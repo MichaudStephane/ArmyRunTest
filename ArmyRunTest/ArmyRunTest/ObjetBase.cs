@@ -63,7 +63,7 @@ namespace AtelierXNA
         public override void Draw(GameTime gameTime)
         {
 
-            if (Vector3.Distance(CaméraJeu.Position, Position)>Distance)
+            if (Vector3.Distance(CaméraJeu.Position, Position)<Distance)
             {
                 DepthStencilState dss = new DepthStencilState();
                 DepthStencilState ancien = GraphicsDevice.DepthStencilState;
