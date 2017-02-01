@@ -40,6 +40,9 @@ namespace AtelierXNA
   
         protected override void Initialize()
         {
+            //staf path hauteur=0.5f(y) de base, (z)0.7x 2(x)
+
+
             const float DELTA_X = 3.3f;
             Vector3 positionDragon = new Vector3(0, 0, 3);
             Vector3 positionCaméra = new Vector3(0, 0, 15);
@@ -60,29 +63,14 @@ namespace AtelierXNA
             Services.AddService(typeof(RessourcesManager<Model>), GestionnairesDeModele);
             Services.AddService(typeof(Caméra), CaméraJeu);
             Services.AddService(typeof(SpriteBatch), new SpriteBatch(GraphicsDevice));
-            Components.Add(new ObjetBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, 0), INTERVALLE_STANDARD, "StefAxe"));
+            Components.Add(new ObjetBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 15, 0), INTERVALLE_STANDARD, "StefAxe"));
             Components.Add(new AfficheurFPS(this, "Arial", Color.Red, INTERVALLE_CALCUL_FPS));
       
+            Components.Add(new ObjetBase(this, 1, new Vector3(0, 0, 0), new Vector3(0, 0, 1), INTERVALLE_STANDARD, "stefpath"));
 
-            Components.Add(new ObjetBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, 0), INTERVALLE_STANDARD, "StefAxe"));
-            Components.Add(new ObjetBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, -2, 20), INTERVALLE_STANDARD, "stefpath"));
-            Components.Add(new ObjetBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, -2, 13), INTERVALLE_STANDARD, "stefpath"));
-            Components.Add(new ObjetBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, -2, 6), INTERVALLE_STANDARD, "stefpath"));
-            Components.Add(new ObjetBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, -2, -1), INTERVALLE_STANDARD, "stefpath"));
-            Components.Add(new ObjetBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, -2, -8), INTERVALLE_STANDARD, "stefpath"));
-            Components.Add(new ObjetBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, -2, -15), INTERVALLE_STANDARD, "stefpath"));
-            Components.Add(new ObjetBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, -2, -22), INTERVALLE_STANDARD, "stefpath"));
-            Components.Add(new ObjetBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, -2, -29), INTERVALLE_STANDARD, "stefpath"));
-            Components.Add(new ObjetBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, -2, -36), INTERVALLE_STANDARD, "stefpath"));
-            Components.Add(new ObjetBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, -2, -43), INTERVALLE_STANDARD, "stefpath"));
+            Components.Add(new ObjetBase(this, 1, new Vector3(0, 0, 0), new Vector3(0, 0, 1.7f), INTERVALLE_STANDARD, "stefpath"));
 
-            Components.Add(new ObjetBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, -2, -50), INTERVALLE_STANDARD, "stefpath"));
-            Components.Add(new ObjetBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, -2, -57), INTERVALLE_STANDARD, "stefpath"));
-            Components.Add(new ObjetBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, -2, -64), INTERVALLE_STANDARD, "stefpath"));
-            Components.Add(new ObjetBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, -2, -71), INTERVALLE_STANDARD, "stefpath"));
-
-
-            Components.Add(new TuileTextureeAnime(this, 0.5f, Vector3.Zero, new Vector3(0, 1, 10), new Vector2(1, 2), "LoupGarou", new Vector2(4, 4), 1f / 60));
+            Components.Add(new TuileTextureeAnime(this, 1, Vector3.Zero, new Vector3(2, 0, 0), new Vector2(1, 0.5f), "LoupGarou", new Vector2(4, 4), 1f / 60));
             Services.AddService(typeof(RessourcesManager<Texture2D>), GestionnaireDeTextures);
 
 

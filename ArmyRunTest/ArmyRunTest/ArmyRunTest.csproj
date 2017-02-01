@@ -85,6 +85,7 @@
     <Compile Include="CameraSubjective.cs" />
     <Compile Include="Caméra.cs" />
     <Compile Include="CaméraFixe.cs" />
+    <Compile Include="HitBoxAngulaire.cs" />
     <Compile Include="ICollisionable.cs" />
     <Compile Include="InputManager.cs" />
     <Compile Include="ObjetBase.cs" />
