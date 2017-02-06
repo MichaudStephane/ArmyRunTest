@@ -82,10 +82,12 @@
   <ItemGroup>
     <Compile Include="Afficheur3D.cs" />
     <Compile Include="AfficheurFPS.cs" />
+    <Compile Include="Armée.cs" />
     <Compile Include="CameraSubjective.cs" />
     <Compile Include="Caméra.cs" />
     <Compile Include="CaméraFixe.cs" />
     <Compile Include="HitBoxAngulaire.cs" />
+    <Compile Include="Humanoide.cs" />
     <Compile Include="ICollisionable.cs" />
     <Compile Include="InputManager.cs" />
     <Compile Include="ObjetBase.cs" />
