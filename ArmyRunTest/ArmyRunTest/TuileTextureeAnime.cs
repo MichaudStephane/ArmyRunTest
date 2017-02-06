@@ -17,7 +17,6 @@ namespace AtelierXNA
         public const float INTERVALLE_ANIMATION_STANDARD=1f/20;
 
         Vector2 DescriptionImage { get; set; }
-        protected Vector2 Delta { get; set; }
         int CompteurX { get; set; }
         int CompteurY { get; set; }
         float IntervalleAnimation { get; set; }
@@ -82,10 +81,10 @@ namespace AtelierXNA
         protected override void CréerTableauPointsTexture()
         {
             // 0 1
-            PtsTexture[0, 0] = new Vector2(Delta.X * CompteurX, Delta.Y * (CompteurY+1));
+            PtsTexture[0, 0] = new Vector2(Delta.X * CompteurX, Delta.Y * (CompteurY + 1));
 
             // 1  1
-            PtsTexture[1, 0] = new Vector2(Delta.X*(CompteurX+1), Delta.Y * (CompteurY+1));
+            PtsTexture[1, 0] = new Vector2(Delta.X * (CompteurX + 1), Delta.Y * (CompteurY + 1));
 
             // 0  0
             PtsTexture[0, 1] = new Vector2(Delta.X * CompteurX, Delta.Y * CompteurY);

@@ -19,6 +19,8 @@ namespace AtelierXNA
         const int NB_PIXEL_DÉPLACEMENT = 2;
         List<Vector3> ListeVecteurs { get; set; }
         Vector3 VecteurGravité { get; set; }
+        int PosX { get; set; }
+        int PosY { get; set; }
         Vector3 VecteurResultant
         {
             get { return CalculerVecteurRésultant(); }
@@ -40,12 +42,17 @@ namespace AtelierXNA
         {
             VecteurGravité = new Vector3(0, -CONSTANTE_GRAVITÉ, 0);//IBougeable changer Y
         }
-
+        public override void Initialize()
+        {
+            PosY = 0;
+            base.Initialize();
+        }
         public override void Update(GameTime gameTime)
         {
             GérerClavier();
             base.Update(gameTime);
         }
+        
 
         protected override void GérerClavier()
         {
@@ -79,10 +86,39 @@ namespace AtelierXNA
 
         protected override void AnimerImage()
         {
-            if (VecteurResultant.X != 0 || VecteurResultant.Z != 0)
+            PosY++;
+            if(PosY <=4)
             {
-                
+                PosY = 0;
             }
+            if (VecteurResultant.X != 0 || VecteurResultant.Z != 0) //gauche/droite/avant/arriere
+            {
+                PosX = 0;
+            }
+            if (VecteurResultant.Y >0)//monter
+            {
+                PosX = 1;
+            }
+            if (VecteurResultant.Y < 0) //descend
+            {
+                PosX = 2;
+            }
+            CréerTableauPointsTexture();
+        }
+        protected override void CréerTableauPointsTexture()
+        {
+
+            // 0 1
+            PtsTexture[0, 0] = new Vector2(Delta.X * PosX, Delta.Y * (PosY + 1));
+
+            // 1  1
+            PtsTexture[1, 0] = new Vector2(Delta.X * (PosX + 1), Delta.Y * (PosY + 1));
+
+            // 0  0
+            PtsTexture[0, 1] = new Vector2(Delta.X * PosX, Delta.Y * PosY);
+
+            // 1 0
+            PtsTexture[1, 1] = new Vector2(Delta.X * (PosX + 1), Delta.Y * PosY);
         }
     }
 }
