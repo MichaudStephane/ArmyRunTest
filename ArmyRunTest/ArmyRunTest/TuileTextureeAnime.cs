@@ -17,7 +17,7 @@ namespace AtelierXNA
         public const float INTERVALLE_ANIMATION_STANDARD=1f/20;
 
         Vector2 DescriptionImage { get; set; }
-        Vector2 Delta { get; set; }
+        protected Vector2 Delta { get; set; }
         int CompteurX { get; set; }
         int CompteurY { get; set; }
         float IntervalleAnimation { get; set; }
@@ -61,7 +61,7 @@ namespace AtelierXNA
             }
             base.Update(gameTime);
         }
-        protected void AnimerImage()
+        protected virtual void AnimerImage()
         {
             CompteurX++;
 
