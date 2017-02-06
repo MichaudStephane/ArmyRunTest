@@ -14,11 +14,12 @@ namespace AtelierXNA
 {
     class Soldat : Humanoide
     {
+        const float CONSTANTE_SAUT = 20f;
         const float CONSTANTE_GRAVITÉ = 9.8f;
         const int NB_PIXEL_DÉPLACEMENT = 2;
         List<Vector3> ListeVecteurs { get; set; }
         Vector3 VecteurGravité { get; set; }
-        Vector3 VecteurResultants
+        Vector3 VecteurResultant
         {
             get { return CalculerVecteurRésultant(); }
         }
@@ -34,10 +35,10 @@ namespace AtelierXNA
         }
 
 
-        public Soldat(Game jeu, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, float intervalleMAJ)
-         : base(jeu, homothétieInitiale, rotationInitiale, positionInitiale, intervalleMAJ)
+        public Soldat(Game jeu, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, Vector2 étendue, string nomImage, Vector2 descriptionImage, float intervalleMAJ)
+         : base(jeu, homothétieInitiale, rotationInitiale, positionInitiale, étendue, nomImage, descriptionImage, intervalleMAJ) 
         {
-            VecteurGravité = new Vector3(0, CONSTANTE_GRAVITÉ, 0);//IBougeable changer Y
+            VecteurGravité = new Vector3(0, -CONSTANTE_GRAVITÉ, 0);//IBougeable changer Y
         }
 
         public override void Update(GameTime gameTime)
@@ -48,11 +49,11 @@ namespace AtelierXNA
 
         protected override void GérerClavier()
         {
-            int déplacementGaucheDroite = GérerTouche(Keys.D) - GérerTouche(Keys.A); //à inverser au besoin
-            int déplacementAvantArrière = GérerTouche(Keys.S) - GérerTouche(Keys.W);
+            float déplacementGaucheDroite = GérerTouche(Keys.D) - GérerTouche(Keys.A); //à inverser au besoin
+            float déplacementAvantArrière = GérerTouche(Keys.S) - GérerTouche(Keys.W);
             if(GestionInput.EstNouvelleTouche(Keys.Space))
             {
-                AjouterVecteur(10);
+                AjouterVecteur(CONSTANTE_SAUT);
             }
             if (déplacementGaucheDroite != 0 || déplacementAvantArrière != 0)
             {
@@ -60,20 +61,28 @@ namespace AtelierXNA
             }
         }
 
-        private void AjouterVecteur(int déplacementAvantArrière, int déplacementGaucheDroite)
+        void AjouterVecteur(float déplacementAvantArrière, float déplacementGaucheDroite)
         {
             Vector3 vecteur = new Vector3(déplacementGaucheDroite, 0, déplacementAvantArrière);
             
-            ListeVecteurs.Add(vecteur + VecteurGravité);
+            ListeVecteurs.Add(vecteur);
         }
-        private void AjouterVecteur(int déplacementSaut)
+        void AjouterVecteur(float déplacementSaut)
         {
-
+            ListeVecteurs.Add(new Vector3(0, déplacementSaut, 0));
         }
 
-        private int GérerTouche(Keys k)
+        int GérerTouche(Keys k)
         {
             return GestionInput.EstEnfoncée(k) ? NB_PIXEL_DÉPLACEMENT : 0;
+        }
+
+        protected override void AnimerImage()
+        {
+            if (VecteurResultant.X != 0 || VecteurResultant.Z != 0)
+            {
+                
+            }
         }
     }
 }
