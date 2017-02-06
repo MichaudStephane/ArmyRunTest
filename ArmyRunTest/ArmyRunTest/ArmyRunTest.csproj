@@ -98,6 +98,7 @@
     <Compile Include="Atelier.cs" />
     <Compile Include="RessourceDeBase.cs" />
     <Compile Include="RessourcesManager.cs" />
+    <Compile Include="Soldat.cs" />
     <Compile Include="Tuile.cs" />
     <Compile Include="TuileTextureeAnime.cs" />
     <Compile Include="TuileTexturée.cs" />
