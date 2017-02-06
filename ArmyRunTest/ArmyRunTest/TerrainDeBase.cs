@@ -31,19 +31,9 @@ namespace AtelierXNA
             }
         }
 
-        public BoundingBox HitBoxGénérale
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
+        public BoundingBox HitBoxGénérale { get; protected set; }
+        
+     
         public Vector3 DonnerVectorCollision(PrimitiveDeBaseAnimée a)
         {
             throw new NotImplementedException();
@@ -73,9 +63,33 @@ namespace AtelierXNA
 
         void CréerHitboxGénérale()
         {
-            
+            Matrix worldTransform = GetMonde();
+
+            foreach (ModelMesh mesh in Objet3D.Meshes)
+            {
+                Vector3 min = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
+                Vector3 max = new Vector3(float.MinValue, float.MinValue, float.MinValue);
+                foreach (ModelMeshPart meshPart in mesh.MeshParts)
+                {
+                    int vertexStride = meshPart.VertexBuffer.VertexDeclaration.VertexStride;
+                    int vertexBufferSize = meshPart.NumVertices * vertexStride;
+
+                    float[] vertexData = new float[vertexBufferSize / sizeof(float)];
+                    meshPart.VertexBuffer.GetData<float>(vertexData);
+
+                    for (int i = 0; i < vertexBufferSize / sizeof(float); i += vertexStride / sizeof(float))
+                    {
+                        Vector3 transformedPosition = Vector3.Transform(new Vector3(vertexData[i], vertexData[i + 1], vertexData[i + 2]), worldTransform);
+
+                        min = Vector3.Min(min, transformedPosition);
+                        max = Vector3.Max(max, transformedPosition);
+                    }
+                }
+                HitBoxGénérale = new BoundingBox(min, max);
             
         }
+
+    }
 
 
     }

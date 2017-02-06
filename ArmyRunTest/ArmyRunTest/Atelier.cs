@@ -65,12 +65,12 @@ namespace AtelierXNA
             Services.AddService(typeof(SpriteBatch), new SpriteBatch(GraphicsDevice));
             Components.Add(new ObjetBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 15, 0), INTERVALLE_STANDARD, "StefAxe"));
             Components.Add(new AfficheurFPS(this, "Arial", Color.Red, INTERVALLE_CALCUL_FPS));
-      
-            Components.Add(new ObjetBase(this, 1, new Vector3(0, 0, 0), new Vector3(0, 0, 1), INTERVALLE_STANDARD, "stefpath"));
 
-            Components.Add(new ObjetBase(this, 1, new Vector3(0, 0, 0), new Vector3(0, 0, 1.7f), INTERVALLE_STANDARD, "stefpath"));
 
-            Components.Add(new TuileTextureeAnime(this, 1, Vector3.Zero, new Vector3(2, 0, 0), new Vector2(1, 0.5f), "LoupGarou", new Vector2(4, 4), 1f / 60));
+
+
+            Components.Add(new ObjetBase(this, 1, new Vector3(0, 0, 0), new Vector3(0, -5, 0), INTERVALLE_STANDARD, "stefpath"));
+            Components.Add(new TestTuileTexturé(this, 1, Vector3.Zero, new Vector3(0, 5, 0), new Vector2(1, 0.5f), "LoupGarou", new Vector2(4, 4), 1f / 60));
             Services.AddService(typeof(RessourcesManager<Texture2D>), GestionnaireDeTextures);
 
 

@@ -10,7 +10,7 @@ namespace AtelierXNA
       const int NB_TRIANGLES = 2;
       protected Vector3[,] PtsSommets { get; private set; }
      protected Vector3 Origine { get; set; }
-      Vector2 Delta { get; set; }
+      protected Vector2 Delta { get; set; }
       protected BasicEffect EffetDeBase { get; private set; }
 
 
