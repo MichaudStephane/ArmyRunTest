@@ -12,12 +12,12 @@ using Microsoft.Xna.Framework.Media;
 
 namespace AtelierXNA
 {
-    /// <summary>
-    /// This is a game component that implements IUpdateable.
-    /// </summary>
-    public class Soldat : Microsoft.Xna.Framework.GameComponent
+    class Soldat : Humanoide
     {
+        const float CONSTANTE_GRAVITÉ = 9.8f;
+        const int NB_PIXEL_DÉPLACEMENT = 2;
         List<Vector3> ListeVecteurs { get; set; }
+        Vector3 VecteurGravité { get; set; }
         Vector3 VecteurResultants
         {
             get { return CalculerVecteurRésultant(); }
@@ -32,32 +32,48 @@ namespace AtelierXNA
 
             return vecteurRésultant;
         }
-        public Soldat(Game game)
-            : base(game)
+
+
+        public Soldat(Game jeu, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, float intervalleMAJ)
+         : base(jeu, homothétieInitiale, rotationInitiale, positionInitiale, intervalleMAJ)
         {
-            // TODO: Construct any child components here
+            VecteurGravité = new Vector3(0, CONSTANTE_GRAVITÉ, 0);//IBougeable changer Y
         }
 
-        /// <summary>
-        /// Allows the game component to perform any initialization it needs to before starting
-        /// to run.  This is where it can query for any required services and load content.
-        /// </summary>
-        public override void Initialize()
-        {
-            // TODO: Add your initialization code here
-
-            base.Initialize();
-        }
-
-        /// <summary>
-        /// Allows the game component to update itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-            // TODO: Add your update code here
-
+            GérerClavier();
             base.Update(gameTime);
+        }
+
+        protected override void GérerClavier()
+        {
+            int déplacementGaucheDroite = GérerTouche(Keys.D) - GérerTouche(Keys.A); //à inverser au besoin
+            int déplacementAvantArrière = GérerTouche(Keys.S) - GérerTouche(Keys.W);
+            if(GestionInput.EstNouvelleTouche(Keys.Space))
+            {
+                AjouterVecteur(10);
+            }
+            if (déplacementGaucheDroite != 0 || déplacementAvantArrière != 0)
+            {
+                AjouterVecteur(déplacementAvantArrière, déplacementGaucheDroite);
+            }
+        }
+
+        private void AjouterVecteur(int déplacementAvantArrière, int déplacementGaucheDroite)
+        {
+            Vector3 vecteur = new Vector3(déplacementGaucheDroite, 0, déplacementAvantArrière);
+            
+            ListeVecteurs.Add(vecteur + VecteurGravité);
+        }
+        private void AjouterVecteur(int déplacementSaut)
+        {
+
+        }
+
+        private int GérerTouche(Keys k)
+        {
+            return GestionInput.EstEnfoncée(k) ? NB_PIXEL_DÉPLACEMENT : 0;
         }
     }
 }

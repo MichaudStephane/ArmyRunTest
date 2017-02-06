@@ -13,11 +13,15 @@ using Microsoft.Xna.Framework.Media;
 
 namespace AtelierXNA
 {
-    class Humanoide : PrimitiveDeBaseAnimée
+    abstract class Humanoide : PrimitiveDeBaseAnimée
     {
         public Humanoide(Game jeu, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, float intervalleMAJ)
          : base(jeu, homothétieInitiale, rotationInitiale, positionInitiale, intervalleMAJ) { }
 
 
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+        }
     }
 }
