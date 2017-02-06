@@ -86,6 +86,7 @@
     <Compile Include="Caméra.cs" />
     <Compile Include="CaméraFixe.cs" />
     <Compile Include="HitBoxAngulaire.cs" />
+    <Compile Include="IBougeable.cs" />
     <Compile Include="ICollisionable.cs" />
     <Compile Include="InputManager.cs" />
     <Compile Include="ObjetBase.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="RessourceDeBase.cs" />
     <Compile Include="RessourcesManager.cs" />
     <Compile Include="Soldat.cs" />
+    <Compile Include="TerrainDeBase.cs" />
     <Compile Include="Tuile.cs" />
     <Compile Include="TuileTextureeAnime.cs" />
     <Compile Include="TuileTexturée.cs" />

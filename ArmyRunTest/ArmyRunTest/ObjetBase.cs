@@ -19,7 +19,7 @@ namespace AtelierXNA
         RessourcesManager<Model> GestionnairesDeModele { get; set; }
         Vector3 Dimension { get; set; }
         string NomModele { get; set; }
-        Model Objet3D { get; set; }
+        public Model Objet3D { get;private set; }
         protected Matrix[] TransformationsModèle { get; private set; }
         protected BasicEffect EffetDeBase { get; private set; }
         
