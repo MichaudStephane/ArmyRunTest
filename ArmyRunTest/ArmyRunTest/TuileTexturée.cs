@@ -69,6 +69,7 @@ namespace AtelierXNA
           DepthStencilState dss = new DepthStencilState();
           DepthStencilState ancien = GraphicsDevice.DepthStencilState;
          
+          
 
       
           dss.DepthBufferEnable = true;

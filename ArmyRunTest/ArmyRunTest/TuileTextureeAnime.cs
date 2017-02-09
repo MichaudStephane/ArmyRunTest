@@ -17,8 +17,8 @@ namespace AtelierXNA
         public const float INTERVALLE_ANIMATION_STANDARD=1f/20;
 
         Vector2 DescriptionImage { get; set; }
-        int CompteurX { get; set; }
-        int CompteurY { get; set; }
+      protected  int CompteurX { get; set; }
+      protected  int CompteurY { get; set; }
         float IntervalleAnimation { get; set; }
         float TempsDepuisDerniereAnimation { get; set; }
 

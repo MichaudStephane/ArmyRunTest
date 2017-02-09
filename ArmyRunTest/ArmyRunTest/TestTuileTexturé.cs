@@ -17,7 +17,7 @@ namespace AtelierXNA
     /// </summary>
     public class TestTuileTexturé : TuileTextureeAnime
     {
-        BoundingBox HitBoxTest { get; set; }
+       public BoundingBox HitBoxTest { get;protected set; }
         public TestTuileTexturé(Game jeu, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, Vector2 étendue, string nomTextureTuile, Vector2 descriptionImage, float intervalleMAJ)
             : base(jeu,homothétieInitiale,rotationInitiale,positionInitiale,étendue,nomTextureTuile,descriptionImage,intervalleMAJ)
         {

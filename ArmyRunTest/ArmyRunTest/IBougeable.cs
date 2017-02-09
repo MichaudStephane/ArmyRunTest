@@ -7,15 +7,20 @@ using Microsoft.Xna.Framework;
 
 namespace AtelierXNA
 {
-    interface IBougeable
+      interface IBougeable
     {
-        float Masse { get; set; }
-        List<Vector3> ListeVecteurs { get; set; }
-        float IntervalleDeplacement { get; set; }
-        Vector3 VecteurResultants { get; set; }
-        Vector3 CalculerVecteurRésultant();
+      
+
+      
+        
+        float Intervalle_MAJ_Mouvement { get; set; }
+        float TempsEcouleDepuisMajMouvement { get; set; }
+
+         void CalculerVecteurResultant();
+         void InitialiserListe();
+
         void ModifierIntervalle();
-        void Bouger();
+
 
     }
 }

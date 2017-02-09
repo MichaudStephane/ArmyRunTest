@@ -88,6 +88,7 @@
     <Compile Include="CaméraFixe.cs" />
     <Compile Include="HitBoxAngulaire.cs" />
     <Compile Include="Humanoide.cs" />
+    <Compile Include="IBougeable.cs" />
     <Compile Include="ICollisionable.cs" />
     <Compile Include="InputManager.cs" />
     <Compile Include="ObjetBase.cs" />

@@ -44,6 +44,7 @@ namespace AtelierXNA
         {
             RasterizerState rasterizerState = new RasterizerState();
             rasterizerState.CullMode = CullMode.CullCounterClockwiseFace;
+            rasterizerState.FillMode = Game.GraphicsDevice.RasterizerState.FillMode;
             GraphicsDevice.RasterizerState = rasterizerState;
             
 
@@ -66,21 +67,38 @@ namespace AtelierXNA
             if (Vector3.Distance(CaméraJeu.Position, Position)<Distance)
             {
                 DepthStencilState dss = new DepthStencilState();
+
+                RasterizerState JeuRasterizerState = new RasterizerState();
+     
+                JeuRasterizerState.FillMode = Game.GraphicsDevice.RasterizerState.FillMode;
+
                 DepthStencilState ancien = GraphicsDevice.DepthStencilState;
+                
                 dss.DepthBufferEnable = true;
 
+
+                
+
                 GraphicsDevice ancienGraphics = GraphicsDevice;
+
 
                 EffetDeBase.World = GetMonde();
                 EffetDeBase.View = CaméraJeu.Vue;
                 EffetDeBase.Projection = CaméraJeu.Projection;
-
+                
                 GraphicsDevice.BlendState = BlendState.AlphaBlend;
+                GraphicsDevice.RasterizerState = JeuRasterizerState;
 
+                GraphicsDevice.RasterizerState = JeuRasterizerState;
+
+               
+               
 
                 GraphicsDevice.DepthStencilState = DepthStencilState.Default;
 
                 GraphicsDevice.DepthStencilState = dss;
+
+
                 foreach (ModelMesh maille in Objet3D.Meshes)
                 {
 
@@ -93,12 +111,14 @@ namespace AtelierXNA
                         effet.Projection = CaméraJeu.Projection;
                         effet.View = CaméraJeu.Vue;
                         effet.World = mondeLocal;
+                   
                     }
                     maille.Draw();
                 }
 
                 GraphicsDevice.BlendState = ancienGraphics.BlendState;
                 GraphicsDevice.DepthStencilState = ancienGraphics.DepthStencilState;
+                GraphicsDevice.RasterizerState = JeuRasterizerState;
             }
 
         }

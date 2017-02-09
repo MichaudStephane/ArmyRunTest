@@ -53,7 +53,7 @@ namespace AtelierXNA
             GestionInput = new InputManager(this);
             Components.Add(GestionInput);
             CaméraJeu = new CaméraSubjective(this, positionCaméra, positionDragon, Vector3.Up, INTERVALLE_STANDARD);
-            Components.Add(new Afficheur3D(this));
+            
             Components.Add(CaméraJeu);
             Services.AddService(typeof(RessourcesManager<SpriteFont>), new RessourcesManager<SpriteFont>(this, "Fonts"));
             Services.AddService(typeof(Random), new Random());
@@ -63,14 +63,22 @@ namespace AtelierXNA
             Services.AddService(typeof(RessourcesManager<Model>), GestionnairesDeModele);
             Services.AddService(typeof(Caméra), CaméraJeu);
             Services.AddService(typeof(SpriteBatch), new SpriteBatch(GraphicsDevice));
-            Components.Add(new ObjetBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 15, 0), INTERVALLE_STANDARD, "StefAxe"));
             Components.Add(new AfficheurFPS(this, "Arial", Color.Red, INTERVALLE_CALCUL_FPS));
 
+            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, 0), INTERVALLE_STANDARD, "stefpath"));
+            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -7), INTERVALLE_STANDARD, "stefpath"));
+            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -14), INTERVALLE_STANDARD, "stefpath"));
+            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -21), INTERVALLE_STANDARD, "stefpath"));
+            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -28), INTERVALLE_STANDARD, "stefpath"));
+            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(-8, 0, -14), INTERVALLE_STANDARD, "stefpath"));
+            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(8, 0, -14), INTERVALLE_STANDARD, "stefpath"));
+            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(16, 0, -14), INTERVALLE_STANDARD, "stefpath"));
+            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(16, 0, 0), INTERVALLE_STANDARD, "stefpath"));
+            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(16, 0, -7), INTERVALLE_STANDARD, "stefpath"));
+            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(7, 0, 0), INTERVALLE_STANDARD, "stefpath"));
 
-
-
-            Components.Add(new ObjetBase(this, 1, new Vector3(0, 0, 0), new Vector3(0, -5, 0), INTERVALLE_STANDARD, "stefpath"));
-            Components.Add(new TestTuileTexturé(this, 1, Vector3.Zero, new Vector3(0, 5, 0), new Vector2(1, 0.5f), "LoupGarou", new Vector2(4, 4), 1f / 60));
+            Components.Add(new Soldat(this, 1f, Vector3.Zero, new Vector3(0, 10, 0), new Vector2(1, 2), "LoupGarou", new Vector2(4, 4), 1f / 60));
+            Components.Add(new Afficheur3D(this));
             Services.AddService(typeof(RessourcesManager<Texture2D>), GestionnaireDeTextures);
 
 
@@ -81,7 +89,13 @@ namespace AtelierXNA
             base.Initialize();
         }
 
-  
+        private void GérerClavier()
+        {
+            if (GestionInput.EstEnfoncée(Keys.Escape))
+            {
+                Exit();
+            }
+        }
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
@@ -91,17 +105,12 @@ namespace AtelierXNA
         }
 
    
-        protected override void UnloadContent()
-        {
-            // TODO: Unload any non ContentManager content here
-        }
 
      
         protected override void Update(GameTime gameTime)
         {
             // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-                this.Exit();
+            GérerClavier();
 
             // TODO: Add your update logic here
 

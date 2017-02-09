@@ -12,11 +12,19 @@ using Microsoft.Xna.Framework.Media;
 
 namespace AtelierXNA
 {
-    /// <summary>
-    /// This is a game component that implements IUpdateable.
-    /// </summary>
+    
+   
+
+
+
     public class TerrainDeBase : ObjetBase, ICollisionable
     {
+        const int HOMOTHETHIE_STANDARD = 10;
+        Vector3 TAILLE_HITBOX_STANDARD = new Vector3(1,0.775555f,0.785F);
+
+
+
+
         public TerrainDeBase(Game jeu, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, float intervalleMAJ, string nomModel) 
             : base(jeu, homothétieInitiale, rotationInitiale, positionInitiale, intervalleMAJ, nomModel)
         {
@@ -36,61 +44,63 @@ namespace AtelierXNA
      
         public Vector3 DonnerVectorCollision(PrimitiveDeBaseAnimée a)
         {
-            throw new NotImplementedException();
+         
+
+            Vector3 v = Vector3.Zero;
+            if(a is ICollisionable)
+                if((a as  Soldat).HitBoxGénérale.Intersects(HitBoxGénérale))
+                {
+                    v = new Vector3(0, -(a as Soldat).VecteurResultant.Y, 0);
+                }
+
+            return v;
         }
 
-        /// <summary>
-        /// Allows the game component to perform any initialization it needs to before starting
-        /// to run.  This is where it can query for any required services and load content.
-        /// </summary>
+  
         public override void Initialize()
         {
-            // TODO: Add your initialization code here
+           
 
+            
             base.Initialize();
+            CréerHitboxGénérale();
         }
 
-        /// <summary>
-        /// Allows the game component to update itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+  
         public override void Update(GameTime gameTime)
         {
-            // TODO: Add your update code here
+           Vector3 posPre = Position;
 
             base.Update(gameTime);
+
+
+            if(posPre!=Position)
+                  CréerHitboxGénérale();
+
         }
 
         void CréerHitboxGénérale()
         {
-            Matrix worldTransform = GetMonde();
 
-            foreach (ModelMesh mesh in Objet3D.Meshes)
-            {
-                Vector3 min = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
-                Vector3 max = new Vector3(float.MinValue, float.MinValue, float.MinValue);
-                foreach (ModelMeshPart meshPart in mesh.MeshParts)
-                {
-                    int vertexStride = meshPart.VertexBuffer.VertexDeclaration.VertexStride;
-                    int vertexBufferSize = meshPart.NumVertices * vertexStride;
 
-                    float[] vertexData = new float[vertexBufferSize / sizeof(float)];
-                    meshPart.VertexBuffer.GetData<float>(vertexData);
+            Vector3 minHB = new Vector3(-0.5f * TAILLE_HITBOX_STANDARD.X, -0.5f * TAILLE_HITBOX_STANDARD.Y, -0.5F*TAILLE_HITBOX_STANDARD.Z);
+            Vector3 maxHB = new Vector3(0.5f * TAILLE_HITBOX_STANDARD.X, 0.5f * TAILLE_HITBOX_STANDARD.Y, 0.5F*TAILLE_HITBOX_STANDARD.Z);
 
-                    for (int i = 0; i < vertexBufferSize / sizeof(float); i += vertexStride / sizeof(float))
-                    {
-                        Vector3 transformedPosition = Vector3.Transform(new Vector3(vertexData[i], vertexData[i + 1], vertexData[i + 2]), worldTransform);
+            minHB = Vector3.Transform(minHB, Matrix.CreateScale(Homothétie));
+            maxHB = Vector3.Transform(maxHB, Matrix.CreateScale(Homothétie));
 
-                        min = Vector3.Min(min, transformedPosition);
-                        max = Vector3.Max(max, transformedPosition);
-                    }
-                }
-                HitBoxGénérale = new BoundingBox(min, max);
-            
+            minHB = Vector3.Transform(minHB, Matrix.CreateTranslation(PositionInitiale));
+            maxHB = Vector3.Transform(maxHB, Matrix.CreateTranslation(PositionInitiale));
+
+            minHB = new Vector3((float)Math.Round(minHB.X, 3), (float)Math.Round(minHB.Y, 3), (float)Math.Round(minHB.Z, 3));
+            maxHB = new Vector3((float)Math.Round(maxHB.X, 3), (float)Math.Round(maxHB.Y, 3), (float)Math.Round(maxHB.Z, 3));
+
+
+            HitBoxGénérale = new BoundingBox(minHB,maxHB);
+            int A = 1;
         }
 
     }
 
 
-    }
-}
+ }

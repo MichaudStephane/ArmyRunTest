@@ -9,8 +9,8 @@ namespace AtelierXNA
 {
     interface ICollisionable
     {
-        bool EstCollisionable { get; }
-        BoundingBox HitBoxGénérale { get; set; }
+   
+        
         Vector3 DonnerVectorCollision(PrimitiveDeBaseAnimée a);
     }
 }
