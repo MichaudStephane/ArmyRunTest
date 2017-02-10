@@ -101,7 +101,6 @@
     <Compile Include="RessourcesManager.cs" />
     <Compile Include="Soldat.cs" />
     <Compile Include="TerrainDeBase.cs" />
-    <Compile Include="TestTuileTexturé.cs" />
     <Compile Include="Tuile.cs" />
     <Compile Include="TuileTextureeAnime.cs" />
     <Compile Include="TuileTexturée.cs" />

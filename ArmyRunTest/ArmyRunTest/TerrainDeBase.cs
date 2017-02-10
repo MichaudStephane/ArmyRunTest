@@ -50,7 +50,15 @@ namespace AtelierXNA
             if(a is ICollisionable)
                 if((a as  Soldat).HitBoxGénérale.Intersects(HitBoxGénérale))
                 {
-                    v = new Vector3(0, -(a as Soldat).VecteurResultant.Y, 0);
+
+
+                    if((a as Soldat).VecteurResultantForce.Y<0)
+                    v = new Vector3(0, -(a as Soldat).VecteurResultantForce.Y, 0);
+
+                    (a as Soldat).Vitesse = new Vector3((a as Soldat).Vitesse.X, 0, (a as Soldat).Vitesse.Z);
+
+
+
                 }
 
             return v;

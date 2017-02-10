@@ -7,7 +7,7 @@ namespace AtelierXNA
 {
    public abstract class Tuile : PrimitiveDeBaseAnimée
    {
-      const int NB_TRIANGLES = 2;
+     public const int NB_TRIANGLES = 2;
       protected Vector3[,] PtsSommets { get; private set; }
      protected Vector3 Origine { get; set; }
       protected Vector2 Delta { get; set; }
@@ -41,7 +41,7 @@ namespace AtelierXNA
 
       protected abstract void InitialiserParamètresEffetDeBase();
 
-      protected void CréerTableauPoints()
+      protected virtual void CréerTableauPoints()
       {
          PtsSommets[0, 0] = new Vector3(Origine.X, Origine.Y, Origine.Z);
          PtsSommets[1, 0] = new Vector3(Origine.X + Delta.X, Origine.Y, Origine.Z);

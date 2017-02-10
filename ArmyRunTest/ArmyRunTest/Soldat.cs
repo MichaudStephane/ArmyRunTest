@@ -12,40 +12,59 @@ using Microsoft.Xna.Framework.Media;
 
 namespace AtelierXNA
 {
-   public class Soldat : Humanoide, IBougeable, ICollisionable
+   public class Soldat : Humanoide, ICollisionable
     {
         const float CONSTANTE_SAUT = 20f;
         const float CONSTANTE_GRAVITE = 9.81F;
-        const float NB_PIXEL_DÉPLACEMENT = 0.00000000000005f;
+        const float NB_PIXEL_DÉPLACEMENT = 10f;
         const float INTERVALLE_DE_DEPART_STANDARD = 1f/60;
+        const float MASSE_SOLDAT_KG = 10;
+        const float DENSITER_AIR =1.225F;  //KG/M CUBE
+        const float DRAG_COEFFICIENT = 1.05F;
+
+
      
+
+        const float INTERVALLE_CALCUL_PHYSIQUE = 1f / 60;
 
         public BoundingBox HitBoxGénérale { get; protected set; }
-        protected List<Vector3> ListeVecteurs { get; set; }
+        
         Vector3 VecteurGravité { get; set; }
-        public Vector3 VecteurResultant { get; protected set; }
-        Vector3 VecteurDirectant { get; set; }
+       
+        
        
         Vector3 AnciennePosition { get; set; }
+        
+        public float Intervalle_MAJ_Mouvement { get;  set; }
+        public float TempsEcouleDepuisMajMouvement { get; set; }
+
+
+
         public bool EstEnCollision { get; set; }
-       public float Intervalle_MAJ_Mouvement { get;  set; }
-       public float TempsEcouleDepuisMajMouvement { get; set; }
-
      
+       public Vector3 VecteurResultantForce { get; protected set; }
+       Vector3 Acceleration { get; set; }
+        public Vector3 Vitesse { get; set; }
+       Vector3 Commande { get; set; }
 
 
-        public Soldat(Game jeu, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, Vector2 étendue, string nomImage, Vector2 descriptionImage, float intervalleMAJ)
-            : base(jeu, homothétieInitiale, rotationInitiale, positionInitiale, étendue, nomImage, descriptionImage, intervalleMAJ)
+
+
+
+        public Soldat(Game jeu, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, Vector2 étendue, string nomImageDos,string nomImageFace ,Vector2 descriptionImageDos,Vector2 DescriptionImageFace, float intervalleMAJ)
+            : base(jeu, homothétieInitiale, rotationInitiale, positionInitiale, étendue, nomImageDos,nomImageFace, descriptionImageDos,DescriptionImageFace, intervalleMAJ)
         {
            
         }
         public override void Initialize()
         {
             base.Initialize();
+            Commande = Vector3.Zero;
             VecteurGravité = new Vector3(0, -CONSTANTE_GRAVITE, 0);
-            VecteurResultant = Vector3.Zero;
-            VecteurDirectant = Vector3.Zero;
-            ListeVecteurs = new List<Vector3>();
+            VecteurResultantForce = Vector3.Zero;
+            Vitesse = Vector3.Zero;
+            Acceleration = Vector3.Zero;
+          
             Intervalle_MAJ_Mouvement = INTERVALLE_DE_DEPART_STANDARD;
             TempsEcouleDepuisMajMouvement = 0;
 
@@ -55,30 +74,38 @@ namespace AtelierXNA
         }
         public override void Update(GameTime gameTime)
         {
-            InitialiserListe();
             base.Update(gameTime);
+
+            VecteurResultantForce = Vector3.Zero;
+
             TempsEcouleDepuisMajMouvement += (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (TempsEcouleDepuisMajMouvement >= Intervalle_MAJ_Mouvement)
             {
-                
+                CalculerForcesExercees();
+                CalculerAcceleration();
                 AnciennePosition = Position;
-              
-                ModifierIntervalle();
-                CreerHitbox();
-                CalculerVecteurResultant();
-                GererCollision();
-                GererMouvement();
+                BougerHitbox();
                 CalculerMatriceMonde();
                 TempsEcouleDepuisMajMouvement = 0;            
             }
-            CreerHitbox();
 
+
+            GameWindow a =Game.Window;
+            a.Title = "Vitesse:[ " + Math.Round(Vitesse.X, 2) + "   " + Math.Round(Vitesse.Y, 2) + "   " + Math.Round(Vitesse.Z, 2) + 
+                "] Position: [" + Math.Round(Position.X, 2) + "   " + Math.Round(Position.Y, 2) + "   " + Math.Round(Position.Z, 2) + "]"
+                + "  Acceleration:[ " + Math.Round(Acceleration.X, 2) + "   " + Math.Round(Acceleration.Y, 2) + "   " + Math.Round(Acceleration.Z, 2) + "]"
+                + "  VecteurForce:[ " + Math.Round(VecteurResultantForce.X, 2) + "   " + Math.Round(VecteurResultantForce.Y, 2) + "   " + Math.Round(VecteurResultantForce.Z, 2) + "]";
            
         }
 
-
+       //TEMPORAIRE
         protected override void GérerClavier()
         {
+
+            /// POUR TESTER HITBOX SEULEUMENT SOLDAT DE LARMER NE SE CONTROLE PAS DIRECTEMENT
+
+
+
             float déplacementGaucheDroite = GérerTouche(Keys.D) - GérerTouche(Keys.A); //à inverser au besoin
             float déplacementAvantArrière = GérerTouche(Keys.S) - GérerTouche(Keys.W);
 
@@ -86,7 +113,10 @@ namespace AtelierXNA
             if(GestionInput.EstNouvelleTouche(Keys.R))
             {
                 Position = PositionInitiale;
-                VecteurResultant = Vector3.Zero;
+                VecteurResultantForce = Vector3.Zero;
+                Vitesse = Vector3.Zero;
+                Acceleration = Vector3.Zero;
+                CreerHitbox();
             }
 
             if (!GestionInput.EstEnfoncée(Keys.LeftShift))
@@ -100,18 +130,21 @@ namespace AtelierXNA
                     AjouterVecteur(déplacementAvantArrière, déplacementGaucheDroite);
                 }
             }
+
+
+            //--------------------------------------------------------------------
             
         }
 
         void AjouterVecteur(float déplacementAvantArrière, float déplacementGaucheDroite)
         {
-            Vector3 vecteur = new Vector3(déplacementGaucheDroite, 0, déplacementAvantArrière);
+            Commande = new Vector3(déplacementGaucheDroite, Commande.Y, déplacementAvantArrière);
 
-            ListeVecteurs.Add(vecteur);
+           
         }
         void AjouterVecteur(float déplacementSaut)
         {
-              ListeVecteurs.Add(new Vector3(0, déplacementSaut, 0));
+            Commande = new Vector3(Commande.X, déplacementSaut, Commande.Y);
         }
 
         float GérerTouche(Keys k)
@@ -143,103 +176,55 @@ namespace AtelierXNA
         */
 
 
-        protected override void CréerTableauPointsTexture()
-        {
-
-            // 0 1
-            PtsTexture[0, 0] = new Vector2(Delta.X * CompteurX, Delta.Y * (CompteurY + 1));
-
-            // 1  1
-            PtsTexture[1, 0] = new Vector2(Delta.X * (CompteurX + 1), Delta.Y * (CompteurY + 1));
-
-            // 0  0
-            PtsTexture[0, 1] = new Vector2(Delta.X * CompteurX, Delta.Y * CompteurY);
-
-            // 1 0
-            PtsTexture[1, 1] = new Vector2(Delta.X * (CompteurX + 1), Delta.Y * CompteurY);
-        }
+     
         public Vector3 DonnerVectorCollision(PrimitiveDeBaseAnimée a)
         {
             return Vector3.Zero;
         }
 
-        public void CalculerVecteurResultant()
-        {
-            Vector3 vTotal = Vector3.Zero;
-            foreach(Vector3 v in ListeVecteurs)
-            {
-                vTotal += v;
-            }
-            VecteurResultant = vTotal;
-        }
-        public void InitialiserListe()
-        {
         
-            ListeVecteurs = new List<Vector3>();
-            ListeVecteurs.Add(VecteurResultant);
-           ListeVecteurs.Add(VecteurGravité);
-            VecteurResultant = Vector3.Zero;
-        }
-
-        public void ModifierIntervalle()
-        {
-            //--A MODIFIRER -----
-
-
-        }
-        void GererMouvement()
-        {
-            CalculerVecteurResultant();
-            Vector3 v = VecteurResultant;
-           
-           // v.Normalize();
-            GererFrottement();
-
-            if(v!=Vector3.Zero)
-            {
-                v.Normalize();              
-            }
-
-            v = Vector3.Multiply(v, 0.3f);
-            Position = new Vector3(Position.X+v.X, Position.Y + v.Y, Position.Z+v.Z);
-            if(Position.Y<-10)
-            {
-                Position = PositionInitiale;
-                VecteurResultant = Vector3.Zero;
-            }
-            CreerHitbox();
-          
-           
-        }
-
         private void GererFrottement()
         {
+            ///-----------------------A METTRE LE FROTTEMENT DYNAMIQUE ET STATIQUE------------------------------------
+                     
+            
 
-            VecteurResultant = new Vector3(VecteurResultant.X - 0.2f * VecteurResultant.X / VecteurResultant.X, VecteurResultant.Y, VecteurResultant.Z - 0.2f * VecteurResultant.Z / VecteurResultant.Z);
+
+
+
+            //frottement air
+
+            Vector3 vitesseCal = Vitesse;
+            Vector3 fAir = Vector3.Multiply(Vector3.Multiply(vitesseCal, vitesseCal), 0.010f*2*0.5f * DENSITER_AIR * DRAG_COEFFICIENT);
+
+            VecteurResultantForce += fAir;
         }
 
         //----A MODIFIER----
         void GererCollision()
         {
+            EstEnCollision = false;
 
+            Vector3 V = VecteurResultantForce;
             // FAIRE EN SORTE QUELLE NE VEFIE QUE LES ELEMENTS PROCHES
-            if(Position.Y<3)
-            {
-                int a = 1;
-            }
-
-
             foreach(GameComponent G in Game.Components.Where(x=>x is ICollisionable).ToList())
             {
-                ListeVecteurs.Add((G as ICollisionable).DonnerVectorCollision(this));
-                CalculerVecteurResultant();
+                
+
+
+                VecteurResultantForce+=((G as ICollisionable).DonnerVectorCollision(this));     
+    
+            }
+            if(V!=VecteurResultantForce)
+            {
+                EstEnCollision = true;
             }
            
         }
 
        void CreerHitbox()
         {
-            Vector3 minHB = new Vector3(-0.5f * Delta.X, -0.5f * Delta.Y, -0.1f);
+            Vector3 minHB = new Vector3(-0.5f * Delta.X, -0.4f * Delta.Y, -0.1f);
             Vector3 maxHB = new Vector3(0.5f * Delta.X, 0.5f * Delta.Y, 0.1f);
 
             minHB = Vector3.Transform(minHB, Matrix.CreateScale(Homothétie));
@@ -253,12 +238,82 @@ namespace AtelierXNA
 
             HitBoxGénérale = new BoundingBox(minHB,maxHB);
 
-            int a = 1;
+           
            
         }
+       void BougerHitbox()
+       {
+           Vector3 diff =Position- HitBoxGénérale.Min +Vector3.Multiply((HitBoxGénérale.Max - HitBoxGénérale.Min),0.5f);
+
+           HitBoxGénérale = new BoundingBox(HitBoxGénérale.Min + diff, HitBoxGénérale.Max + diff);
+
+
+       }
+
+       void CalculerForcesExercees()
+       {
+           // faire pour les force de rotations aussi
+
+
+           VecteurResultantForce += Vector3.Multiply(VecteurGravité,MASSE_SOLDAT_KG);
+           VecteurResultantForce += Commande;
+           Commande = Vector3.Zero;
+           GererCollision();
+           GererFrottement();
+
+
+       }
+       void CalculerAcceleration()
+       {
+           Vector3 vitesseCal = Vitesse;
+           Vector3 accCal = Acceleration;
+           Vector3 vecForceCal = VecteurResultantForce;
+
+           Vector3 accelerationPrecedente = Acceleration;
+           Vector3 varPosition = Vector3.Multiply(vitesseCal,INTERVALLE_CALCUL_PHYSIQUE)+Vector3.Multiply(Vector3.Multiply(accelerationPrecedente,0.5f),(float)Math.Pow(INTERVALLE_CALCUL_PHYSIQUE,2));
+           Position = new Vector3(Position.X+varPosition.X,Position.Y+varPosition.Y,Position.Z+varPosition.Z);
+           Acceleration = Vector3.Multiply(vecForceCal,1f/MASSE_SOLDAT_KG);
 
 
 
+           Acceleration = new Vector3((float)Math.Round(Acceleration.X, 2), (float)Math.Round(Acceleration.Y, 2), (float)Math.Round(Acceleration.Z, 2));
+     
+           if (Acceleration != Vector3.Zero)
+           {
+
+               Acceleration = Vector3.Multiply(accelerationPrecedente + Acceleration, 0.5f);
+           }
+
+
+           Vitesse+=Acceleration*INTERVALLE_CALCUL_PHYSIQUE;
+
+           Vitesse = new Vector3((float)Math.Round(Vitesse.X, 2), (float)Math.Round(Vitesse.Y, 2), (float)Math.Round(Vitesse.Z, 2));
+           Acceleration = new Vector3((float)Math.Round(Acceleration.X, 2), (float)Math.Round(Acceleration.Y, 2), (float)Math.Round(Acceleration.Z, 2));
+     
+
+           BougerHitbox();
+       }
+
+
+
+
+
+
+
+
+
+       void ModifierIntervalle()
+       {
+
+       }
+       void InitialiserListe()
+       {
+
+       }
+       void CalculerVecteurResultant()
+       {
+
+       }
 
     }
 }

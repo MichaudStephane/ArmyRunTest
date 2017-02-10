@@ -23,6 +23,8 @@ namespace AtelierXNA
         GraphicsDeviceManager PériphériqueGraphique { get; set; }
         RessourcesManager<Texture2D> GestionnaireDeTextures { get; set; }
         RessourcesManager<Model> GestionnairesDeModele { get; set; }
+        GraphicsDeviceManager graphics;
+        ContentManager content;
 
         public Atelier()
         {
@@ -33,8 +35,15 @@ namespace AtelierXNA
             PériphériqueGraphique.SynchronizeWithVerticalRetrace = false;
             IsFixedTimeStep = false;
             IsMouseVisible = false;
+          
+            content = new ContentManager(Services);
 
-
+           // PériphériqueGraphique.PreferredBackBufferWidth = 1920;
+           // PériphériqueGraphique.PreferredBackBufferHeight = 1080;
+          //  PériphériqueGraphique.PreferMultiSampling = false;
+           // PériphériqueGraphique.IsFullScreen = true;
+            
+;
         }
 
   
@@ -76,8 +85,23 @@ namespace AtelierXNA
             Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(16, 0, 0), INTERVALLE_STANDARD, "stefpath"));
             Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(16, 0, -7), INTERVALLE_STANDARD, "stefpath"));
             Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(7, 0, 0), INTERVALLE_STANDARD, "stefpath"));
+            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, 0), INTERVALLE_STANDARD, "stefpath"));
+            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -35), INTERVALLE_STANDARD, "stefpath"));
+            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -42), INTERVALLE_STANDARD, "stefpath"));
+            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -49), INTERVALLE_STANDARD, "stefpath"));
+            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -56), INTERVALLE_STANDARD, "stefpath"));
 
-            Components.Add(new Soldat(this, 1f, Vector3.Zero, new Vector3(0, 10, 0), new Vector2(1, 2), "LoupGarou", new Vector2(4, 4), 1f / 60));
+            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -63), INTERVALLE_STANDARD, "stefpath"));
+            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -70), INTERVALLE_STANDARD, "stefpath"));
+            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -77), INTERVALLE_STANDARD, "stefpath"));
+            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -84), INTERVALLE_STANDARD, "stefpath"));
+
+            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -91), INTERVALLE_STANDARD, "stefpath"));
+            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -98), INTERVALLE_STANDARD, "stefpath"));
+            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -105), INTERVALLE_STANDARD, "stefpath"));
+            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -112), INTERVALLE_STANDARD, "stefpath"));
+
+            Components.Add(new Soldat(this, 1f, Vector3.Zero, new Vector3(0, 10, 0), new Vector2(1, 2), "LoupGarou", "LoupGarou", new Vector2(4, 4), new Vector2(4, 4), 1f / 60));
             Components.Add(new Afficheur3D(this));
             Services.AddService(typeof(RessourcesManager<Texture2D>), GestionnaireDeTextures);
 
@@ -115,6 +139,9 @@ namespace AtelierXNA
             // TODO: Add your update logic here
 
             base.Update(gameTime);
+ 
+
+           
         }
 
   

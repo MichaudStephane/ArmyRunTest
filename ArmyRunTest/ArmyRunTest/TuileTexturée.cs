@@ -7,13 +7,13 @@ namespace AtelierXNA
 {
    public class TuileTexturée : Tuile
    {
-      const int NB_TRIANGLES = 2;
-      RessourcesManager<Texture2D> gestionnaireDeTextures;
+      
+      protected RessourcesManager<Texture2D> gestionnaireDeTextures { get; set; }
      protected Texture2D textureTuile{get;private set;}
       VertexPositionTexture[] Sommets { get; set; }
      protected Vector2[,] PtsTexture { get; set; }
       string NomTextureTuile { get; set; }
-      BlendState GestionAlpha { get; set; }
+    protected  BlendState GestionAlpha { get; set; }
 
       public TuileTexturée(Game jeu, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, Vector2 étendue, string nomTextureTuile, float intervalleMAJ)
          : base(jeu, homothétieInitiale, rotationInitiale, positionInitiale, étendue, intervalleMAJ)
@@ -36,7 +36,7 @@ namespace AtelierXNA
          PtsTexture[1, 1] = new Vector2(1, 0);
       }
 
-      protected void InitialiserSommets() // Est appelée par base.Initialize()
+      protected virtual void InitialiserSommets() // Est appelée par base.Initialize()
       {
          int NoSommet = -1;
          for (int j = 0; j < 1; ++j)
@@ -68,23 +68,13 @@ namespace AtelierXNA
       {
           DepthStencilState dss = new DepthStencilState();
           DepthStencilState ancien = GraphicsDevice.DepthStencilState;
-         
-          
-
-      
           dss.DepthBufferEnable = true;
-
-
-
           GraphicsDevice.DepthStencilState = dss;
-
 
          BlendState oldBlendState = GraphicsDevice.BlendState;
          GraphicsDevice.BlendState = GestionAlpha;
          base.Draw(gameTime);
          GraphicsDevice.BlendState = oldBlendState;
-
-
 
          GraphicsDevice.DepthStencilState = ancien;
          
@@ -93,7 +83,7 @@ namespace AtelierXNA
 
       protected override void DessinerTriangleStrip()
       {
-         GraphicsDevice.DrawUserPrimitives<VertexPositionTexture>(PrimitiveType.TriangleStrip, Sommets, 0, NB_TRIANGLES);
+          GraphicsDevice.DrawUserPrimitives<VertexPositionTexture>(PrimitiveType.TriangleStrip, Sommets, 0, NB_TRIANGLES);
       }
    }
 }
