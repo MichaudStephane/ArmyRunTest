@@ -47,14 +47,15 @@ namespace AtelierXNA
          
 
             Vector3 v = Vector3.Zero;
-            if(a is ICollisionable)
+            
                 if((a as  Soldat).HitBoxGénérale.Intersects(HitBoxGénérale))
                 {
-
+                    // A CHANGER POUR INCLURE TOUTE LES DIRECTIONS. CHECKER POUR UNE FACON PLUS ELEGANTE DE LECRIRE
 
                     if((a as Soldat).VecteurResultantForce.Y<0)
                     v = new Vector3(0, -(a as Soldat).VecteurResultantForce.Y, 0);
 
+                    if((a as Soldat).Vitesse.Y<0)
                     (a as Soldat).Vitesse = new Vector3((a as Soldat).Vitesse.X, 0, (a as Soldat).Vitesse.Z);
 
 

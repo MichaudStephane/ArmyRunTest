@@ -12,15 +12,17 @@ using Microsoft.Xna.Framework.Media;
 
 namespace AtelierXNA
 {
-   public class Soldat : Humanoide, ICollisionable
+   public class Soldat : Humanoide
     {
-        const float CONSTANTE_SAUT = 20f;
+        const float CONSTANTE_SAUT = 6000f;
         const float CONSTANTE_GRAVITE = 9.81F;
         const float NB_PIXEL_DÉPLACEMENT = 10f;
-        const float INTERVALLE_DE_DEPART_STANDARD = 1f/60;
+        const float INTERVALLE_DE_DEPART_STANDARD = 1f/30;
         const float MASSE_SOLDAT_KG = 10;
         const float DENSITER_AIR =1.225F;  //KG/M CUBE
         const float DRAG_COEFFICIENT = 1.05F;
+
+        Vector3 VarPosition { get; set; }
 
 
      
@@ -37,7 +39,7 @@ namespace AtelierXNA
         
         public float Intervalle_MAJ_Mouvement { get;  set; }
         public float TempsEcouleDepuisMajMouvement { get; set; }
-
+        float TempsEcoulerDepuisMAJCalcul { get; set; }
 
 
         public bool EstEnCollision { get; set; }
@@ -59,6 +61,8 @@ namespace AtelierXNA
         public override void Initialize()
         {
             base.Initialize();
+            VarPosition = Position;
+            TempsEcoulerDepuisMAJCalcul = 0;
             Commande = Vector3.Zero;
             VecteurGravité = new Vector3(0, -CONSTANTE_GRAVITE, 0);
             VecteurResultantForce = Vector3.Zero;
@@ -79,12 +83,25 @@ namespace AtelierXNA
             VecteurResultantForce = Vector3.Zero;
 
             TempsEcouleDepuisMajMouvement += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (TempsEcouleDepuisMajMouvement >= Intervalle_MAJ_Mouvement)
+            TempsEcoulerDepuisMAJCalcul += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+
+
+            if(TempsEcoulerDepuisMAJCalcul>=INTERVALLE_CALCUL_PHYSIQUE)
             {
                 CalculerForcesExercees();
                 CalculerAcceleration();
                 AnciennePosition = Position;
                 BougerHitbox();
+                TempsEcoulerDepuisMAJCalcul = 0;
+            }
+
+
+            if (TempsEcouleDepuisMajMouvement >= Intervalle_MAJ_Mouvement)
+            {
+
+
+                Position = VarPosition;
                 CalculerMatriceMonde();
                 TempsEcouleDepuisMajMouvement = 0;            
             }
@@ -116,6 +133,7 @@ namespace AtelierXNA
                 VecteurResultantForce = Vector3.Zero;
                 Vitesse = Vector3.Zero;
                 Acceleration = Vector3.Zero;
+                VarPosition = Vector3.Zero;
                 CreerHitbox();
             }
 
@@ -123,7 +141,10 @@ namespace AtelierXNA
             {
                 if (GestionInput.EstNouvelleTouche(Keys.Space))
                 {
-                    AjouterVecteur(CONSTANTE_SAUT);
+                    if (EstEnCollision)
+                    {
+                        AjouterVecteur(CONSTANTE_SAUT);
+                    }
                 }
                 if (déplacementGaucheDroite != 0 || déplacementAvantArrière != 0)
                 {
@@ -209,11 +230,7 @@ namespace AtelierXNA
             // FAIRE EN SORTE QUELLE NE VEFIE QUE LES ELEMENTS PROCHES
             foreach(GameComponent G in Game.Components.Where(x=>x is ICollisionable).ToList())
             {
-                
-
-
-                VecteurResultantForce+=((G as ICollisionable).DonnerVectorCollision(this));     
-    
+                VecteurResultantForce+=((G as ICollisionable).DonnerVectorCollision(this));         
             }
             if(V!=VecteurResultantForce)
             {
@@ -233,8 +250,8 @@ namespace AtelierXNA
             minHB = Vector3.Transform(minHB, Matrix.CreateTranslation(Position));
             maxHB = Vector3.Transform(maxHB, Matrix.CreateTranslation(Position));
 
-            minHB = new Vector3((float)Math.Round(minHB.X, 3), (float)Math.Round(minHB.Y, 3), (float)Math.Round(minHB.Z, 3));
-            maxHB = new Vector3((float)Math.Round(maxHB.X, 3), (float)Math.Round(maxHB.Y, 3), (float)Math.Round(maxHB.Z, 3));
+          //  minHB = new Vector3((float)Math.Round(minHB.X, 3), (float)Math.Round(minHB.Y, 3), (float)Math.Round(minHB.Z, 3));
+            //maxHB = new Vector3((float)Math.Round(maxHB.X, 3), (float)Math.Round(maxHB.Y, 3), (float)Math.Round(maxHB.Z, 3));
 
             HitBoxGénérale = new BoundingBox(minHB,maxHB);
 
@@ -247,7 +264,7 @@ namespace AtelierXNA
 
            HitBoxGénérale = new BoundingBox(HitBoxGénérale.Min + diff, HitBoxGénérale.Max + diff);
 
-
+           
        }
 
        void CalculerForcesExercees()
@@ -265,18 +282,18 @@ namespace AtelierXNA
        }
        void CalculerAcceleration()
        {
-           Vector3 vitesseCal = Vitesse;
-           Vector3 accCal = Acceleration;
-           Vector3 vecForceCal = VecteurResultantForce;
+           
+           
+           
 
            Vector3 accelerationPrecedente = Acceleration;
-           Vector3 varPosition = Vector3.Multiply(vitesseCal,INTERVALLE_CALCUL_PHYSIQUE)+Vector3.Multiply(Vector3.Multiply(accelerationPrecedente,0.5f),(float)Math.Pow(INTERVALLE_CALCUL_PHYSIQUE,2));
-           Position = new Vector3(Position.X+varPosition.X,Position.Y+varPosition.Y,Position.Z+varPosition.Z);
-           Acceleration = Vector3.Multiply(vecForceCal,1f/MASSE_SOLDAT_KG);
+           Vector3 varPosition = Vector3.Multiply(Vitesse, INTERVALLE_CALCUL_PHYSIQUE) + Vector3.Multiply(Vector3.Multiply(accelerationPrecedente, 0.5f), (float)Math.Pow(INTERVALLE_CALCUL_PHYSIQUE, 2));
+           VarPosition = new Vector3(VarPosition.X + varPosition.X, VarPosition.Y + varPosition.Y, VarPosition.Z + varPosition.Z);
+           Acceleration = Vector3.Multiply(VecteurResultantForce,1f/MASSE_SOLDAT_KG);
 
 
 
-           Acceleration = new Vector3((float)Math.Round(Acceleration.X, 2), (float)Math.Round(Acceleration.Y, 2), (float)Math.Round(Acceleration.Z, 2));
+         //  Acceleration = new Vector3((float)Math.Round(Acceleration.X, 2), (float)Math.Round(Acceleration.Y, 2), (float)Math.Round(Acceleration.Z, 2));
      
            if (Acceleration != Vector3.Zero)
            {
@@ -287,14 +304,14 @@ namespace AtelierXNA
 
            Vitesse+=Acceleration*INTERVALLE_CALCUL_PHYSIQUE;
 
-           Vitesse = new Vector3((float)Math.Round(Vitesse.X, 2), (float)Math.Round(Vitesse.Y, 2), (float)Math.Round(Vitesse.Z, 2));
-           Acceleration = new Vector3((float)Math.Round(Acceleration.X, 2), (float)Math.Round(Acceleration.Y, 2), (float)Math.Round(Acceleration.Z, 2));
+          // Vitesse = new Vector3((float)Math.Round(Vitesse.X, 2), (float)Math.Round(Vitesse.Y, 2), (float)Math.Round(Vitesse.Z, 2));
+         //  Acceleration = new Vector3((float)Math.Round(Acceleration.X, 2), (float)Math.Round(Acceleration.Y, 2), (float)Math.Round(Acceleration.Z, 2));
      
 
            BougerHitbox();
        }
 
-
+       
 
 
 
