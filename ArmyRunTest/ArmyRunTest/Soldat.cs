@@ -21,40 +21,29 @@ namespace AtelierXNA
         const float MASSE_SOLDAT_KG = 10;
         const float DENSITER_AIR =1.225F;  //KG/M CUBE
         const float DRAG_COEFFICIENT = 1.05F;
-
-        Vector3 VarPosition { get; set; }
-
-
-     
-
+        const float NORMALE = (MASSE_SOLDAT_KG * 9.8f) ;
+        const float FROTTEMENT = 0.75F * NORMALE * INTERVALLE_CALCUL_PHYSIQUE ;
         const float INTERVALLE_CALCUL_PHYSIQUE = 1f / 60;
-
-        public BoundingBox HitBoxGénérale { get; protected set; }
-        
+        Vector3 VarPosition { get; set; }
+        public BoundingBox HitBoxGénérale { get; protected set; }   
         Vector3 VecteurGravité { get; set; }
-       
-        
-       
         Vector3 AnciennePosition { get; set; }
-        
         public float Intervalle_MAJ_Mouvement { get;  set; }
         public float TempsEcouleDepuisMajMouvement { get; set; }
         float TempsEcoulerDepuisMAJCalcul { get; set; }
-
-
         public bool EstEnCollision { get; set; }
-     
-       public Vector3 VecteurResultantForce { get; protected set; }
-       Vector3 Acceleration { get; set; }
+        public Vector3 VecteurResultantForce { get; protected set; }
+        Vector3 Acceleration { get; set; }
         public Vector3 Vitesse { get; set; }
-       Vector3 Commande { get; set; }
+        Vector3 Commande { get; set; }
+        public bool EstSurTerrain { get; set; }
 
 
 
 
 
         public Soldat(Game jeu, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, Vector2 étendue, string nomImageDos,string nomImageFace ,Vector2 descriptionImageDos,Vector2 DescriptionImageFace, float intervalleMAJ)
-            : base(jeu, homothétieInitiale, rotationInitiale, positionInitiale, étendue, nomImageDos,nomImageFace, descriptionImageDos,DescriptionImageFace, intervalleMAJ)
+            : base(jeu, homothétieInitiale, rotationInitiale, positionInitiale, étendue, nomImageDos,nomImageFace, descriptionImageDos,DescriptionImageFace, intervalleMAJ) 
         {
            
         }
@@ -206,15 +195,22 @@ namespace AtelierXNA
         
         private void GererFrottement()
         {
-            ///-----------------------A METTRE LE FROTTEMENT DYNAMIQUE ET STATIQUE------------------------------------
-                     
-            
+            //-----------------------A METTRE LE FROTTEMENT DYNAMIQUE ET STATIQUE------------------------------------
+            //frottement avec sol (peut etre changer la valeur de la division)
+            if (EstSurTerrain)
+            {
+                if (Vitesse.X != 0)
+                {
+                    VecteurResultantForce -= new Vector3(FROTTEMENT * (Vitesse.X / Math.Abs(Vitesse.X)), 0, 0);
+                }
 
-
-
+                if (Vitesse.Z != 0)
+                {
+                    VecteurResultantForce -= new Vector3(0, 0, FROTTEMENT * (Vitesse.Z / Math.Abs(Vitesse.Z)));
+                }
+            }
 
             //frottement air
-
             Vector3 vitesseCal = Vitesse;
             Vector3 fAir = Vector3.Multiply(Vector3.Multiply(vitesseCal, vitesseCal), 0.010f*2*0.5f * DENSITER_AIR * DRAG_COEFFICIENT);
 
@@ -266,6 +262,7 @@ namespace AtelierXNA
 
            
        }
+      
 
        void CalculerForcesExercees()
        {
@@ -311,13 +308,6 @@ namespace AtelierXNA
            BougerHitbox();
        }
 
-       
-
-
-
-
-
-
 
        void ModifierIntervalle()
        {
@@ -329,7 +319,7 @@ namespace AtelierXNA
        }
        void CalculerVecteurResultant()
        {
-
+            
        }
 
     }
