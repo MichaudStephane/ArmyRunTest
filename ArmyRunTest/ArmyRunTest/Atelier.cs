@@ -11,9 +11,11 @@ using Microsoft.Xna.Framework.Media;
 
 namespace AtelierXNA
 {
-
+    
     public class Atelier : Microsoft.Xna.Framework.Game
     {
+        const float HAUTEUR_HACHE = 3f;
+
         SpriteBatch spriteBatch;
         public const float INTERVALLE_STANDARD = 1f / 60;
         public const float INTERVALLE_CALCUL_FPS = 1f;
@@ -76,9 +78,12 @@ namespace AtelierXNA
 
             Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, 0), INTERVALLE_STANDARD, "stefpath"));
             Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -7), INTERVALLE_STANDARD, "stefpath"));
-            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -14), INTERVALLE_STANDARD, "stefpath"));
             Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -21), INTERVALLE_STANDARD, "stefpath"));
             Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -28), INTERVALLE_STANDARD, "stefpath"));
+            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -35), INTERVALLE_STANDARD, "stefpath"));
+
+
+            Components.Add(new HachePendule(this, 13, new Vector3(0, 0, 0), new Vector3(0, HAUTEUR_HACHE, 0), INTERVALLE_STANDARD, "StefAxe"));
         //    Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(-8, 0, -14), INTERVALLE_STANDARD, "stefpath"));
        //     Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(8, 0, -14), INTERVALLE_STANDARD, "stefpath"));
          //   Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(16, 0, -14), INTERVALLE_STANDARD, "stefpath"));

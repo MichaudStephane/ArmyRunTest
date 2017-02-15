@@ -31,14 +31,6 @@ namespace AtelierXNA
             
         }
 
-        public bool EstCollisionable
-        {
-            get
-            {
-                return true;
-            }
-        }
-
         public BoundingBox HitBoxGénérale { get; protected set; }
         
      
