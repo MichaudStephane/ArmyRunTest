@@ -25,6 +25,7 @@ namespace AtelierXNA
         RessourcesManager<Model> GestionnairesDeModele { get; set; }
         GraphicsDeviceManager graphics;
         ContentManager content;
+        List<Humanoide> Soldats = new List<Humanoide>();
 
         public Atelier()
         {
@@ -49,13 +50,14 @@ namespace AtelierXNA
   
         protected override void Initialize()
         {
-            //staf path hauteur=0.5f(y) de base, (z)0.7x 2(x)
+            //stef path hauteur=0.5f(y) de base, (z)0.7x 2(x)
 
 
             const float DELTA_X = 3.3f;
             Vector3 positionDragon = new Vector3(0, 0, 3);
             Vector3 positionCaméra = new Vector3(0, 0, 15);
             Vector3 positionTuileDragon = positionDragon + Vector3.Right * (DELTA_X * 2);
+            Soldats.Add(new Soldat(this, 1f, Vector3.Zero, new Vector3(0, 10, 0), new Vector2(1, 2), "LoupGarou", "LoupGarou", new Vector2(4, 4), new Vector2(4, 4), 1f / 30));
 
             GestionnaireDeTextures = new RessourcesManager<Texture2D>(this, "Textures");
             GestionnairesDeModele = new RessourcesManager<Model>(this, "Modeles");
@@ -73,6 +75,7 @@ namespace AtelierXNA
             Services.AddService(typeof(Caméra), CaméraJeu);
             Services.AddService(typeof(SpriteBatch), new SpriteBatch(GraphicsDevice));
             Components.Add(new AfficheurFPS(this, "Arial", Color.Red, INTERVALLE_CALCUL_FPS));
+            Components.Add(new Armée(this, Soldats,Soldats.Count, INTERVALLE_STANDARD));
 
             Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, 0), INTERVALLE_STANDARD, "stefpath"));
             Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -7), INTERVALLE_STANDARD, "stefpath"));
@@ -109,14 +112,17 @@ namespace AtelierXNA
 
             //    Components.Add(new Soldat(this, 1f, Vector3.Zero, new Vector3(1, 10, 0), new Vector2(1, 2), "LoupGarou", "LoupGarou", new Vector2(4, 4), new Vector2(4, 4), 1f / 30));
             //   Components.Add(new Soldat(this, 1f, Vector3.Zero, new Vector3(-1, 10, 0), new Vector2(1, 2), "LoupGarou", "LoupGarou", new Vector2(4, 4), new Vector2(4, 4), 1f / 30));
-            Components.Add(new Soldat(this, 1f, Vector3.Zero, new Vector3(0, 10, 0), new Vector2(1, 2), "LoupGarou", "LoupGarou", new Vector2(4, 4), new Vector2(4, 4), 1f / 30));
 
+            foreach (Soldat s in Soldats)
+            {
+                Components.Add(s);
+            }
 
             Components.Add(new Afficheur3D(this));
             Services.AddService(typeof(RessourcesManager<Texture2D>), GestionnaireDeTextures);
            
            
-
+            
 
 
 

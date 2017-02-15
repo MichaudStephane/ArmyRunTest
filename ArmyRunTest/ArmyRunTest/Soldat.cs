@@ -43,7 +43,7 @@ namespace AtelierXNA
 
 
         public Soldat(Game jeu, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, Vector2 étendue, string nomImageDos,string nomImageFace ,Vector2 descriptionImageDos,Vector2 DescriptionImageFace, float intervalleMAJ)
-            : base(jeu, homothétieInitiale, rotationInitiale, positionInitiale, étendue, nomImageDos,nomImageFace, descriptionImageDos,DescriptionImageFace, intervalleMAJ)
+            : base(jeu, homothétieInitiale, rotationInitiale, positionInitiale, étendue, nomImageDos,nomImageFace, descriptionImageDos,DescriptionImageFace, intervalleMAJ) 
         {
            
         }
