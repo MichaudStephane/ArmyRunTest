@@ -133,7 +133,7 @@ namespace AtelierXNA
                 VecteurResultantForce = Vector3.Zero;
                 Vitesse = Vector3.Zero;
                 Acceleration = Vector3.Zero;
-                VarPosition = Vector3.Zero;
+                VarPosition = Position;
                 CreerHitbox();
             }
 
