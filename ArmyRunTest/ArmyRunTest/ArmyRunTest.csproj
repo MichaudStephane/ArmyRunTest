@@ -83,6 +83,7 @@
     <Compile Include="Afficheur3D.cs" />
     <Compile Include="AfficheurFPS.cs" />
     <Compile Include="Armée.cs" />
+    <Compile Include="ArrièrePlan.cs" />
     <Compile Include="CameraSubjective.cs" />
     <Compile Include="Caméra.cs" />
     <Compile Include="CaméraFixe.cs" />
@@ -101,6 +102,7 @@
     <Compile Include="RessourceDeBase.cs" />
     <Compile Include="RessourcesManager.cs" />
     <Compile Include="Soldat.cs" />
+    <Compile Include="TerrainBasePlanIncline.cs" />
     <Compile Include="TerrainDeBase.cs" />
     <Compile Include="Tuile.cs" />
     <Compile Include="TuileTextureeAnime.cs" />
