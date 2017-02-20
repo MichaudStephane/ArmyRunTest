@@ -12,11 +12,6 @@ using Microsoft.Xna.Framework.Media;
 
 namespace AtelierXNA
 {
-    
-   
-
-
-
     public class TerrainDeBase : ObjetBase, ICollisionable
     {
         const int HOMOTHETHIE_STANDARD = 10;

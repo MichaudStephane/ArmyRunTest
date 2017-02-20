@@ -88,6 +88,7 @@ namespace AtelierXNA
                  Matrix.CreateTranslation(Position);
       }
 
+
       public override void Update(GameTime gameTime)
       {
          GérerClavier();
