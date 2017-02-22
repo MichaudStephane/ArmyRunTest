@@ -14,6 +14,7 @@ namespace AtelierXNA
 {
     public class TerrainBasePlanIncline: PrimitiveDeBaseAnimée
     {
+        const float HAUTEUR = 0.785f; 
         Color Couleur { get; set; }
         VertexPositionColor[] Sommets1 { get; set; }
         VertexPositionColor[] Sommets2 { get; set; }
@@ -22,6 +23,8 @@ namespace AtelierXNA
         Vector3 Dimension { get; set; }
         BasicEffect EffetDeBase { get; set; }
         RasterizerState NouveauJeuRasterizerState { get; set; }
+        Random NombreAléatoire { get; set; }
+
 
         public TerrainBasePlanIncline(Game jeu, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,Color couleur, float intervalleMAJ)
             :base(jeu,homothétieInitiale,rotationInitiale,positionInitiale,intervalleMAJ)
@@ -34,11 +37,32 @@ namespace AtelierXNA
 
         public override void Initialize()
         {
-            Dimension = new Vector3(1, 0.775555f, 0.785f);
+            double nombre = CréerNombreAléatoire();
+            if(nombre == 0)
+            {
+                nombre = CréerNombreAléatoire();
+            }
+            Dimension = CalculerDimension(nombre);
             Sommets1 = new VertexPositionColor[6];
             Sommets2 = new VertexPositionColor[6];
             InitialiserSommets();
+            InitialiserHitBoxPlanIncliné();
             base.Initialize();
+        }
+
+       void InitialiserHitBoxPlanIncliné()
+        {
+        }
+
+        double CréerNombreAléatoire()
+        {
+            NombreAléatoire = new Random();
+            return NombreAléatoire.NextDouble();
+        }
+
+        Vector3 CalculerDimension(double val)
+        {
+            return new Vector3(1,(float)val+Origine.Y,HAUTEUR);
         }
 
         protected override void LoadContent()
