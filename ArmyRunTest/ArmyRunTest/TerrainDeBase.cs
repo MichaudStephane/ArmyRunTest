@@ -12,11 +12,6 @@ using Microsoft.Xna.Framework.Media;
 
 namespace AtelierXNA
 {
-    
-   
-
-
-
     public class TerrainDeBase : ObjetBase, ICollisionable
     {
         const int HOMOTHETHIE_STANDARD = 10;
@@ -36,14 +31,15 @@ namespace AtelierXNA
      
         public Vector3 DonnerVectorCollision(PrimitiveDeBaseAnimée a)
         {
-         
 
-            Vector3 v = Vector3.Zero;
+
             
+
+                Vector3 v = Vector3.Zero;
+            (a as Soldat).EstSurTerrain = true;
                 if((a as  Soldat).HitBoxGénérale.Intersects(HitBoxGénérale))
                 {
-                    // A CHANGER POUR INCLURE TOUTE LES DIRECTIONS. CHECKER POUR UNE FACON PLUS ELEGANTE DE LECRIRE
-
+                // A CHANGER POUR INCLURE TOUTE LES DIRECTIONS. CHECKER POUR UNE FACON PLUS ELEGANTE DE LECRIRE
                     if((a as Soldat).VecteurResultantForce.Y<0)
                     v = new Vector3(0, -(a as Soldat).VecteurResultantForce.Y, 0);
 
@@ -54,7 +50,28 @@ namespace AtelierXNA
 
                 }
 
-            return v;
+            return v + GarderHorsBornes((a as Soldat));
+
+
+        }
+        private Vector3 GarderHorsBornes(Soldat a)
+        {
+            Vector3 v = Vector3.Zero;
+
+
+            if ((a as Soldat).HitBoxGénérale.Intersects(HitBoxGénérale))
+            {
+                if (HitBoxGénérale.Max.Y > a.HitBoxGénérale.Min.Y && HitBoxGénérale.Min.Y < a.HitBoxGénérale.Max.Y)
+                {
+                    //   float NouvellePositionY = a.VarPosition.Y + Math.Abs((HitBoxGénérale.Max.Y - a.VarPosition.Y));
+                    // a.ModifierVarPosition(new Vector3(a.VarPosition.X, NouvellePositionY, a.VarPosition.Z));
+                    v = new Vector3 (0,HitBoxGénérale.Max.Y - a.HitBoxGénérale.Min.Y,0);
+                   
+                }
+                
+            }
+                return v;
+
         }
 
   
@@ -83,8 +100,7 @@ namespace AtelierXNA
         void CréerHitboxGénérale()
         {
 
-
-            Vector3 minHB = new Vector3(-0.5f * TAILLE_HITBOX_STANDARD.X, -0.5f * TAILLE_HITBOX_STANDARD.Y, -0.5F*TAILLE_HITBOX_STANDARD.Z);
+            Vector3 minHB = new Vector3(-0.5f * TAILLE_HITBOX_STANDARD.X, -0.1f * TAILLE_HITBOX_STANDARD.Y, -0.5F*TAILLE_HITBOX_STANDARD.Z);
             Vector3 maxHB = new Vector3(0.5f * TAILLE_HITBOX_STANDARD.X, 0.5f * TAILLE_HITBOX_STANDARD.Y, 0.5F*TAILLE_HITBOX_STANDARD.Z);
 
             minHB = Vector3.Transform(minHB, Matrix.CreateScale(Homothétie));
@@ -98,7 +114,7 @@ namespace AtelierXNA
 
 
             HitBoxGénérale = new BoundingBox(minHB,maxHB);
-            int A = 1;
+            
         }
 
     }

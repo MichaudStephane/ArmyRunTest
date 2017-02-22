@@ -75,36 +75,38 @@ namespace AtelierXNA
             Services.AddService(typeof(Caméra), CaméraJeu);
             Services.AddService(typeof(SpriteBatch), new SpriteBatch(GraphicsDevice));
             Components.Add(new AfficheurFPS(this, "Arial", Color.Red, INTERVALLE_CALCUL_FPS));
+            Components.Add(new TerrainBasePlanIncline(this,10, new Vector3(0, 0, 0), new Vector3(0.47F, 0.2F, -0.33F),Color.Black, INTERVALLE_STANDARD));
 
             Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, 0), INTERVALLE_STANDARD, "stefpath"));
-            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -7), INTERVALLE_STANDARD, "stefpath"));
-            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -21), INTERVALLE_STANDARD, "stefpath"));
-            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -28), INTERVALLE_STANDARD, "stefpath"));
-            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -35), INTERVALLE_STANDARD, "stefpath"));
-
-
-            //Components.Add(new HachePendule(this, 13, new Vector3(0, 0, 0), new Vector3(0, HAUTEUR_HACHE, -5), INTERVALLE_STANDARD, "StefAxe"));
-            //Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(-8, 0, -14), INTERVALLE_STANDARD, "stefpath"));
-            //Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(8, 0, -14), INTERVALLE_STANDARD, "stefpath"));
-            //Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(16, 0, -14), INTERVALLE_STANDARD, "stefpath"));
-            //Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(16, 0, 0), INTERVALLE_STANDARD, "stefpath"));
-            //Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(16, 0, -7), INTERVALLE_STANDARD, "stefpath"));
-            //Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(7, 0, 0), INTERVALLE_STANDARD, "stefpath"));
-            //Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, 0), INTERVALLE_STANDARD, "stefpath"));
+            //Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -7), INTERVALLE_STANDARD, "stefpath"));
+            //Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -21), INTERVALLE_STANDARD, "stefpath"));
+            //Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -28), INTERVALLE_STANDARD, "stefpath"));
             //Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -35), INTERVALLE_STANDARD, "stefpath"));
-            //Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -42), INTERVALLE_STANDARD, "stefpath"));
-            //Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -49), INTERVALLE_STANDARD, "stefpath"));
-            //Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -56), INTERVALLE_STANDARD, "stefpath"));
+            //Components.Add(new TerrainDeBase(this, 10, (new Vector3(0.5f, 0, 0)), new Vector3(0, 0, 7), INTERVALLE_STANDARD, "stefpath"));
 
-            //Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -63), INTERVALLE_STANDARD, "stefpath"));
-            //Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -70), INTERVALLE_STANDARD, "stefpath"));
-            //Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -77), INTERVALLE_STANDARD, "stefpath"));
-            //Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -84), INTERVALLE_STANDARD, "stefpath"));
 
-            //Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -91), INTERVALLE_STANDARD, "stefpath"));
-            //Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -98), INTERVALLE_STANDARD, "stefpath"));
-            //Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -105), INTERVALLE_STANDARD, "stefpath"));
-            //Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -112), INTERVALLE_STANDARD, "stefpath"));
+            Components.Add(new HachePendule(this, 13, new Vector3(0, 0, 0), new Vector3(0, HAUTEUR_HACHE, 0), INTERVALLE_STANDARD, "StefAxe"));
+            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(-8, 0, -14), INTERVALLE_STANDARD, "stefpath"));
+            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(8, 0, -14), INTERVALLE_STANDARD, "stefpath"));
+            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(16, 0, -14), INTERVALLE_STANDARD, "stefpath"));
+            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(16, 0, 0), INTERVALLE_STANDARD, "stefpath"));
+            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(16, 0, -7), INTERVALLE_STANDARD, "stefpath"));
+            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(7, 0, 0), INTERVALLE_STANDARD, "stefpath"));
+            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, 0), INTERVALLE_STANDARD, "stefpath"));
+            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -35), INTERVALLE_STANDARD, "stefpath"));
+            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -42), INTERVALLE_STANDARD, "stefpath"));
+            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -49), INTERVALLE_STANDARD, "stefpath"));
+            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -56), INTERVALLE_STANDARD, "stefpath"));
+
+            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -63), INTERVALLE_STANDARD, "stefpath"));
+            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -70), INTERVALLE_STANDARD, "stefpath"));
+            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -77), INTERVALLE_STANDARD, "stefpath"));
+            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -84), INTERVALLE_STANDARD, "stefpath"));
+
+            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -91), INTERVALLE_STANDARD, "stefpath"));
+            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -98), INTERVALLE_STANDARD, "stefpath"));
+            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -105), INTERVALLE_STANDARD, "stefpath"));
+            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -112), INTERVALLE_STANDARD, "stefpath"));
 
 
 
@@ -114,7 +116,7 @@ namespace AtelierXNA
 
             //Components.Add(new Soldat(this, 1f, Vector3.Zero, new Vector3(1, 10, 0), new Vector2(1, 2), "LoupGarou", "LoupGarou", new Vector2(4, 4), new Vector2(4, 4), 1f / 30));
             //Components.Add(new Soldat(this, 1f, Vector3.Zero, new Vector3(-1, 10, 0), new Vector2(1, 2), "LoupGarou", "LoupGarou", new Vector2(4, 4), new Vector2(4, 4), 1f / 30));
-            Components.Add(new Soldat(this, 1f, Vector3.Zero, new Vector3(0, 10, 0), new Vector2(1, 2), "LoupGarou", "LoupGarou", new Vector2(4, 4), new Vector2(4, 4), 1f / 30));
+            Components.Add(new Soldat(this, 1f, Vector3.Zero, new Vector3(0, 50, 0), new Vector2(2, 2), "LoupGarou", "LoupGarou", new Vector2(4, 4), new Vector2(4, 4), 1f / 30));
 
 
             Components.Add(new Afficheur3D(this));
