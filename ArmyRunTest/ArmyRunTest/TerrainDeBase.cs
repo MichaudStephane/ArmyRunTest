@@ -16,7 +16,12 @@ namespace AtelierXNA
     {
         const int HOMOTHETHIE_STANDARD = 10;
         Vector3 TAILLE_HITBOX_STANDARD = new Vector3(1,0.775555f,0.785F);
-
+        Vector3 VECTOR_HAUT = new Vector3(0, 1, 0);
+        Vector3 VECTOR_BAS = new Vector3(0, -1, 0);
+        Vector3 VECTOR_GAUCHE = new Vector3(-1, 0, 0);
+        Vector3 VECTOR_DROITE = new Vector3(1, 0, 0);
+        Vector3 VECTOR_DEVANT = new Vector3(0, 0, 1);
+        Vector3 VECTOR_DERRIERE = new Vector3(0, 0, -1);
 
 
 
@@ -31,26 +36,53 @@ namespace AtelierXNA
      
         public Vector3 DonnerVectorCollision(PrimitiveDeBaseAnimée a)
         {
+            Vector3 vitesseTemp = (a as Soldat).Vitesse;
+            Vector3 forceTemp = (a as Soldat).VecteurResultantForce;
+            Vector3 v = Vector3.Zero;
+            if (HitBoxGénérale.Intersects((a as Soldat).HitBoxGénérale))
+            {
 
+                v = a.Position - Position;
+                v = new Vector3(v.X / TAILLE_HITBOX_STANDARD.X, v.Y / TAILLE_HITBOX_STANDARD.Y, v.Z / TAILLE_HITBOX_STANDARD.Z);
+                v = Convert.ToInt32((v.Y >= v.X) && (v.Y >= v.Z) &&forceTemp.Y<0&&vitesseTemp.Y<=0) * VECTOR_HAUT;//+ Convert.ToInt32((v.Y <= v.X) && (v.Y <= v.Z) && vitesseTemp.Y>0) * VECTOR_BAS;
+                (a as Soldat).EstSurTerrain = true;
+                (a as Soldat).EstEnCollision = true;
 
-            
-
-                Vector3 v = Vector3.Zero;
-            (a as Soldat).EstSurTerrain = true;
-                if((a as  Soldat).HitBoxGénérale.Intersects(HitBoxGénérale))
+                if ((v.Y >= v.X) && (v.Y >= v.Z) && vitesseTemp.Y < 0)
                 {
-                // A CHANGER POUR INCLURE TOUTE LES DIRECTIONS. CHECKER POUR UNE FACON PLUS ELEGANTE DE LECRIRE
-                    if((a as Soldat).VecteurResultantForce.Y<0)
-                    v = new Vector3(0, -(a as Soldat).VecteurResultantForce.Y, 0);
-
-                    if((a as Soldat).Vitesse.Y<0)
-                    (a as Soldat).Vitesse = new Vector3((a as Soldat).Vitesse.X, 0, (a as Soldat).Vitesse.Z);
-
-
-
+                    int a6gh = 3;
                 }
 
-            return v + GarderHorsBornes((a as Soldat));
+                //if ((a as Soldat).Vitesse.Y < 0)
+                //    (a as Soldat).Vitesse = new Vector3((a as Soldat).Vitesse.X, 0, (a as Soldat).Vitesse.Z);
+
+
+            }
+            //if (v.Y != 0)
+            //{
+            //    (a as Soldat).Vitesse = new Vector3(vitesseTemp.X, 0, vitesseTemp.Z);
+            //}
+
+              (a as Soldat).Vitesse -= new Vector3(v.X * vitesseTemp.X, v.Y * vitesseTemp.Y, v.Z * vitesseTemp.Z);
+            v = new Vector3(v.X * forceTemp.X, v.Y * forceTemp.Y, v.Z * forceTemp.Z);
+
+
+            //Vector3 v = Vector3.Zero;
+            //(a as Soldat).EstSurTerrain = true;
+            //if ((a as Soldat).HitBoxGénérale.Intersects(HitBoxGénérale))
+            //{
+            //    // A CHANGER POUR INCLURE TOUTE LES DIRECTIONS. CHECKER POUR UNE FACON PLUS ELEGANTE DE LECRIRE
+            //    if ((a as Soldat).VecteurResultantForce.Y < 0)
+            //        v = new Vector3(0, -(a as Soldat).VecteurResultantForce.Y, 0);
+
+            //    if ((a as Soldat).Vitesse.Y < 0)
+            //        (a as Soldat).Vitesse = new Vector3((a as Soldat).Vitesse.X, 0, (a as Soldat).Vitesse.Z);
+
+
+
+            //     }
+            return -v;
+            //return -v + GarderHorsBornes((a as Soldat));
 
 
         }
@@ -70,7 +102,7 @@ namespace AtelierXNA
                 }
                 
             }
-                return v;
+                return 10*v;
 
         }
 
