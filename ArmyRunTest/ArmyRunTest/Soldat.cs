@@ -24,7 +24,7 @@ namespace AtelierXNA
         const float NORMALE = (MASSE_SOLDAT_KG * 9.8f) ;
         const float FROTTEMENT = 0.75F * NORMALE * INTERVALLE_CALCUL_PHYSIQUE ;
         const float INTERVALLE_CALCUL_PHYSIQUE = 1f / 60;
-        public Vector3 VarPosition { get;private set; }
+        Vector3 VarPosition { get; set; }
         public BoundingBox HitBoxGénérale { get; protected set; }   
         Vector3 VecteurGravité { get; set; }
         Vector3 AnciennePosition { get; set; }
@@ -212,7 +212,7 @@ namespace AtelierXNA
 
             //frottement air
             Vector3 vitesseCal = Vitesse;
-            Vector3 fAir = Vector3.Multiply(Vector3.Multiply(vitesseCal, vitesseCal), 0.010f*2 * DENSITER_AIR * DRAG_COEFFICIENT);
+            Vector3 fAir = Vector3.Multiply(Vector3.Multiply(vitesseCal, vitesseCal), 0.010f*2*0.5f * DENSITER_AIR * DRAG_COEFFICIENT);
 
             VecteurResultantForce += fAir;
         }
@@ -321,11 +321,6 @@ namespace AtelierXNA
        {
             
        }
-
-       public void ModifierVarPosition(Vector3 a)
-        {
-            VarPosition = new Vector3 (a.X,a.Y,a.Z);
-        }
 
     }
 }

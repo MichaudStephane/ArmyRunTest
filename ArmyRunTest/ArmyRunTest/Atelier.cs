@@ -85,7 +85,7 @@ namespace AtelierXNA
             //Components.Add(new TerrainDeBase(this, 10, (new Vector3(0.5f, 0, 0)), new Vector3(0, 0, 7), INTERVALLE_STANDARD, "stefpath"));
 
 
-            Components.Add(new HachePendule(this, 13, new Vector3(0, 0, 0), new Vector3(0, HAUTEUR_HACHE, 0), INTERVALLE_STANDARD, "StefAxe"));
+            Components.Add(new HachePendule(this, 13, new Vector3(0, 0, 0), new Vector3(16, HAUTEUR_HACHE, -10), INTERVALLE_STANDARD, "StefAxe"));
             Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(-8, 0, -14), INTERVALLE_STANDARD, "stefpath"));
             Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(8, 0, -14), INTERVALLE_STANDARD, "stefpath"));
             Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(16, 0, -14), INTERVALLE_STANDARD, "stefpath"));
