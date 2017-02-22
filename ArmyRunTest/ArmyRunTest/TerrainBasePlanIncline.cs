@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace AtelierXNA
 {
-    public class TerrainBasePlanIncline: PrimitiveDeBaseAnimée
+    public class TerrainBasePlanIncline: PrimitiveDeBaseAnimée,ICollisionable
     {
         const float HAUTEUR = 0.785f; 
         Color Couleur { get; set; }
@@ -24,6 +24,7 @@ namespace AtelierXNA
         BasicEffect EffetDeBase { get; set; }
         RasterizerState NouveauJeuRasterizerState { get; set; }
         Random NombreAléatoire { get; set; }
+        BoundingBox HitBoxPlanIncliné { get; set; }
 
 
         public TerrainBasePlanIncline(Game jeu, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,Color couleur, float intervalleMAJ)
@@ -42,7 +43,7 @@ namespace AtelierXNA
             {
                 nombre = CréerNombreAléatoire();
             }
-            Dimension = CalculerDimension(nombre);
+            CalculerDimension(nombre);
             Sommets1 = new VertexPositionColor[6];
             Sommets2 = new VertexPositionColor[6];
             InitialiserSommets();
@@ -52,6 +53,23 @@ namespace AtelierXNA
 
        void InitialiserHitBoxPlanIncliné()
         {
+            List<Vector3> point = new List<Vector3>();
+            point.Add(Origine); point.Add(new Vector3(Origine.X + Dimension.X, Origine.Y + Dimension.Y, Origine.Z + Dimension.Z));
+            HitBoxPlanIncliné = BoundingBox.CreateFromPoints(point);
+        }
+
+        public Vector3 DonnerVectorCollision(PrimitiveDeBaseAnimée a)
+        {
+            Vector3 v = Vector3.Zero;
+            (a as Soldat).EstSurTerrain = true;
+            if ((a as Soldat).HitBoxGénérale.Intersects(HitBoxPlanIncliné))
+            {
+                if ((a as Soldat).HitBoxGénérale.Min.Y == CalculerHauteur((a as Soldat).HitBoxGénérale.Min.Z))
+                {
+                    v = new Vector3(0, -(a as Soldat).VecteurResultantForce.Y, 0);
+                }
+            }
+            return v;
         }
 
         double CréerNombreAléatoire()
@@ -60,10 +78,15 @@ namespace AtelierXNA
             return NombreAléatoire.NextDouble();
         }
 
-        Vector3 CalculerDimension(double val)
+        void CalculerDimension(double val)
         {
-            return new Vector3(1,(float)val+Origine.Y,HAUTEUR);
+            Dimension = new Vector3(1,(float)val+Origine.Y,HAUTEUR);
         }
+        float CalculerHauteur(float nb)
+        {
+            return nb * Dimension.Y;
+        }
+
 
         protected override void LoadContent()
         {

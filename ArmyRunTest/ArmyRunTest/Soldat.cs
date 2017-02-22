@@ -14,6 +14,7 @@ namespace AtelierXNA
 {
    public class Soldat : Humanoide
     {
+        public const float MASSE_SOLDAT = 1f;
         const float CONSTANTE_SAUT = 6000f;
         const float CONSTANTE_GRAVITE = 9.81F;
         const float NB_PIXEL_DÉPLACEMENT = 10f;
@@ -208,6 +209,10 @@ namespace AtelierXNA
                 {
                     VecteurResultantForce -= new Vector3(0, 0, FROTTEMENT * (Vitesse.Z / Math.Abs(Vitesse.Z)));
                 }
+                if(Vitesse.Y !=0)
+                {
+                    VecteurResultantForce -= new Vector3(0, FROTTEMENT * (Vitesse.Y / Math.Abs(Vitesse.Y)), 0);
+                }
             }
 
             //frottement air
@@ -246,68 +251,42 @@ namespace AtelierXNA
             minHB = Vector3.Transform(minHB, Matrix.CreateTranslation(Position));
             maxHB = Vector3.Transform(maxHB, Matrix.CreateTranslation(Position));
 
-          //  minHB = new Vector3((float)Math.Round(minHB.X, 3), (float)Math.Round(minHB.Y, 3), (float)Math.Round(minHB.Z, 3));
+            //minHB = new Vector3((float)Math.Round(minHB.X, 3), (float)Math.Round(minHB.Y, 3), (float)Math.Round(minHB.Z, 3));
             //maxHB = new Vector3((float)Math.Round(maxHB.X, 3), (float)Math.Round(maxHB.Y, 3), (float)Math.Round(maxHB.Z, 3));
-
             HitBoxGénérale = new BoundingBox(minHB,maxHB);
-
-           
-           
         }
        void BougerHitbox()
        {
-           Vector3 diff =Position- HitBoxGénérale.Min +Vector3.Multiply((HitBoxGénérale.Max - HitBoxGénérale.Min),0.5f);
-
-           HitBoxGénérale = new BoundingBox(HitBoxGénérale.Min + diff, HitBoxGénérale.Max + diff);
-
-           
+            Vector3 diff = Position - HitBoxGénérale.Min + Vector3.Multiply((HitBoxGénérale.Max - HitBoxGénérale.Min), 0.5f);
+            HitBoxGénérale = new BoundingBox(HitBoxGénérale.Min + diff, HitBoxGénérale.Max + diff);
        }
-      
 
        void CalculerForcesExercees()
        {
            // faire pour les force de rotations aussi
-
-
            VecteurResultantForce += Vector3.Multiply(VecteurGravité,MASSE_SOLDAT_KG);
            VecteurResultantForce += Commande;
            Commande = Vector3.Zero;
            GererCollision();
            GererFrottement();
-
-
        }
        void CalculerAcceleration()
        {
-           
-           
-           
-
            Vector3 accelerationPrecedente = Acceleration;
            Vector3 varPosition = Vector3.Multiply(Vitesse, INTERVALLE_CALCUL_PHYSIQUE) + Vector3.Multiply(Vector3.Multiply(accelerationPrecedente, 0.5f), (float)Math.Pow(INTERVALLE_CALCUL_PHYSIQUE, 2));
            VarPosition = new Vector3(VarPosition.X + varPosition.X, VarPosition.Y + varPosition.Y, VarPosition.Z + varPosition.Z);
            Acceleration = Vector3.Multiply(VecteurResultantForce,1f/MASSE_SOLDAT_KG);
-
-
-
-         //  Acceleration = new Vector3((float)Math.Round(Acceleration.X, 2), (float)Math.Round(Acceleration.Y, 2), (float)Math.Round(Acceleration.Z, 2));
+           //Acceleration = new Vector3((float)Math.Round(Acceleration.X, 2), (float)Math.Round(Acceleration.Y, 2), (float)Math.Round(Acceleration.Z, 2));
      
            if (Acceleration != Vector3.Zero)
            {
-
                Acceleration = Vector3.Multiply(accelerationPrecedente + Acceleration, 0.5f);
            }
-
-
            Vitesse+=Acceleration*INTERVALLE_CALCUL_PHYSIQUE;
-
           // Vitesse = new Vector3((float)Math.Round(Vitesse.X, 2), (float)Math.Round(Vitesse.Y, 2), (float)Math.Round(Vitesse.Z, 2));
          //  Acceleration = new Vector3((float)Math.Round(Acceleration.X, 2), (float)Math.Round(Acceleration.Y, 2), (float)Math.Round(Acceleration.Z, 2));
-     
-
            BougerHitbox();
        }
-
 
        void ModifierIntervalle()
        {
