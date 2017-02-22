@@ -232,7 +232,7 @@ namespace AtelierXNA
             {
                 EstEnCollision = true;
             }
-           
+            int a = 1;
         }
 
        void CreerHitbox()
@@ -270,10 +270,11 @@ namespace AtelierXNA
 
 
            VecteurResultantForce += Vector3.Multiply(VecteurGravité,MASSE_SOLDAT_KG);
-           VecteurResultantForce += Commande;
-           Commande = Vector3.Zero;
-           GererCollision();
-           GererFrottement();
+            VecteurResultantForce += Commande;
+            Commande = Vector3.Zero;
+            GererCollision();
+            
+            GererFrottement();
 
 
        }
@@ -292,11 +293,11 @@ namespace AtelierXNA
 
          //  Acceleration = new Vector3((float)Math.Round(Acceleration.X, 2), (float)Math.Round(Acceleration.Y, 2), (float)Math.Round(Acceleration.Z, 2));
      
-           if (Acceleration != Vector3.Zero)
-           {
+           //if (Acceleration != Vector3.Zero)
+           //{
 
-               Acceleration = Vector3.Multiply(accelerationPrecedente + Acceleration, 0.5f);
-           }
+           //    Acceleration = Vector3.Multiply(accelerationPrecedente + Acceleration, 0.5f);
+           //}
 
 
            Vitesse+=Acceleration*INTERVALLE_CALCUL_PHYSIQUE;
