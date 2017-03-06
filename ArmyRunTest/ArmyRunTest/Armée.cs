@@ -41,6 +41,15 @@ namespace AtelierXNA
             }
         }
 
+        public override void Initialize()
+        {
+            //foreach (Humanoide s in Soldats)
+            //{
+            //    Game.Components.Add(s as Soldat);
+            //}
+            base.Initialize();
+        }
+
         void OptimiserPosition()
         {
             bool EstPair = NbSoldatPair();
@@ -64,5 +73,6 @@ namespace AtelierXNA
             }
             return EstCarré;
         }
+        
     }
 }

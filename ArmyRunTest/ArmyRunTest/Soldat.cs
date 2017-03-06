@@ -250,24 +250,18 @@ namespace AtelierXNA
             //maxHB = new Vector3((float)Math.Round(maxHB.X, 3), (float)Math.Round(maxHB.Y, 3), (float)Math.Round(maxHB.Z, 3));
 
             HitBoxGénérale = new BoundingBox(minHB,maxHB);
-
-           
-           
         }
+
        void BougerHitbox()
        {
            Vector3 diff =Position- HitBoxGénérale.Min +Vector3.Multiply((HitBoxGénérale.Max - HitBoxGénérale.Min),0.5f);
 
            HitBoxGénérale = new BoundingBox(HitBoxGénérale.Min + diff, HitBoxGénérale.Max + diff);
-
-           
        }
-      
 
        void CalculerForcesExercees()
        {
            // faire pour les force de rotations aussi
-
 
            VecteurResultantForce += Vector3.Multiply(VecteurGravité,MASSE_SOLDAT_KG);
             VecteurResultantForce += Commande;
@@ -275,22 +269,15 @@ namespace AtelierXNA
             GererCollision();
             
             GererFrottement();
-
-
        }
-       void CalculerAcceleration()
-       {
-           
-           
-           
 
+       void CalculerAcceleration()
+        { 
            Vector3 accelerationPrecedente = Acceleration;
            Vector3 varPosition = Vector3.Multiply(Vitesse, INTERVALLE_CALCUL_PHYSIQUE) + Vector3.Multiply(Vector3.Multiply(accelerationPrecedente, 0.5f), (float)Math.Pow(INTERVALLE_CALCUL_PHYSIQUE, 2));
            VarPosition = new Vector3(VarPosition.X + varPosition.X, VarPosition.Y + varPosition.Y, VarPosition.Z + varPosition.Z);
            Acceleration = Vector3.Multiply(VecteurResultantForce,1f/MASSE_SOLDAT_KG);
-
-
-
+            
          //  Acceleration = new Vector3((float)Math.Round(Acceleration.X, 2), (float)Math.Round(Acceleration.Y, 2), (float)Math.Round(Acceleration.Z, 2));
      
            //if (Acceleration != Vector3.Zero)
@@ -298,14 +285,11 @@ namespace AtelierXNA
 
            //    Acceleration = Vector3.Multiply(accelerationPrecedente + Acceleration, 0.5f);
            //}
-
-
            Vitesse+=Acceleration*INTERVALLE_CALCUL_PHYSIQUE;
 
           // Vitesse = new Vector3((float)Math.Round(Vitesse.X, 2), (float)Math.Round(Vitesse.Y, 2), (float)Math.Round(Vitesse.Z, 2));
          //  Acceleration = new Vector3((float)Math.Round(Acceleration.X, 2), (float)Math.Round(Acceleration.Y, 2), (float)Math.Round(Acceleration.Z, 2));
      
-
            BougerHitbox();
        }
 
