@@ -61,7 +61,7 @@ namespace AtelierXNA
         public Vector3 DonnerVectorCollision(PrimitiveDeBaseAnimée a)
         {
             Vector3 v = Vector3.Zero;
-            (a as Soldat).EstSurTerrain = true;
+           
             if ((a as Soldat).HitBoxGénérale.Intersects(HitBoxPlanIncliné))
             {
                 if ((a as Soldat).HitBoxGénérale.Min.Y == CalculerHauteur((a as Soldat).HitBoxGénérale.Min.Z))

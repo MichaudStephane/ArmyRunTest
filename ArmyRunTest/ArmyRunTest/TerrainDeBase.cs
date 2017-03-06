@@ -41,18 +41,19 @@ namespace AtelierXNA
             Vector3 v = Vector3.Zero;
             if (HitBoxGénérale.Intersects((a as Soldat).HitBoxGénérale))
             {
+              
 
                 v = a.Position - Position;
-                v = new Vector3(v.X / TAILLE_HITBOX_STANDARD.X, v.Y / TAILLE_HITBOX_STANDARD.Y, v.Z / TAILLE_HITBOX_STANDARD.Z);
-                v = Convert.ToInt32((v.Y >= v.X) && (v.Y >= v.Z) &&forceTemp.Y<0&&vitesseTemp.Y<=0) * VECTOR_HAUT;//+ Convert.ToInt32((v.Y <= v.X) && (v.Y <= v.Z) && vitesseTemp.Y>0) * VECTOR_BAS;
+                v = new Vector3(v.X / TAILLE_HITBOX_STANDARD.X*0.9995f, v.Y / TAILLE_HITBOX_STANDARD.Y, v.Z / TAILLE_HITBOX_STANDARD.Z*0.9995f);
+                v = Convert.ToInt32((v.Y >= v.X) && (v.Y >= v.Z) && (vitesseTemp.Y < -0.0001f)) * VECTOR_HAUT
+               // +Convert.ToInt32((v.Y <= v.X) && (v.Y <= v.Z) && vitesseTemp.Y > 0) * VECTOR_BAS
+                + Convert.ToInt32((v.Z >= v.X) && (v.Z >= v.Y) && vitesseTemp.Z < -0.0001f) * VECTOR_DEVANT
+                ;
+
+
+
                 (a as Soldat).EstSurTerrain = true;
                 (a as Soldat).EstEnCollision = true;
-
-                if ((v.Y >= v.X) && (v.Y >= v.Z) && vitesseTemp.Y < 0)
-                {
-                    int a6gh = 3;
-                }
-
                 //if ((a as Soldat).Vitesse.Y < 0)
                 //    (a as Soldat).Vitesse = new Vector3((a as Soldat).Vitesse.X, 0, (a as Soldat).Vitesse.Z);
 
@@ -81,8 +82,8 @@ namespace AtelierXNA
 
 
             //     }
-            return -v;
-            //return -v + GarderHorsBornes((a as Soldat));
+
+            return -v+ GarderHorsBornes((a as Soldat));
 
 
         }
@@ -97,12 +98,12 @@ namespace AtelierXNA
                 {
                     //   float NouvellePositionY = a.VarPosition.Y + Math.Abs((HitBoxGénérale.Max.Y - a.VarPosition.Y));
                     // a.ModifierVarPosition(new Vector3(a.VarPosition.X, NouvellePositionY, a.VarPosition.Z));
-                    v = new Vector3 (0,HitBoxGénérale.Max.Y - a.HitBoxGénérale.Min.Y,0);
+                    v = new Vector3 (0,1,0);
                    
                 }
                 
             }
-                return 10*v;
+                return (HitBoxGénérale.Max.Y-(a as Soldat).HitBoxGénérale.Min.Y)*v;
 
         }
 

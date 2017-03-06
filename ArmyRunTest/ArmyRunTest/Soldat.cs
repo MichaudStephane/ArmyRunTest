@@ -57,6 +57,8 @@ namespace AtelierXNA
             VecteurResultantForce = Vector3.Zero;
             Vitesse = Vector3.Zero;
             Acceleration = Vector3.Zero;
+            EstEnCollision = false;
+            EstSurTerrain = false; 
           
             Intervalle_MAJ_Mouvement = INTERVALLE_DE_DEPART_STANDARD;
             TempsEcouleDepuisMajMouvement = 0;
@@ -94,7 +96,8 @@ namespace AtelierXNA
                 CalculerMatriceMonde();
                 TempsEcouleDepuisMajMouvement = 0;            
             }
-
+           
+            
 
             GameWindow a =Game.Window;
             a.Title = "Vitesse:[ " + Math.Round(Vitesse.X, 2) + "   " + Math.Round(Vitesse.Y, 2) + "   " + Math.Round(Vitesse.Z, 2) + 
@@ -130,8 +133,11 @@ namespace AtelierXNA
             {
                 if (GestionInput.EstNouvelleTouche(Keys.Space))
                 {
-                    if (EstEnCollision)
+                    if (EstSurTerrain)
                     {
+                       // VarPosition = new Vector3(VarPosition.X, VarPosition.Y + 1, VarPosition.Z);
+                     //   Position = new Vector3(Position.X, Position.Y + 1, Position.Z);
+                        BougerHitbox();
                         AjouterVecteur(CONSTANTE_SAUT);
                     }
                 }
@@ -148,6 +154,8 @@ namespace AtelierXNA
 
         void AjouterVecteur(float déplacementAvantArrière, float déplacementGaucheDroite)
         {
+           
+
             Commande = new Vector3(déplacementGaucheDroite, Commande.Y, déplacementAvantArrière);
 
            
@@ -220,8 +228,9 @@ namespace AtelierXNA
         //----A MODIFIER----
         void GererCollision()
         {
-            EstEnCollision = false;
 
+            EstEnCollision = false; ;
+            EstSurTerrain = false;
             Vector3 V = VecteurResultantForce;
             // FAIRE EN SORTE QUELLE NE VEFIE QUE LES ELEMENTS PROCHES
             foreach(GameComponent G in Game.Components.Where(x=>x is ICollisionable).ToList())
@@ -231,6 +240,7 @@ namespace AtelierXNA
             if(V!=VecteurResultantForce)
             {
                 EstEnCollision = true;
+                EstSurTerrain = true;
             }
             int a = 1;
         }
@@ -266,14 +276,19 @@ namespace AtelierXNA
 
        void CalculerForcesExercees()
        {
-           // faire pour les force de rotations aussi
+           
 
-
-           VecteurResultantForce += Vector3.Multiply(VecteurGravité,MASSE_SOLDAT_KG);
+         
             VecteurResultantForce += Commande;
             Commande = Vector3.Zero;
             GererCollision();
-            
+            int a = 1;
+
+            if (!EstSurTerrain)
+            {
+                VecteurResultantForce += Vector3.Multiply(VecteurGravité, MASSE_SOLDAT_KG);
+            }
+
             GererFrottement();
 
 
@@ -307,6 +322,10 @@ namespace AtelierXNA
      
 
            BougerHitbox();
+         if(EstEnCollision==true)
+            {
+                int a = 1;
+            }
        }
 
 
