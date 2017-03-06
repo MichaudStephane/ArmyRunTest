@@ -75,17 +75,17 @@ namespace AtelierXNA
             {
              //   Vector3 centre = Vector3.Transform(a.Center, Matrix.CreateTranslation(0, -GRANDEUR_HACHE_STANDARD, 0f) * Matrix.CreateRotationZ(Angle) * Matrix.CreateTranslation(0, GRANDEUR_HACHE_STANDARD, 0f));
              //   BoundingSphere b = new BoundingSphere(centre, a.Radius);
-                 a.Transform(Matrix.CreateTranslation(Position.X, -GRANDEUR_HACHE_STANDARD, Position.Z) * Matrix.CreateRotationZ(Angle) * Matrix.CreateTranslation(Position.X, GRANDEUR_HACHE_STANDARD, Position.Z));
+                 a.Transform(Matrix.CreateTranslation(-a.Center.X, -GRANDEUR_HACHE_STANDARD, -a.Center.Z) * Matrix.CreateRotationZ(Angle) * Matrix.CreateTranslation(a.Center.X, GRANDEUR_HACHE_STANDARD, a.Center.Z));
             }
             
-
+            
         }
 
         private void CalculerNouvellePositionHache()
         {
 
             
-            Matrix transform  = Matrix.CreateTranslation(Position.X, -GRANDEUR_HACHE_STANDARD, Position.Z) *
+            Matrix transform  = Matrix.CreateTranslation(-Position.X, -GRANDEUR_HACHE_STANDARD, -Position.Z) *
                       Matrix.CreateRotationZ(Angle) *
                       Matrix.CreateTranslation(Position.X, GRANDEUR_HACHE_STANDARD, Position.Z);
 
@@ -110,7 +110,7 @@ namespace AtelierXNA
                     {
                         Vector3 EntreSphèreetPers = (TableauxHitBoxPrécises[i].Center - a.Position);
                        // (a as Soldat).Vitesse = new Vector3((a as Soldat).Vitesse.X, (a as Soldat).Vitesse.Y, 0);
-                        v = 1000 * EntreSphèreetPers;
+                        v = Angle*1000 * EntreSphèreetPers;
                         
 
                     }
