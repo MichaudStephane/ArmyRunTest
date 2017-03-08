@@ -44,10 +44,15 @@ namespace AtelierXNA
               
 
                 v = a.Position - Position;
-                v = new Vector3(v.X / TAILLE_HITBOX_STANDARD.X*0.9995f, v.Y / TAILLE_HITBOX_STANDARD.Y, v.Z / TAILLE_HITBOX_STANDARD.Z*0.9995f);
-                v = Convert.ToInt32((v.Y >= v.X) && (v.Y >= v.Z) && (vitesseTemp.Y < -0.0001f)) * VECTOR_HAUT
-               // +Convert.ToInt32((v.Y <= v.X) && (v.Y <= v.Z) && vitesseTemp.Y > 0) * VECTOR_BAS
-                + Convert.ToInt32((v.Z >= v.X) && (v.Z >= v.Y) && vitesseTemp.Z < -0.0001f) * VECTOR_DEVANT
+                if(v.Y<=0.0001)
+                {
+                    int t = 1;
+                }
+                v = new Vector3(v.X / TAILLE_HITBOX_STANDARD.X*0.9995f, v.Y / TAILLE_HITBOX_STANDARD.Y, (v.Z / TAILLE_HITBOX_STANDARD.Z)*0.85f);
+                Vector3 vTemp = v;
+                v = Convert.ToInt32((v.Y >= v.X) && (v.Y >= v.Z) && (vitesseTemp.Y < -0.0001f) && v.Y>=0.0001f) * VECTOR_HAUT
+                + Convert.ToInt32((Math.Abs(v.Y) >= Math.Abs(v.X)) && (Math.Abs(v.Y) >= Math.Abs(v.Z)) && vitesseTemp.Y >= 0.0001f && v.Y <= -0.0001f) * VECTOR_BAS
+                + Convert.ToInt32((v.Z >= v.X) && (v.Z >= v.Y) && vitesseTemp.Z < -0.0001f ) * VECTOR_DEVANT
                 ;
 
 
@@ -58,14 +63,16 @@ namespace AtelierXNA
                 //    (a as Soldat).Vitesse = new Vector3((a as Soldat).Vitesse.X, 0, (a as Soldat).Vitesse.Z);
 
 
+
+                (a as Soldat).Vitesse += new Vector3(v.X * Math.Abs(vitesseTemp.X), v.Y * Math.Abs(vitesseTemp.Y), v.Z * Math.Abs(vitesseTemp.Z));
+              //  v = new Vector3(v.X * forceTemp.X, v.Y * forceTemp.Y, v.Z * forceTemp.Z);
             }
             //if (v.Y != 0)
             //{
             //    (a as Soldat).Vitesse = new Vector3(vitesseTemp.X, 0, vitesseTemp.Z);
             //}
 
-              (a as Soldat).Vitesse -= new Vector3(v.X * vitesseTemp.X, v.Y * vitesseTemp.Y, v.Z * vitesseTemp.Z);
-            v = new Vector3(v.X * forceTemp.X, v.Y * forceTemp.Y, v.Z * forceTemp.Z);
+            
 
 
             //Vector3 v = Vector3.Zero;
@@ -81,30 +88,16 @@ namespace AtelierXNA
 
 
 
-            //     }
+            //}
 
-            return -v+ GarderHorsBornes((a as Soldat));
+            return -v;
 
 
         }
-        private Vector3 GarderHorsBornes(Soldat a)
+        private float GarderHorsBornes(Soldat a,Vector3 v)
         {
-            Vector3 v = Vector3.Zero;
 
-
-            if ((a as Soldat).HitBoxGénérale.Intersects(HitBoxGénérale))
-            {
-                if (HitBoxGénérale.Max.Y > a.HitBoxGénérale.Min.Y && HitBoxGénérale.Min.Y < a.HitBoxGénérale.Max.Y)
-                {
-                    //   float NouvellePositionY = a.VarPosition.Y + Math.Abs((HitBoxGénérale.Max.Y - a.VarPosition.Y));
-                    // a.ModifierVarPosition(new Vector3(a.VarPosition.X, NouvellePositionY, a.VarPosition.Z));
-                    v = new Vector3 (0,1,0);
-                   
-                }
-                
-            }
-                return (HitBoxGénérale.Max.Y-(a as Soldat).HitBoxGénérale.Min.Y)*v;
-
+            return 0;
         }
 
   
