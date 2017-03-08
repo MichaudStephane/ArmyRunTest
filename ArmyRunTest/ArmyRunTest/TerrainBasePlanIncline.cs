@@ -56,8 +56,7 @@ namespace AtelierXNA
 
         void InitialiserHitBoxPlanIncliné()
         {
-            HitBoxPlanIncliné = new BoundingBox(Origine, (new Vector3(Origine.X - (10*Dimension.X), Origine.Y - (10*Dimension.Y), Origine.Z -(10* Dimension.Z))));
-          
+            HitBoxPlanIncliné = new BoundingBox((new Vector3(Origine.X - (10*Dimension.X), Origine.Y - (10*Dimension.Y), Origine.Z -(10* Dimension.Z))),Origine);
         }
 
         public Vector3 DonnerVectorCollision(PrimitiveDeBaseAnimée a)
@@ -66,11 +65,12 @@ namespace AtelierXNA
            
             if (HitBoxPlanIncliné.Intersects((a as Soldat).HitBoxGénérale))
             {
-                if ((a as Soldat).HitBoxGénérale.Min.Y >= CalculerHauteur((a as Soldat).HitBoxGénérale.Min.Z))
+                if ((a as Soldat).HitBoxGénérale.Min.Y <= CalculerHauteur((a as Soldat).HitBoxGénérale.Max.Z))
                 {
                     (a as Soldat).EstSurTerrain = true;
                     float angle = (float)Math.Atan(Dimension.Y / Dimension.Z);
-                    v = new Vector3(0, (float)Math.Cos(angle)*9.81f, 0);
+                    v = new Vector3((a as Soldat).VecteurResultantForce.X, -(a as Soldat).VecteurResultantForce.Y, (a as Soldat).VecteurResultantForce.Z); //(float)Math.Cos(angle) * 9.81f,-(a as Soldat).VecteurResultantForce.Y
+                    (a as Soldat).Vitesse = new Vector3((a as Soldat).Vitesse.X, 0, (a as Soldat).Vitesse.Z);
                 }
             }
             return v;
@@ -95,7 +95,6 @@ namespace AtelierXNA
         {
             return Pente * nb +Origine.Y; //pt Z
         }
-
 
         protected override void LoadContent()
         {
