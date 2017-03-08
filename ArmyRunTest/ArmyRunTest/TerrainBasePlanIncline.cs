@@ -25,6 +25,7 @@ namespace AtelierXNA
         RasterizerState NouveauJeuRasterizerState { get; set; }
         Random NombreAléatoire { get; set; }
         BoundingBox HitBoxPlanIncliné { get; set; }
+        float Pente { get; set; }
 
 
         public TerrainBasePlanIncline(Game jeu, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,Color couleur, float intervalleMAJ)
@@ -46,16 +47,17 @@ namespace AtelierXNA
             CalculerDimension(nombre);
             Sommets1 = new VertexPositionColor[6];
             Sommets2 = new VertexPositionColor[6];
+            CalculerPente(nombre);
             InitialiserSommets();
             InitialiserHitBoxPlanIncliné();
             base.Initialize();
         }
+        
 
-       void InitialiserHitBoxPlanIncliné()
+        void InitialiserHitBoxPlanIncliné()
         {
-            List<Vector3> point = new List<Vector3>();
-            point.Add(Origine); point.Add(new Vector3(Origine.X + Dimension.X, Origine.Y + Dimension.Y, Origine.Z + Dimension.Z));
-            HitBoxPlanIncliné = BoundingBox.CreateFromPoints(point);
+            HitBoxPlanIncliné = new BoundingBox(Origine, (new Vector3(Origine.X + Dimension.X, Origine.Y + Dimension.Y, Origine.Z + Dimension.Z)));
+            HitBoxAngulaire hitboxPLan = new HitBoxAngulaire();
         }
 
         public Vector3 DonnerVectorCollision(PrimitiveDeBaseAnimée a)
@@ -64,12 +66,18 @@ namespace AtelierXNA
            
             if ((a as Soldat).HitBoxGénérale.Intersects(HitBoxPlanIncliné))
             {
-                if ((a as Soldat).HitBoxGénérale.Min.Y == CalculerHauteur((a as Soldat).HitBoxGénérale.Min.Z))
+                if ((a as Soldat).HitBoxGénérale.Min.Y <= CalculerHauteur((a as Soldat).HitBoxGénérale.Min.Z))
                 {
+                    (a as Soldat).EstSurTerrain = true;
                     v = new Vector3(0, -(a as Soldat).VecteurResultantForce.Y, 0);
                 }
             }
             return v;
+        }
+
+        void CalculerPente(double val)
+        {
+            Pente = ((float)val - Origine.Y / (HAUTEUR - Origine.Z));
         }
 
         double CréerNombreAléatoire()
@@ -84,7 +92,7 @@ namespace AtelierXNA
         }
         float CalculerHauteur(float nb)
         {
-            return nb * Dimension.Y;
+            return Pente * nb +Origine.Y; //pt Z
         }
 
 
