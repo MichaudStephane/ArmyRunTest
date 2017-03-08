@@ -56,20 +56,21 @@ namespace AtelierXNA
 
         void InitialiserHitBoxPlanIncliné()
         {
-            HitBoxPlanIncliné = new BoundingBox(Origine, (new Vector3(Origine.X + Dimension.X, Origine.Y + Dimension.Y, Origine.Z + Dimension.Z)));
-            HitBoxAngulaire hitboxPLan = new HitBoxAngulaire();
+            HitBoxPlanIncliné = new BoundingBox(Origine, (new Vector3(Origine.X - (10*Dimension.X), Origine.Y - (10*Dimension.Y), Origine.Z -(10* Dimension.Z))));
+          
         }
 
         public Vector3 DonnerVectorCollision(PrimitiveDeBaseAnimée a)
         {
             Vector3 v = Vector3.Zero;
            
-            if ((a as Soldat).HitBoxGénérale.Intersects(HitBoxPlanIncliné))
+            if (HitBoxPlanIncliné.Intersects((a as Soldat).HitBoxGénérale))
             {
-                if ((a as Soldat).HitBoxGénérale.Min.Y <= CalculerHauteur((a as Soldat).HitBoxGénérale.Min.Z))
+                if ((a as Soldat).HitBoxGénérale.Min.Y >= CalculerHauteur((a as Soldat).HitBoxGénérale.Min.Z))
                 {
                     (a as Soldat).EstSurTerrain = true;
-                    v = new Vector3(0, -(a as Soldat).VecteurResultantForce.Y, 0);
+                    float angle = (float)Math.Atan(Dimension.Y / Dimension.Z);
+                    v = new Vector3(0, (float)Math.Cos(angle)*9.81f, 0);
                 }
             }
             return v;
