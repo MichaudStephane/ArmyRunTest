@@ -21,8 +21,11 @@ namespace AtelierXNA
         const int NB_HITBOX_PRÉCISES = 8;
         Matrix MondeInitial { get; set; }
         BoundingSphere[] TableauxHitBoxPrécises { get; set; }
+        Vector3[] TableauPositionInitiales { get; set; }
+        Vector3 PositionInitialeHbGénérale { get; set; }
         float cpt { get; set; }
         float Angle { get; set; }
+        float ValeurSin { get; set; }
 
         float INTERVALLE_MAJ { get; set; }
         float TempsÉcouléDepuisMaj { get; set; } 
@@ -44,6 +47,7 @@ namespace AtelierXNA
             TableauxHitBoxPrécises = new BoundingSphere[NB_HITBOX_PRÉCISES];
             CréerHitBoxGénérale();
             CréerHitBoxesPrécises();
+            
             MondeInitial = Monde;
         }
 
@@ -62,7 +66,7 @@ namespace AtelierXNA
                 CalculerNouvellePositionHache();
                 BougerHitBox();
                 Angle = MathHelper.PiOver2 * (float)Math.Sin((float)gameTime.TotalGameTime.TotalSeconds);
-
+                ValeurSin = (float)Math.Sin((float)gameTime.TotalGameTime.TotalSeconds);
                 TempsÉcouléDepuisMaj = 0;
             }
 
@@ -71,14 +75,17 @@ namespace AtelierXNA
 
         private void BougerHitBox()
         {
-            foreach(BoundingSphere a in TableauxHitBoxPrécises)
+            Vector3 NouveauCentre = Vector3.Transform(PositionInitialeHbGénérale, Matrix.CreateTranslation(-PositionInitialeHbGénérale.X, -GRANDEUR_HACHE_STANDARD, -PositionInitialeHbGénérale.Z) * Matrix.CreateRotationZ(Angle) * Matrix.CreateTranslation(PositionInitialeHbGénérale.X, GRANDEUR_HACHE_STANDARD, PositionInitialeHbGénérale.Z));
+            HitBoxGénérale = new BoundingSphere(NouveauCentre, HitBoxGénérale.Radius);
+
+            for (int i=0;i<TableauxHitBoxPrécises.Count();++i)
             {
-             //   Vector3 centre = Vector3.Transform(a.Center, Matrix.CreateTranslation(0, -GRANDEUR_HACHE_STANDARD, 0f) * Matrix.CreateRotationZ(Angle) * Matrix.CreateTranslation(0, GRANDEUR_HACHE_STANDARD, 0f));
-             //   BoundingSphere b = new BoundingSphere(centre, a.Radius);
-                 a.Transform(Matrix.CreateTranslation(-a.Center.X, -GRANDEUR_HACHE_STANDARD, -a.Center.Z) * Matrix.CreateRotationZ(Angle) * Matrix.CreateTranslation(a.Center.X, GRANDEUR_HACHE_STANDARD, a.Center.Z));
+                
+                Vector3 centre = Vector3.Transform(TableauPositionInitiales[i], Matrix.CreateTranslation(-TableauPositionInitiales[i].X, -GRANDEUR_HACHE_STANDARD, -TableauPositionInitiales[i].Z) * Matrix.CreateRotationZ(Angle) * Matrix.CreateTranslation(TableauPositionInitiales[i].X, GRANDEUR_HACHE_STANDARD, TableauPositionInitiales[i].Z));
+                TableauxHitBoxPrécises[i] = new BoundingSphere(centre, TableauxHitBoxPrécises[i].Radius);
             }
-            
-            
+
+
         }
 
         private void CalculerNouvellePositionHache()
@@ -95,6 +102,7 @@ namespace AtelierXNA
         void CréerHitBoxGénérale()
         {
             HitBoxGénérale = new BoundingSphere(new Vector3(Position.X, Position.Y+3, Position.Z), 5);
+            PositionInitialeHbGénérale = new Vector3(HitBoxGénérale.Center.X, HitBoxGénérale.Center.Y, HitBoxGénérale.Center.Z);
         }
         public Vector3 DonnerVectorCollision(PrimitiveDeBaseAnimée a)
         {
@@ -110,7 +118,8 @@ namespace AtelierXNA
                     {
                         Vector3 EntreSphèreetPers = (TableauxHitBoxPrécises[i].Center - a.Position);
                        // (a as Soldat).Vitesse = new Vector3((a as Soldat).Vitesse.X, (a as Soldat).Vitesse.Y, 0);
-                        v = Angle*1000 * EntreSphèreetPers;
+                       Vector3 temp = ValeurSin * 2500 * new Vector3(1,0.5f,0); //(Angle / Math.Abs(Angle))
+                        v = new Vector3(temp.X,0,0);
                         
 
                     }
@@ -133,6 +142,13 @@ namespace AtelierXNA
             TableauxHitBoxPrécises[5] = new BoundingSphere(new Vector3(Position.X + 1.5f, Position.Y, Position.Z), 1f);
             TableauxHitBoxPrécises[6] = new BoundingSphere(new Vector3(Position.X - 1.5f, Position.Y, Position.Z), 1f);
             TableauxHitBoxPrécises[7] = new BoundingSphere(new Vector3(Position.X , Position.Y +1.5f, Position.Z), 1f);
+
+            TableauPositionInitiales = new Vector3[TableauxHitBoxPrécises.Length];
+
+            for(int i = 0;i<TableauxHitBoxPrécises.Length;++i)
+            {
+                TableauPositionInitiales[i] = new Vector3(TableauxHitBoxPrécises[i].Center.X, TableauxHitBoxPrécises[i].Center.Y, TableauxHitBoxPrécises[i].Center.Z);
+            }
 
 
         }
