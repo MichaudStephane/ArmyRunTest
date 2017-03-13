@@ -64,8 +64,9 @@ namespace AtelierXNA
            
             if ((a as Soldat).HitBoxGénérale.Intersects(HitBoxPlanIncliné))
             {
-                if ((a as Soldat).HitBoxGénérale.Min.Y == CalculerHauteur((a as Soldat).HitBoxGénérale.Min.Z))
+                if ((a as Soldat).HitBoxGénérale.Min.Y >= CalculerHauteur((a as Soldat).HitBoxGénérale.Min.Z))
                 {
+                    (a as Soldat).EstSurTerrain = true;
                     v = new Vector3(0, -(a as Soldat).VecteurResultantForce.Y, 0);
                 }
             }
