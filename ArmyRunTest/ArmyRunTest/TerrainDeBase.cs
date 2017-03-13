@@ -42,12 +42,12 @@ namespace AtelierXNA
             if (HitBoxGénérale.Intersects((a as Soldat).HitBoxGénérale))
             {           
                 v = a.Position - Position;
-                v = new Vector3(v.X / TAILLE_HITBOX_STANDARD.X*0.9995f, v.Y / TAILLE_HITBOX_STANDARD.Y, (v.Z / TAILLE_HITBOX_STANDARD.Z)*0.85f);
+                v = new Vector3(v.X / TAILLE_HITBOX_STANDARD.X, v.Y / TAILLE_HITBOX_STANDARD.Y*0.85f, (v.Z / TAILLE_HITBOX_STANDARD.Z)*0.85f);
 
                 v = Convert.ToInt32((v.Y >= v.X) && (v.Y >= v.Z) && (vitesseTemp.Y < -0.0001f) && v.Y >= 0.0001f) * VECTOR_HAUT
                 + Convert.ToInt32((v.Y <= v.X) && (v.Y <= v.Z) && (vitesseTemp.Y > 0.0001f) && (v.Y <= -0.0001f)) * VECTOR_BAS
                    + Convert.ToInt32((v.Z >= v.X) && (v.Z >= v.Y) && vitesseTemp.Z < -0.0001f) * VECTOR_DEVANT
-                   + Convert.ToInt32(vitesseTemp.X >= 0.001f) * VECTOR_GAUCHE;
+                //   + Convert.ToInt32(vitesseTemp.X >= 0.001f) * VECTOR_GAUCHE;
                 ;
 
                 if(v.Y>0)
