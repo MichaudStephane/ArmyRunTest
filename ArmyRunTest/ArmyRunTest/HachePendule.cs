@@ -25,11 +25,13 @@ namespace AtelierXNA
         Vector3 PositionInitialeHbGénérale { get; set; }
         float cpt { get; set; }
         float Angle { get; set; }
-        float ValeurSin { get; set; }
+
 
         float INTERVALLE_MAJ { get; set; }
         float TempsÉcouléDepuisMaj { get; set; } 
         BoundingSphere HitBoxGénérale { get; set; }
+        int sens { get; set; }
+        float AnglePrécédent { get; set; }
         public HachePendule(Game jeu, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, float intervalleMAJ, string nomModel)
             : base(jeu, homothétieInitiale, rotationInitiale, positionInitiale, intervalleMAJ, nomModel)
         {
@@ -47,7 +49,9 @@ namespace AtelierXNA
             TableauxHitBoxPrécises = new BoundingSphere[NB_HITBOX_PRÉCISES];
             CréerHitBoxGénérale();
             CréerHitBoxesPrécises();
-            
+            sens = 1;
+            AnglePrécédent = 0;
+            Angle = 0;
             MondeInitial = Monde;
         }
 
@@ -57,7 +61,7 @@ namespace AtelierXNA
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-            
+            AnglePrécédent = Angle;
             TempsÉcouléDepuisMaj += (float)gameTime.ElapsedGameTime.TotalSeconds;
             
              if(TempsÉcouléDepuisMaj >= INTERVALLE_MAJ)
@@ -66,7 +70,17 @@ namespace AtelierXNA
                 CalculerNouvellePositionHache();
                 BougerHitBox();
                 Angle = MathHelper.PiOver2 * (float)Math.Sin((float)gameTime.TotalGameTime.TotalSeconds);
-                ValeurSin = (float)Math.Sin((float)gameTime.TotalGameTime.TotalSeconds);
+
+                if( Angle>AnglePrécédent )
+                {
+                    sens = 1;
+                }
+                else
+                {
+                    sens = -1;
+                }
+                
+
                 TempsÉcouléDepuisMaj = 0;
             }
 
@@ -118,18 +132,12 @@ namespace AtelierXNA
                     {
                         Vector3 EntreSphèreetPers = (TableauxHitBoxPrécises[i].Center - a.Position);
                        // (a as Soldat).Vitesse = new Vector3((a as Soldat).Vitesse.X, (a as Soldat).Vitesse.Y, 0);
-                       Vector3 temp = ValeurSin * 2500 * new Vector3(1,0.5f,0); //(Angle / Math.Abs(Angle))
-                        v = new Vector3(temp.X,0,0);
-                        
-
+                       Vector3 temp = sens * 2800 * new Vector3(1,0.5f,0); //(Angle / Math.Abs(Angle))
+                        v = new Vector3(temp.X,Math.Abs(temp.Y),0);
                     }
-                }
-
-               
+                }      
             }
-
             return v;
-
         }
 
         void CréerHitBoxesPrécises()
