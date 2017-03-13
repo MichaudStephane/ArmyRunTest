@@ -266,11 +266,24 @@ namespace AtelierXNA
         }
        void BougerHitbox()
        {
-           Vector3 diff =Position- HitBoxGénérale.Min +Vector3.Multiply((HitBoxGénérale.Max - HitBoxGénérale.Min),0.5f);
 
-           HitBoxGénérale = new BoundingBox(HitBoxGénérale.Min + diff, HitBoxGénérale.Max + diff);
 
-           
+            Vector3 minHB = new Vector3(-0.5f * Delta.X, -0.4f * Delta.Y, -0.1f);
+            Vector3 maxHB = new Vector3(0.5f * Delta.X, 0.5f * Delta.Y, 0.1f);
+
+            minHB = Vector3.Transform(minHB, Matrix.CreateScale(Homothétie));
+            maxHB = Vector3.Transform(maxHB, Matrix.CreateScale(Homothétie));
+
+            minHB = Vector3.Transform(minHB, Matrix.CreateTranslation(VarPosition));
+            maxHB = Vector3.Transform(maxHB, Matrix.CreateTranslation(VarPosition));
+
+            //  minHB = new Vector3((float)Math.Round(minHB.X, 3), (float)Math.Round(minHB.Y, 3), (float)Math.Round(minHB.Z, 3));
+            //maxHB = new Vector3((float)Math.Round(maxHB.X, 3), (float)Math.Round(maxHB.Y, 3), (float)Math.Round(maxHB.Z, 3));
+
+            HitBoxGénérale = new BoundingBox(minHB, maxHB);
+
+
+
        }
       
 

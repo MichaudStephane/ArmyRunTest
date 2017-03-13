@@ -21,7 +21,7 @@ namespace AtelierXNA
       protected  int CompteurY { get; set; }
         float IntervalleAnimation { get; set; }
         float TempsDepuisDerniereAnimation { get; set; }
-
+        Vector2 DeltaImage { get; set; }
 
 
         public TuileTextureeAnime(Game jeu, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, Vector2 étendue, string nomTextureTuile,Vector2 descriptionImage, float intervalleMAJ)
@@ -38,7 +38,7 @@ namespace AtelierXNA
             
 
             base.Initialize();
-            Delta =new Vector2( 1f / DescriptionImage.X, 1f/DescriptionImage.Y);
+            DeltaImage = new Vector2( 1f / DescriptionImage.X, 1f/DescriptionImage.Y);
             TempsDepuisDerniereAnimation = 0;
             CompteurX = 0;
             CompteurY = 0;
@@ -81,16 +81,16 @@ namespace AtelierXNA
         protected override void CréerTableauPointsTexture()
         {
             // 0 1
-            PtsTexture[0, 0] = new Vector2(Delta.X * CompteurX, Delta.Y * (CompteurY + 1));
+            PtsTexture[0, 0] = new Vector2(DeltaImage.X * CompteurX, DeltaImage.Y * (CompteurY + 1));
 
             // 1  1
-            PtsTexture[1, 0] = new Vector2(Delta.X * (CompteurX + 1), Delta.Y * (CompteurY + 1));
+            PtsTexture[1, 0] = new Vector2(DeltaImage.X * (CompteurX + 1), DeltaImage.Y * (CompteurY + 1));
 
             // 0  0
-            PtsTexture[0, 1] = new Vector2(Delta.X * CompteurX, Delta.Y * CompteurY);
+            PtsTexture[0, 1] = new Vector2(DeltaImage.X * CompteurX, DeltaImage.Y * CompteurY);
 
             // 1 0
-            PtsTexture[1, 1] = new Vector2(Delta.X * (CompteurX + 1), Delta.Y * CompteurY);
+            PtsTexture[1, 1] = new Vector2(DeltaImage.X * (CompteurX + 1), DeltaImage.Y * CompteurY);
 
         }
 
