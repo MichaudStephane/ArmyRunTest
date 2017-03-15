@@ -37,7 +37,8 @@ namespace AtelierXNA
         public Vector3 Vitesse { get; set; }
         Vector3 Commande { get; set; }
         public bool EstSurTerrain { get; set; }
-
+        SoundEffect SonSaut { get; set; }
+        RessourcesManager<SoundEffect> GestionnaireDeSons { get; set; }
 
 
 
@@ -62,6 +63,9 @@ namespace AtelierXNA
           
             Intervalle_MAJ_Mouvement = INTERVALLE_DE_DEPART_STANDARD;
             TempsEcouleDepuisMajMouvement = 0;
+
+            GestionnaireDeSons = Game.Services.GetService(typeof(RessourcesManager<SoundEffect>)) as RessourcesManager<SoundEffect>;
+            SonSaut = GestionnaireDeSons.Find("Saut1");
 
             CreerHitbox();
            
@@ -139,6 +143,7 @@ namespace AtelierXNA
                      //   Position = new Vector3(Position.X, Position.Y + 1, Position.Z);
                         BougerHitbox();
                         AjouterVecteur(CONSTANTE_SAUT);
+                        SonSaut.Play(1f,0f,0f);
                     }
                 }
                 if (déplacementGaucheDroite != 0 || déplacementAvantArrière != 0)

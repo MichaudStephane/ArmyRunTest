@@ -25,8 +25,14 @@ namespace AtelierXNA
         GraphicsDeviceManager PériphériqueGraphique { get; set; }
         RessourcesManager<Texture2D> GestionnaireDeTextures { get; set; }
         RessourcesManager<Model> GestionnairesDeModele { get; set; }
+        RessourcesManager<Song> GestionnaireDeMusiques { get; set; }
+        RessourcesManager<SoundEffect> GestionnaireDeSons { get; set; }
+
         GraphicsDeviceManager graphics;
         ContentManager content;
+
+        Song ChansonJeu { get; set; }
+        SoundEffect SonJeu { get; set; }
 
         public Atelier()
         {
@@ -67,6 +73,14 @@ namespace AtelierXNA
             Components.Add(CaméraJeu);
             Services.AddService(typeof(RessourcesManager<SpriteFont>), new RessourcesManager<SpriteFont>(this, "Fonts"));
             Services.AddService(typeof(Random), new Random());
+
+            Services.AddService(typeof(RessourcesManager<SoundEffect>), new RessourcesManager<SoundEffect>(this, "Sounds"));
+            GestionnaireDeSons = new RessourcesManager<SoundEffect>(this, "Sounds");
+
+            Services.AddService(typeof(RessourcesManager<Song>), new RessourcesManager<Song>(this, "Chansons"));
+            GestionnaireDeMusiques = new RessourcesManager<Song>(this, "Chansons");
+            ChansonJeu = GestionnaireDeMusiques.Find("Starboy");
+            MediaPlayer.Play(ChansonJeu);
 
             Services.AddService(typeof(InputManager), GestionInput);
             Services.AddService(typeof(RessourcesManager<Model>), GestionnairesDeModele);
