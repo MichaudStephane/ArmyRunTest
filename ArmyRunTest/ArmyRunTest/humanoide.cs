@@ -24,6 +24,7 @@ namespace AtelierXNA
              NomImage2 = nomImageFace;
              DescriptionImage2 = DescriptionImageDevant;
          }
+        protected virtual void GererCollision() { }
         
 
     }
