@@ -14,7 +14,7 @@ namespace AtelierXNA
 {
    public class Soldat : Humanoide
     {
-        protected const float CONSTANTE_SAUT = 6000f;
+        const float CONSTANTE_SAUT = 6000f;
         const float CONSTANTE_GRAVITE = 9.81F;
         const float NB_PIXEL_DÉPLACEMENT = 10f;
         const float INTERVALLE_DE_DEPART_STANDARD = 1f/30;
@@ -160,7 +160,7 @@ namespace AtelierXNA
 
            
         }
-       void AjouterVecteur(float déplacementSaut)
+        void AjouterVecteur(float déplacementSaut)
         {
             Commande = new Vector3(Commande.X, déplacementSaut, Commande.Y);
         }
@@ -226,7 +226,7 @@ namespace AtelierXNA
         }
 
         //----A MODIFIER----
-        protected override void GererCollision()
+        protected  void GererCollision()
         {
 
             EstEnCollision = false; ;

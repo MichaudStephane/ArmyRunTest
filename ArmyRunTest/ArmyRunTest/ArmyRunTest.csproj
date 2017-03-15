@@ -106,6 +106,8 @@
     <Compile Include="SoldatDeArmée.cs" />
     <Compile Include="TerrainBasePlanIncline.cs" />
     <Compile Include="TerrainDeBase.cs" />
+    <Compile Include="TerrainDeBaseMobile.cs" />
+    <Compile Include="TerrainMobileSin.cs" />
     <Compile Include="Tuile.cs" />
     <Compile Include="TuileTextureeAnime.cs" />
     <Compile Include="TuileTexturée.cs" />
