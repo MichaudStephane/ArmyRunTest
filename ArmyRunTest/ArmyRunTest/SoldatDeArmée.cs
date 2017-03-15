@@ -15,11 +15,12 @@ namespace AtelierXNA
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class SoldatDeArmée : Soldat,ICollisionable
+    public class SoldatDeArmée : Soldat, ICollisionable
     {
         const int HAUTEUR_MINIMAL = -50;
         int NuméroSoldat { get; set; }
         GameComponent[][] ObjetCollisionné { get; set; }
+        int Compteur { get; set; }
 
 
 
@@ -33,13 +34,14 @@ namespace AtelierXNA
 
         public override void Initialize()
         {
+            Compteur = 0;
             base.Initialize();
         }
 
-        protected override void GererCollision()
-        {
+        //protected override void GererCollision()
+        //{
 
-        }
+        //}
 
         public override void Update(GameTime gameTime)
         {
@@ -56,31 +58,35 @@ namespace AtelierXNA
                 {
                     if ((ObjetCollisionné[i][j] as Soldat).EstSurTerrain)
                     {
-                        //(ObjetCollisionné[i][j] as Soldat); euhhhh ajouter la constante saut en Y
-
+                        VecteurResultantForce = new Vector3(VecteurResultantForce.X, VecteurResultantForce.Y + CONSTANTE_SAUT, VecteurResultantForce.Z);
                     }
-
                 }
             }
         }
 
         void MourrirChute()
         {
-                for (int i = 0; i < ObjetCollisionné.GetLength(0); i++)
+            for (int i = 0; i < ObjetCollisionné.GetLength(0); i++)
+            {
+                for (int j = 0; j < ObjetCollisionné.GetLength(1); j++)
                 {
-                    for (int j = 0; j < ObjetCollisionné.GetLength(1); j++)
+                    if ((ObjetCollisionné[i][j] as Soldat).Position.Y <= HAUTEUR_MINIMAL)
                     {
-                        if ((ObjetCollisionné[i][j] as Soldat).Position.Y <= HAUTEUR_MINIMAL)
-                        {
-                            Game.Components.Remove(ObjetCollisionné[i][j]);
-                        }
+                        Game.Components.Remove(ObjetCollisionné[i][j]);
                     }
                 }
-         }
+            }
+        }
+
         void AjouterVecteurDéplacement()
         {
 
         }
 
+        Vector3 GetPosition(int i) //méthode pour trouver la position d'un soldat de l'armé sans avoir a utiliser les double boucles à chaque fois
+        {
+            Vector3 v = Vector3.Zero;
+            return v;
         }
     }
+}
