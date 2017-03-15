@@ -15,15 +15,15 @@ namespace AtelierXNA
     public class TerrainDeBase : ObjetBase, ICollisionable
     {
         const int HOMOTHETHIE_STANDARD = 10;
-        Vector3 TAILLE_HITBOX_STANDARD = new Vector3(1,0.555f,0.785F);
-        Vector3 VECTOR_HAUT = new Vector3(0, 1, 0);
-        Vector3 VECTOR_BAS = new Vector3(0, -1, 0);
-        Vector3 VECTOR_GAUCHE = new Vector3(-1, 0, 0);
-        Vector3 VECTOR_DROITE = new Vector3(1, 0, 0);
-        Vector3 VECTOR_DEVANT = new Vector3(0, 0, 1);
-        Vector3 VECTOR_DERRIERE = new Vector3(0, 0, -1);
+       protected Vector3 TAILLE_HITBOX_STANDARD = new Vector3(1,0.555f,0.785F);
+       protected Vector3 VECTOR_HAUT = new Vector3(0, 1, 0);
+       protected Vector3 VECTOR_BAS = new Vector3(0, -1, 0);
+       protected Vector3 VECTOR_GAUCHE = new Vector3(-1, 0, 0);
+       protected Vector3 VECTOR_DROITE = new Vector3(1, 0, 0);
+       protected Vector3 VECTOR_DEVANT = new Vector3(0, 0, 1);
+       protected Vector3 VECTOR_DERRIERE = new Vector3(0, 0, -1);
 
-
+        //a faire friction pour terrain
 
         public TerrainDeBase(Game jeu, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, float intervalleMAJ, string nomModel) 
             : base(jeu, homothétieInitiale, rotationInitiale, positionInitiale, intervalleMAJ, nomModel)
@@ -100,7 +100,7 @@ namespace AtelierXNA
 
         }
 
-        void CréerHitboxGénérale()
+        protected void CréerHitboxGénérale()
         {
 
             Vector3 minHB = new Vector3(-0.5f * TAILLE_HITBOX_STANDARD.X, -0.1f * TAILLE_HITBOX_STANDARD.Y, -0.5F*TAILLE_HITBOX_STANDARD.Z);
@@ -109,8 +109,8 @@ namespace AtelierXNA
             minHB = Vector3.Transform(minHB, Matrix.CreateScale(Homothétie));
             maxHB = Vector3.Transform(maxHB, Matrix.CreateScale(Homothétie));
 
-            minHB = Vector3.Transform(minHB, Matrix.CreateTranslation(PositionInitiale));
-            maxHB = Vector3.Transform(maxHB, Matrix.CreateTranslation(PositionInitiale));
+            minHB = Vector3.Transform(minHB, Matrix.CreateTranslation(Position));
+            maxHB = Vector3.Transform(maxHB, Matrix.CreateTranslation(Position));
 
             minHB = new Vector3((float)Math.Round(minHB.X, 3), (float)Math.Round(minHB.Y, 3), (float)Math.Round(minHB.Z, 3));
             maxHB = new Vector3((float)Math.Round(maxHB.X, 3), (float)Math.Round(maxHB.Y, 3), (float)Math.Round(maxHB.Z, 3));

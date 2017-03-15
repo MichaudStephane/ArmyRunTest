@@ -226,7 +226,7 @@ namespace AtelierXNA
         }
 
         //----A MODIFIER----
-        void GererCollision()
+        protected  void GererCollision()
         {
 
             EstEnCollision = false; ;
