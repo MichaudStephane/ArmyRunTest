@@ -103,6 +103,7 @@
     <Compile Include="RessourceDeBase.cs" />
     <Compile Include="RessourcesManager.cs" />
     <Compile Include="Soldat.cs" />
+    <Compile Include="SoldatDeArmée.cs" />
     <Compile Include="TerrainBasePlanIncline.cs" />
     <Compile Include="TerrainDeBase.cs" />
     <Compile Include="Tuile.cs" />
