@@ -22,7 +22,7 @@ namespace AtelierXNA
         const float DENSITER_AIR =1.225F;  //KG/M CUBE
         const float DRAG_COEFFICIENT = 1.05F;
         const float NORMALE = (MASSE_SOLDAT_KG * 9.8f) ;
-        const float FROTTEMENT = 0.75F * NORMALE * INTERVALLE_CALCUL_PHYSIQUE ;
+        const float FROTTEMENT = 0.75F * NORMALE * INTERVALLE_CALCUL_PHYSIQUE*5 ;
         const float INTERVALLE_CALCUL_PHYSIQUE = 1f / 60;
         Vector3 VarPosition { get; set; }
         public BoundingBox HitBoxGénérale { get; protected set; }   
@@ -64,8 +64,6 @@ namespace AtelierXNA
             TempsEcouleDepuisMajMouvement = 0;
 
             CreerHitbox();
-           
-          
         }
         public override void Update(GameTime gameTime)
         {
@@ -76,8 +74,6 @@ namespace AtelierXNA
             TempsEcouleDepuisMajMouvement += (float)gameTime.ElapsedGameTime.TotalSeconds;
             TempsEcoulerDepuisMAJCalcul += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-
-
             if(TempsEcoulerDepuisMAJCalcul>=INTERVALLE_CALCUL_PHYSIQUE)
             {
                 CalculerForcesExercees();
@@ -86,19 +82,12 @@ namespace AtelierXNA
                 BougerHitbox();
                 TempsEcoulerDepuisMAJCalcul = 0;
             }
-
-
             if (TempsEcouleDepuisMajMouvement >= Intervalle_MAJ_Mouvement)
             {
-
-
                 Position = VarPosition;
                 CalculerMatriceMonde();
                 TempsEcouleDepuisMajMouvement = 0;            
             }
-           
-            
-
             GameWindow a =Game.Window;
             a.Title = "Vitesse:[ " + Math.Round(Vitesse.X, 2) + "   " + Math.Round(Vitesse.Y, 2) + "   " + Math.Round(Vitesse.Z, 2) + 
                 "] Position: [" + Math.Round(Position.X, 2) + "   " + Math.Round(Position.Y, 2) + "   " + Math.Round(Position.Z, 2) + "]"
@@ -110,11 +99,7 @@ namespace AtelierXNA
        //TEMPORAIRE
         protected override void GérerClavier()
         {
-
             /// POUR TESTER HITBOX SEULEUMENT SOLDAT DE LARMER NE SE CONTROLE PAS DIRECTEMENT
-
-
-
             float déplacementGaucheDroite = GérerTouche(Keys.D) - GérerTouche(Keys.A); //à inverser au besoin
             float déplacementAvantArrière = GérerTouche(Keys.S) - GérerTouche(Keys.W);
 
@@ -153,12 +138,8 @@ namespace AtelierXNA
         }
 
         void AjouterVecteur(float déplacementAvantArrière, float déplacementGaucheDroite)
-        {
-           
-
-            Commande = new Vector3(déplacementGaucheDroite, Commande.Y, déplacementAvantArrière);
-
-           
+        {     
+            Commande = new Vector3(déplacementGaucheDroite, Commande.Y, déplacementAvantArrière);          
         }
         void AjouterVecteur(float déplacementSaut)
         {
@@ -169,7 +150,10 @@ namespace AtelierXNA
          {
             return GestionInput.EstEnfoncée(k) ? NB_PIXEL_DÉPLACEMENT : 0;
         }
-
+       public void ModifierPosition(Vector3 NouvellePosition)
+        {
+            Position = NouvellePosition;
+        }
      /*  protected override void AnimerImage()
         {
             CompteurY++;
@@ -289,29 +273,17 @@ namespace AtelierXNA
 
        void CalculerForcesExercees()
        {
-           
-
-         
             VecteurResultantForce += Commande;
             Commande = Vector3.Zero;
             GererCollision();
-            int a = 1;
-
             if (!EstSurTerrain)
             {
                 VecteurResultantForce += Vector3.Multiply(VecteurGravité, MASSE_SOLDAT_KG);
             }
-
             GererFrottement();
-
-
        }
        void CalculerAcceleration()
        {
-           
-           
-           
-
            Vector3 accelerationPrecedente = Acceleration;
            Vector3 varPosition = Vector3.Multiply(Vitesse, INTERVALLE_CALCUL_PHYSIQUE) + Vector3.Multiply(Vector3.Multiply(accelerationPrecedente, 0.5f), (float)Math.Pow(INTERVALLE_CALCUL_PHYSIQUE, 2));
            VarPosition = new Vector3(VarPosition.X + varPosition.X, VarPosition.Y + varPosition.Y, VarPosition.Z + varPosition.Z);
@@ -335,10 +307,6 @@ namespace AtelierXNA
      
 
            BougerHitbox();
-         if(EstEnCollision==true)
-            {
-                int a = 1;
-            }
        }
 
 

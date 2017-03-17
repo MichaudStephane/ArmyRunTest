@@ -96,6 +96,8 @@ namespace AtelierXNA
         {
             CréerHitboxGénérale();
         }
+       protected abstract Vector3 DonnerVectorMouvement();
+      
 
     }
 }

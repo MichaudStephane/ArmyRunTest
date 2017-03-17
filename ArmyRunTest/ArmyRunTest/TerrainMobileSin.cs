@@ -17,7 +17,7 @@ namespace AtelierXNA
    
     {
         float Distance { get; set; }
-
+        int sens { get; set; }
 
 
         public TerrainMobileSin(Game jeu, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, float intervalleMAJ, string nomModel, string direction, float intervalleDeplacement, float distance) 
@@ -33,11 +33,18 @@ namespace AtelierXNA
 
         protected override void BougerTerrain(GameTime gameTime)
         {
-
+            Vector3 PositionPrecedente = Position;
 
             Position = PositionInitiale + (float)Math.Sin(gameTime.TotalGameTime.TotalSeconds)*Distance*Direction;
            
         }
+
+        protected override Vector3 DonnerVectorMouvement()
+        {
+            return Vector3.Zero;
+        }
+
+       
 
     }
 }
