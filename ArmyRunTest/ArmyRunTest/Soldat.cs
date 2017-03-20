@@ -240,7 +240,7 @@ namespace AtelierXNA
             if(V!=VecteurResultantForce)
             {
                 EstEnCollision = true;
-                EstSurTerrain = true;
+              //  EstSurTerrain = true;
             }
             int a = 1;
         }
