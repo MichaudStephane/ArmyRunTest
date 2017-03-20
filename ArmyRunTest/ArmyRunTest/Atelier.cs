@@ -27,6 +27,7 @@ namespace AtelierXNA
         RessourcesManager<Model> GestionnairesDeModele { get; set; }
         RessourcesManager<Song> GestionnaireDeMusiques { get; set; }
         RessourcesManager<SoundEffect> GestionnaireDeSons { get; set; }
+        Soldat[][] ObjetCollisionné { get; set; }
 
         GraphicsDeviceManager graphics;
         ContentManager content;
@@ -50,8 +51,6 @@ namespace AtelierXNA
            // PériphériqueGraphique.PreferredBackBufferHeight = 1080;
           //  PériphériqueGraphique.PreferMultiSampling = false;
            // PériphériqueGraphique.IsFullScreen = true;
-            
-;
         }
 
   
@@ -69,7 +68,7 @@ namespace AtelierXNA
             GestionInput = new InputManager(this);
             Components.Add(GestionInput);
             CaméraJeu = new CaméraSubjective(this, positionCaméra, positionDragon, Vector3.Up, INTERVALLE_STANDARD);
-            
+            ObjetCollisionné = new Soldat[3][];
             Components.Add(CaméraJeu);
             Services.AddService(typeof(RessourcesManager<SpriteFont>), new RessourcesManager<SpriteFont>(this, "Fonts"));
             Services.AddService(typeof(Random), new Random());
@@ -92,12 +91,15 @@ namespace AtelierXNA
 
            
             Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, 0), INTERVALLE_STANDARD, "stefpath"));
-          
-            Components.Add(new TerrainMobileSin(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -8), INTERVALLE_STANDARD, "stefpath", "Devant", 1f / 60, 5));
-           
+            //Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -7), INTERVALLE_STANDARD, "stefpath"));
+            //Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -14), INTERVALLE_STANDARD, "stefpath"));
+            //Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(-3, 3, -15), INTERVALLE_STANDARD, "stefpath"));
 
-          //Components.Add(new Ventilateur(this, 1, new Vector3(0, 0, 0), new Vector3(-7, 3, 0), INTERVALLE_STANDARD, "stefpath"));
-          //Components.Add(new HéliceVentilateur(this, 1, new Vector3(0, 0, 0), new Vector3(-7, 3, 0), INTERVALLE_STANDARD, "stefpath"));
+            //Components.Add(new TerrainMobileSin(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, -8), INTERVALLE_STANDARD, "stefpath", "Devant", 1f / 60, 5));
+
+
+            //Components.Add(new Ventilateur(this, 1, new Vector3(0, 0, 0), new Vector3(-7, 3, 0), INTERVALLE_STANDARD, "stefpath"));
+            //Components.Add(new HéliceVentilateur(this, 1, new Vector3(0, 0, 0), new Vector3(-7, 3, 0), INTERVALLE_STANDARD, "stefpath"));
 
             //List<Humanoide> Soldats = new List<Humanoide>();
             //Soldats.Add(new Soldat(this, 1f, Vector3.Zero, new Vector3(-1, 10, -1), new Vector2(1, 2), "LoupGarou", "LoupGarou", new Vector2(4, 4), new Vector2(4, 4), 1f / 30));
@@ -108,10 +110,18 @@ namespace AtelierXNA
             //Soldats.Add(new Soldat(this, 1f, Vector3.Zero, new Vector3(-1, 10, 0), new Vector2(1, 2), "LoupGarou", "LoupGarou", new Vector2(4, 4), new Vector2(4, 4), 1f / 30));
             //Soldats.Add(new Soldat(this, 1f, Vector3.Zero, new Vector3(0, 50, 0), new Vector2(2, 2), "LoupGarou", "LoupGarou", new Vector2(4, 4), new Vector2(4, 4), 1f / 30));
             //Components.Add(new Armée(this,Soldats,Soldats.Count,INTERVALLE_STANDARD));
-
-         //   Components.Add(new Soldat(this, 1f, Vector3.Zero, new Vector3(-1, 10, -1), new Vector2(1, 2), "LoupGarou", "LoupGarou", new Vector2(4, 4), new Vector2(4, 4), 1f / 30));
-          //  Components.Add(new Soldat(this, 1f, Vector3.Zero, new Vector3(1, 10, -1), new Vector2(1, 2), "LoupGarou", "LoupGarou", new Vector2(4, 4), new Vector2(4, 4), 1f / 30));
-            Components.Add(new Soldat(this, 1f, Vector3.Zero, new Vector3(0, 80, -1), new Vector2(1, 2), "LoupGarou", "LoupGarou", new Vector2(4, 4), new Vector2(4, 4), 1f / 30));
+            //for (int i = 0; i < ObjetCollisionné.GetLength(0); i++)
+            //{
+            //    ObjetCollisionné[i] = new Soldat[0];
+            //    for (int j = 0; j <= 0; j++)
+            //    {
+            //        ObjetCollisionné[i][j] = new Soldat(this, 1f, Vector3.Zero, new Vector3(i-1, 40, -1), new Vector2(1, 2), "LoupGarou", "LoupGarou", new Vector2(4, 4), new Vector2(4, 4), 1f / 30);
+            //    }
+            //}
+            //Components.Add(new SoldatDeArmée(this,0,Vector3.Zero,new Vector3(0,0,0),new Vector2(1,2),"LoupGarou", "LoupGarou",new Vector2(4,4),new Vector2(4, 4),INTERVALLE_STANDARD,)
+            Components.Add(new Soldat(this, 1f, Vector3.Zero, new Vector3(-1, 40, -1), new Vector2(1, 2), "LoupGarou", "LoupGarou", new Vector2(4, 4), new Vector2(4, 4), 1f / 30));
+            Components.Add(new Soldat(this, 1f, Vector3.Zero, new Vector3(1, 40, -1), new Vector2(1, 2), "LoupGarou", "LoupGarou", new Vector2(4, 4), new Vector2(4, 4), 1f / 30));
+            Components.Add(new Soldat(this, 1f, Vector3.Zero, new Vector3(0, 40, -1), new Vector2(1, 2), "LoupGarou", "LoupGarou", new Vector2(4, 4), new Vector2(4, 4), 1f / 30));
 
             //Components.Add(new Soldat(this, 1f, Vector3.Zero, new Vector3(1, 10, 0), new Vector2(1, 2), "LoupGarou", "LoupGarou", new Vector2(4, 4), new Vector2(4, 4), 1f / 30));
             //Components.Add(new Soldat(this, 1f, Vector3.Zero, new Vector3(-1, 10, 0), new Vector2(1, 2), "LoupGarou", "LoupGarou", new Vector2(4, 4), new Vector2(4, 4), 1f / 30));
