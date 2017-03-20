@@ -14,7 +14,7 @@ namespace AtelierXNA
 {
     public class TerrainBasePlanIncline: PrimitiveDeBaseAnimée,ICollisionable
     {
-        const float HAUTEUR = 0.785f; 
+        const float ValeurZ = 0.785f; 
         Color Couleur { get; set; }
         VertexPositionColor[] Sommets1 { get; set; }
         VertexPositionColor[] Sommets2 { get; set; }
@@ -78,7 +78,7 @@ namespace AtelierXNA
 
         void CalculerPente(double val)
         {
-            Pente = ((float)val - Origine.Y / (HAUTEUR - Origine.Z));
+            Pente = ((float)val - Origine.Y / (ValeurZ - Origine.Z));
         }
 
         double CréerNombreAléatoire()
@@ -86,10 +86,10 @@ namespace AtelierXNA
             NombreAléatoire = new Random();
             return NombreAléatoire.NextDouble();
         }
-
+         
         void CalculerDimension(double val)
         {
-            Dimension = new Vector3(1,(float)val+Origine.Y,HAUTEUR);
+            Dimension = new Vector3(1,(float)val+Origine.Y, ValeurZ);
         }
         float CalculerHauteur(float nb)
         {
