@@ -26,7 +26,6 @@ namespace AtelierXNA
             : base(jeu,homothétieInitiale,rotationInitiale,positionInitiale,intervalleMAJ,nomModel)
         {
             PlacerHélice();
-            // TODO: Construct any child components here
         }
 
         /// <summary>

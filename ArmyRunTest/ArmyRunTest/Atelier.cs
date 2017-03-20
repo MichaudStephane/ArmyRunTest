@@ -117,6 +117,7 @@ namespace AtelierXNA
             //Components.Add(new Soldat(this, 1f, Vector3.Zero, new Vector3(-1, 10, 0), new Vector2(1, 2), "LoupGarou", "LoupGarou", new Vector2(4, 4), new Vector2(4, 4), 1f / 30));
             //Components.Add(new Soldat(this, 1f, Vector3.Zero, new Vector3(0, 50, 0), new Vector2(2, 2), "LoupGarou", "LoupGarou", new Vector2(4, 4), new Vector2(4, 4), 1f / 30));
 
+
             Components.Add(new Afficheur3D(this));
             Services.AddService(typeof(RessourcesManager<Texture2D>), GestionnaireDeTextures);
 
