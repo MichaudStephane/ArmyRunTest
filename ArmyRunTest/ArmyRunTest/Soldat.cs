@@ -14,17 +14,17 @@ namespace AtelierXNA
 {
    public class Soldat : Humanoide
     {
-        public const float CONSTANTE_SAUT = 6000f;
+        public const float CONSTANTE_SAUT = 22000f;
         const float CONSTANTE_GRAVITE = 9.81F;
-        const float NB_PIXEL_DÉPLACEMENT = 10f;
+        const float NB_PIXEL_DÉPLACEMENT = 100f;
         const float INTERVALLE_DE_DEPART_STANDARD = 1f/30;
-        const float MASSE_SOLDAT_KG = 10;
+        const float MASSE_SOLDAT_KG = 40;
         const float DENSITER_AIR =1.225F;  //KG/M CUBE
-        const float DRAG_COEFFICIENT = 1.05F;
+        const float DRAG_COEFFICIENT = 100.05F;
         const float NORMALE = (MASSE_SOLDAT_KG * 9.8f) ;
         const float FROTTEMENT = 0.75F * NORMALE * INTERVALLE_CALCUL_PHYSIQUE*5 ;
         const float INTERVALLE_CALCUL_PHYSIQUE = 1f / 60;
-        Vector3 VarPosition { get; set; }
+        public Vector3 VarPosition { get; protected set; }
         public BoundingBox HitBoxGénérale { get; protected set; }   
         Vector3 VecteurGravité { get; set; }
         Vector3 AnciennePosition { get; set; }
@@ -157,7 +157,7 @@ namespace AtelierXNA
         }
        public void ModifierPosition(Vector3 NouvellePosition)
         {
-            Position = NouvellePosition;
+            VarPosition = NouvellePosition;
         }
      /*  protected override void AnimerImage()
         {
@@ -209,9 +209,28 @@ namespace AtelierXNA
 
             //frottement air
             Vector3 vitesseCal = Vitesse;
+
             Vector3 fAir = Vector3.Multiply(Vector3.Multiply(vitesseCal, vitesseCal), 0.010f*2*0.5f * DENSITER_AIR * DRAG_COEFFICIENT);
 
             VecteurResultantForce += fAir;
+
+            AjusterVitesse();
+        }
+        void AjusterVitesse()
+        {
+            if(Math.Abs(VecteurResultantForce.X) <= 0.15)
+            {
+                Vitesse = new Vector3(0, Vitesse.Y, Vitesse.Z);
+                //VecteurResultantForce=new Vector3(0, VecteurResultantForce.Y, VecteurResultantForce.Z);
+                Acceleration = new Vector3(0, Acceleration.Y, Acceleration.Z);
+            }
+        
+            if (Math.Abs(VecteurResultantForce.Z) <= 0.15)
+            {
+                Vitesse = new Vector3(Vitesse.X, Vitesse.Y, 0);
+                //VecteurResultantForce = new Vector3(VecteurResultantForce.X, VecteurResultantForce.Y, 0);
+                //Acceleration = new Vector3(Acceleration.X, Acceleration.Y, 0);
+            }
         }
 
         //----A MODIFIER----
@@ -313,6 +332,10 @@ namespace AtelierXNA
 
            BougerHitbox();
        }
+       public void ModifierVecteruForces(Vector3 vecteurAAjouté)
+        {
+            VecteurResultantForce += vecteurAAjouté;
+        }
 
 
        void ModifierIntervalle()

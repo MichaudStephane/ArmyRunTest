@@ -69,6 +69,9 @@ namespace AtelierXNA
                 (a as Soldat).Vitesse += new Vector3(v.X * Math.Abs(vitesseTemp.X), v.Y * Math.Abs(vitesseTemp.Y), v.Z * Math.Abs(vitesseTemp.Z));
                 //  v = new Vector3(v.X * forceTemp.X, v.Y * forceTemp.Y, v.Z * forceTemp.Z);
                 GarderHorsBornes((a as Soldat),v);
+
+                SuivreTerrain(a as Soldat);
+
             }
             return -v;
         }
@@ -125,6 +128,10 @@ namespace AtelierXNA
 
             HitBoxGénérale = new BoundingBox(minHB,maxHB);
             
+        }
+      protected  virtual void SuivreTerrain(Soldat a)
+        {
+
         }
 
     }
