@@ -16,7 +16,7 @@ namespace AtelierXNA
     {
         public const float CONSTANTE_SAUT = 6000f;
         const float CONSTANTE_GRAVITE = 9.81F;
-        const float NB_PIXEL_DÉPLACEMENT = 10f;
+        protected const float NB_PIXEL_DÉPLACEMENT = 10f;
         const float INTERVALLE_DE_DEPART_STANDARD = 1f/30;
         const float MASSE_SOLDAT_KG = 10;
         const float DENSITER_AIR =1.225F;  //KG/M CUBE
@@ -35,7 +35,7 @@ namespace AtelierXNA
         public Vector3 VecteurResultantForce { get; protected set; }
         Vector3 Acceleration { get; set; }
         public Vector3 Vitesse { get; set; }
-        Vector3 Commande { get; set; }
+        protected Vector3 Commande { get; set; }
         public bool EstSurTerrain { get; set; }
         SoundEffect SonSaut { get; set; }
         RessourcesManager<SoundEffect> GestionnaireDeSons { get; set; }
