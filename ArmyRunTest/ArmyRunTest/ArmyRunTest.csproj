@@ -102,6 +102,9 @@
     <Compile Include="Atelier.cs" />
     <Compile Include="RessourceDeBase.cs" />
     <Compile Include="RessourcesManager.cs" />
+    <Compile Include="SectionDeNiveau.cs" />
+    <Compile Include="SectionHache.cs" />
+    <Compile Include="SectionVentilateur.cs" />
     <Compile Include="Soldat.cs" />
     <Compile Include="SoldatDeArmée.cs" />
     <Compile Include="TerrainBasePlanIncline.cs" />
