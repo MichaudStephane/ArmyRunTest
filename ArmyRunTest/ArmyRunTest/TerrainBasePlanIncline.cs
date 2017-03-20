@@ -86,7 +86,7 @@ namespace AtelierXNA
             Pente = 1;
         }
 
-        float CréerNombreAléatoire()
+        float CréerNombreAléatoire() 
         {
             NombreAléatoire = new Random();
             return (float)NombreAléatoire.Next(10,30)/20;

@@ -65,7 +65,7 @@ namespace AtelierXNA
             TempsEcouleDepuisMajMouvement = 0;
 
             GestionnaireDeSons = Game.Services.GetService(typeof(RessourcesManager<SoundEffect>)) as RessourcesManager<SoundEffect>;
-            SonSaut = GestionnaireDeSons.Find("Saut1");
+            SonSaut = GestionnaireDeSons.Find("Saut");
 
             CreerHitbox();
         }
