@@ -14,7 +14,7 @@ namespace AtelierXNA
 {
    public class Soldat : Humanoide
     {
-        const float CONSTANTE_SAUT = 6000f;
+        public const float CONSTANTE_SAUT = 6000f;
         const float CONSTANTE_GRAVITE = 9.81F;
         const float NB_PIXEL_DÉPLACEMENT = 10f;
         const float INTERVALLE_DE_DEPART_STANDARD = 1f/30;
@@ -22,7 +22,7 @@ namespace AtelierXNA
         const float DENSITER_AIR =1.225F;  //KG/M CUBE
         const float DRAG_COEFFICIENT = 1.05F;
         const float NORMALE = (MASSE_SOLDAT_KG * 9.8f) ;
-        const float FROTTEMENT = 0.75F * NORMALE * INTERVALLE_CALCUL_PHYSIQUE ;
+        const float FROTTEMENT = 0.75F * NORMALE * INTERVALLE_CALCUL_PHYSIQUE*5 ;
         const float INTERVALLE_CALCUL_PHYSIQUE = 1f / 60;
         Vector3 VarPosition { get; set; }
         public BoundingBox HitBoxGénérale { get; protected set; }   
@@ -37,7 +37,8 @@ namespace AtelierXNA
         public Vector3 Vitesse { get; set; }
         Vector3 Commande { get; set; }
         public bool EstSurTerrain { get; set; }
-
+        SoundEffect SonSaut { get; set; }
+        RessourcesManager<SoundEffect> GestionnaireDeSons { get; set; }
 
 
 
@@ -63,9 +64,10 @@ namespace AtelierXNA
             Intervalle_MAJ_Mouvement = INTERVALLE_DE_DEPART_STANDARD;
             TempsEcouleDepuisMajMouvement = 0;
 
+            GestionnaireDeSons = Game.Services.GetService(typeof(RessourcesManager<SoundEffect>)) as RessourcesManager<SoundEffect>;
+            SonSaut = GestionnaireDeSons.Find("Saut1");
+
             CreerHitbox();
-           
-          
         }
         public override void Update(GameTime gameTime)
         {
@@ -76,8 +78,6 @@ namespace AtelierXNA
             TempsEcouleDepuisMajMouvement += (float)gameTime.ElapsedGameTime.TotalSeconds;
             TempsEcoulerDepuisMAJCalcul += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-
-
             if(TempsEcoulerDepuisMAJCalcul>=INTERVALLE_CALCUL_PHYSIQUE)
             {
                 CalculerForcesExercees();
@@ -86,19 +86,12 @@ namespace AtelierXNA
                 BougerHitbox();
                 TempsEcoulerDepuisMAJCalcul = 0;
             }
-
-
             if (TempsEcouleDepuisMajMouvement >= Intervalle_MAJ_Mouvement)
             {
-
-
                 Position = VarPosition;
                 CalculerMatriceMonde();
                 TempsEcouleDepuisMajMouvement = 0;            
             }
-           
-            
-
             GameWindow a =Game.Window;
             a.Title = "Vitesse:[ " + Math.Round(Vitesse.X, 2) + "   " + Math.Round(Vitesse.Y, 2) + "   " + Math.Round(Vitesse.Z, 2) + 
                 "] Position: [" + Math.Round(Position.X, 2) + "   " + Math.Round(Position.Y, 2) + "   " + Math.Round(Position.Z, 2) + "]"
@@ -110,11 +103,7 @@ namespace AtelierXNA
        //TEMPORAIRE
         protected override void GérerClavier()
         {
-
             /// POUR TESTER HITBOX SEULEUMENT SOLDAT DE LARMER NE SE CONTROLE PAS DIRECTEMENT
-
-
-
             float déplacementGaucheDroite = GérerTouche(Keys.D) - GérerTouche(Keys.A); //à inverser au besoin
             float déplacementAvantArrière = GérerTouche(Keys.S) - GérerTouche(Keys.W);
 
@@ -139,6 +128,7 @@ namespace AtelierXNA
                      //   Position = new Vector3(Position.X, Position.Y + 1, Position.Z);
                         BougerHitbox();
                         AjouterVecteur(CONSTANTE_SAUT);
+                        SonSaut.Play(1f,0f,0f);
                     }
                 }
                 if (déplacementGaucheDroite != 0 || déplacementAvantArrière != 0)
@@ -153,12 +143,8 @@ namespace AtelierXNA
         }
 
         void AjouterVecteur(float déplacementAvantArrière, float déplacementGaucheDroite)
-        {
-           
-
-            Commande = new Vector3(déplacementGaucheDroite, Commande.Y, déplacementAvantArrière);
-
-           
+        {     
+            Commande = new Vector3(déplacementGaucheDroite, Commande.Y, déplacementAvantArrière);          
         }
         void AjouterVecteur(float déplacementSaut)
         {
@@ -169,7 +155,10 @@ namespace AtelierXNA
          {
             return GestionInput.EstEnfoncée(k) ? NB_PIXEL_DÉPLACEMENT : 0;
         }
-
+       public void ModifierPosition(Vector3 NouvellePosition)
+        {
+            Position = NouvellePosition;
+        }
      /*  protected override void AnimerImage()
         {
             CompteurY++;
@@ -226,7 +215,7 @@ namespace AtelierXNA
         }
 
         //----A MODIFIER----
-        void GererCollision()
+        protected  void GererCollision()
         {
 
             EstEnCollision = false; ;
@@ -266,39 +255,40 @@ namespace AtelierXNA
         }
        void BougerHitbox()
        {
-           Vector3 diff =Position- HitBoxGénérale.Min +Vector3.Multiply((HitBoxGénérale.Max - HitBoxGénérale.Min),0.5f);
 
-           HitBoxGénérale = new BoundingBox(HitBoxGénérale.Min + diff, HitBoxGénérale.Max + diff);
 
-           
+            Vector3 minHB = new Vector3(-0.5f * Delta.X, -0.4f * Delta.Y, -0.1f);
+            Vector3 maxHB = new Vector3(0.5f * Delta.X, 0.5f * Delta.Y, 0.1f);
+
+            minHB = Vector3.Transform(minHB, Matrix.CreateScale(Homothétie));
+            maxHB = Vector3.Transform(maxHB, Matrix.CreateScale(Homothétie));
+
+            minHB = Vector3.Transform(minHB, Matrix.CreateTranslation(VarPosition));
+            maxHB = Vector3.Transform(maxHB, Matrix.CreateTranslation(VarPosition));
+
+            //  minHB = new Vector3((float)Math.Round(minHB.X, 3), (float)Math.Round(minHB.Y, 3), (float)Math.Round(minHB.Z, 3));
+            //maxHB = new Vector3((float)Math.Round(maxHB.X, 3), (float)Math.Round(maxHB.Y, 3), (float)Math.Round(maxHB.Z, 3));
+
+            HitBoxGénérale = new BoundingBox(minHB, maxHB);
+
+
+
        }
       
 
        void CalculerForcesExercees()
        {
-           
-
-         
             VecteurResultantForce += Commande;
             Commande = Vector3.Zero;
             GererCollision();
-            int a = 1;
-
             if (!EstSurTerrain)
             {
                 VecteurResultantForce += Vector3.Multiply(VecteurGravité, MASSE_SOLDAT_KG);
             }
-
             GererFrottement();
-
-
        }
        void CalculerAcceleration()
        {
-           
-           
-           
-
            Vector3 accelerationPrecedente = Acceleration;
            Vector3 varPosition = Vector3.Multiply(Vitesse, INTERVALLE_CALCUL_PHYSIQUE) + Vector3.Multiply(Vector3.Multiply(accelerationPrecedente, 0.5f), (float)Math.Pow(INTERVALLE_CALCUL_PHYSIQUE, 2));
            VarPosition = new Vector3(VarPosition.X + varPosition.X, VarPosition.Y + varPosition.Y, VarPosition.Z + varPosition.Z);
@@ -322,10 +312,6 @@ namespace AtelierXNA
      
 
            BougerHitbox();
-         if(EstEnCollision==true)
-            {
-                int a = 1;
-            }
        }
 
 

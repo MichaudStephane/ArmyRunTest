@@ -14,7 +14,7 @@ namespace AtelierXNA
 {
     public class TerrainBasePlanIncline: PrimitiveDeBaseAnimée,ICollisionable
     {
-        const float ValeurZ = 0.785f; 
+        const float HAUTEUR = 0.785f; 
         Color Couleur { get; set; }
         VertexPositionColor[] Sommets1 { get; set; }
         VertexPositionColor[] Sommets2 { get; set; }
@@ -24,8 +24,9 @@ namespace AtelierXNA
         BasicEffect EffetDeBase { get; set; }
         RasterizerState NouveauJeuRasterizerState { get; set; }
         Random NombreAléatoire { get; set; }
-        BoundingBox HitBoxPlanIncliné { get; set; }
+        BoundingSphere HitBoxPlanIncliné { get; set; }
         float Pente { get; set; }
+        float homothétie { get; set; }
 
 
         public TerrainBasePlanIncline(Game jeu, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,Color couleur, float intervalleMAJ)
@@ -33,13 +34,14 @@ namespace AtelierXNA
         {
             Origine = positionInitiale;
             Couleur = couleur;
+            homothétie = homothétieInitiale;
             NouveauJeuRasterizerState = new RasterizerState();
             NouveauJeuRasterizerState.CullMode = CullMode.None;
         }
 
         public override void Initialize()
         {
-            double nombre = CréerNombreAléatoire();
+            float nombre = CréerNombreAléatoire();
             if(nombre == 0)
             {
                 nombre = CréerNombreAléatoire();
@@ -56,7 +58,7 @@ namespace AtelierXNA
 
         void InitialiserHitBoxPlanIncliné()
         {
-            HitBoxPlanIncliné = new BoundingBox((new Vector3(Origine.X - (10*Dimension.X), Origine.Y - (10*Dimension.Y), Origine.Z -(10* Dimension.Z))),Origine);
+            HitBoxPlanIncliné = new BoundingSphere(Position, 30);
         }
 
         public Vector3 DonnerVectorCollision(PrimitiveDeBaseAnimée a)
@@ -65,10 +67,12 @@ namespace AtelierXNA
            
             if (HitBoxPlanIncliné.Intersects((a as Soldat).HitBoxGénérale))
             {
-                if ((a as Soldat).HitBoxGénérale.Min.Y <= CalculerHauteur((a as Soldat).HitBoxGénérale.Max.Z))
+                if ((a as Soldat).HitBoxGénérale.Min.Y <= CalculerHauteur((a as Soldat).Position.Z ))
                 {
-                    (a as Soldat).EstSurTerrain = true;
-                    float angle = (float)Math.Atan(Dimension.Y / Dimension.Z);
+
+            (a as Soldat).EstSurTerrain = true;
+                    (a as Soldat).EstEnCollision = true;
+                   // float angle = (float)Math.Atan(Dimension.Y / Dimension.Z);
                     v = new Vector3((a as Soldat).VecteurResultantForce.X, -(a as Soldat).VecteurResultantForce.Y, (a as Soldat).VecteurResultantForce.Z); //(float)Math.Cos(angle) * 9.81f,-(a as Soldat).VecteurResultantForce.Y
                     (a as Soldat).Vitesse = new Vector3((a as Soldat).Vitesse.X, 0, (a as Soldat).Vitesse.Z);
                 }
@@ -76,24 +80,25 @@ namespace AtelierXNA
             return v;
         }
 
-        void CalculerPente(double val)
+        void CalculerPente(float val)
         {
-            Pente = ((float)val - Origine.Y / (ValeurZ - Origine.Z));
+            //Pente = val;
+            Pente = 1;
         }
 
-        double CréerNombreAléatoire()
+        float CréerNombreAléatoire()
         {
             NombreAléatoire = new Random();
-            return NombreAléatoire.NextDouble();
+            return (float)NombreAléatoire.Next(10,30)/20;
         }
-         
-        void CalculerDimension(double val)
+
+        void CalculerDimension(float val)
         {
-            Dimension = new Vector3(1,(float)val+Origine.Y, ValeurZ);
+            Dimension = new Vector3(1,HAUTEUR*val,HAUTEUR);
         }
         float CalculerHauteur(float nb)
         {
-            return Pente * nb +Origine.Y; //pt Z
+            return Pente * nb +3.5f; //pt Z
         }
 
         protected override void LoadContent()

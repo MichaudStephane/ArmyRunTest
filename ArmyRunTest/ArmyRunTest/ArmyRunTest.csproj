@@ -90,6 +90,7 @@
     <Compile Include="HachePendule.cs" />
     <Compile Include="HitBoxAngulaire.cs" />
     <Compile Include="Humanoide.cs" />
+    <Compile Include="HéliceVentilateur.cs" />
     <Compile Include="IBougeable.cs" />
     <Compile Include="ICollisionable.cs" />
     <Compile Include="InputManager.cs" />
@@ -102,11 +103,15 @@
     <Compile Include="RessourceDeBase.cs" />
     <Compile Include="RessourcesManager.cs" />
     <Compile Include="Soldat.cs" />
+    <Compile Include="SoldatDeArmée.cs" />
     <Compile Include="TerrainBasePlanIncline.cs" />
     <Compile Include="TerrainDeBase.cs" />
+    <Compile Include="TerrainDeBaseMobile.cs" />
+    <Compile Include="TerrainMobileSin.cs" />
     <Compile Include="Tuile.cs" />
     <Compile Include="TuileTextureeAnime.cs" />
     <Compile Include="TuileTexturée.cs" />
+    <Compile Include="Ventilateur.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
