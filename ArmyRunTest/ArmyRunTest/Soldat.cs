@@ -16,15 +16,15 @@ namespace AtelierXNA
     {
         public const float CONSTANTE_SAUT = 6000f;
         const float CONSTANTE_GRAVITE = 9.81F;
-        protected const float NB_PIXEL_DÉPLACEMENT = 10f;
+        protected const float NB_PIXEL_DÉPLACEMENT = 80f;
         const float INTERVALLE_DE_DEPART_STANDARD = 1f/30;
         const float MASSE_SOLDAT_KG = 10;
         const float DENSITER_AIR =1.225F;  //KG/M CUBE
-        const float DRAG_COEFFICIENT = 1.05F;
+        const float DRAG_COEFFICIENT = 40.05F;
         const float NORMALE = (MASSE_SOLDAT_KG * 9.8f) ;
         const float FROTTEMENT = 0.75F * NORMALE * INTERVALLE_CALCUL_PHYSIQUE*5 ;
         const float INTERVALLE_CALCUL_PHYSIQUE = 1f / 60;
-        Vector3 VarPosition { get; set; }
+       public Vector3 VarPosition { get; set; }
         public BoundingBox HitBoxGénérale { get; protected set; }   
         Vector3 VecteurGravité { get; set; }
         Vector3 AnciennePosition { get; set; }
@@ -35,6 +35,7 @@ namespace AtelierXNA
         public Vector3 VecteurResultantForce { get; protected set; }
         Vector3 Acceleration { get; set; }
         public Vector3 Vitesse { get; set; }
+      //  public Vector3 VitesseDutATerrain { get; set; }
         protected Vector3 Commande { get; set; }
         public bool EstSurTerrain { get; set; }
         SoundEffect SonSaut { get; set; }
@@ -157,7 +158,7 @@ namespace AtelierXNA
         }
        public void ModifierPosition(Vector3 NouvellePosition)
         {
-            Position = NouvellePosition;
+            VarPosition = NouvellePosition;
         }
      /*  protected override void AnimerImage()
         {

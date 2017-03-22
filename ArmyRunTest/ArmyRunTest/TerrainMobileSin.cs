@@ -17,8 +17,8 @@ namespace AtelierXNA
    
     {
         float Distance { get; set; }
-        int sens { get; set; }
         Vector3 DifferencePosition { get; set; }
+        Vector3 VitesseTerrain { get; set; }
 
 
         public TerrainMobileSin(Game jeu, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, float intervalleMAJ, string nomModel, string direction, float intervalleDeplacement, float distance) 
@@ -26,7 +26,7 @@ namespace AtelierXNA
         {
             Distance = distance;
             DifferencePosition = Vector3.Zero;
-            sens = 1;
+   
         }
 
         /// <summary>
@@ -42,8 +42,7 @@ namespace AtelierXNA
 
 
 
-            DifferencePosition = -PositionPrecedente + Position;
-           
+            DifferencePosition = -PositionPrecedente + Position;        
         }
 
         protected override Vector3 DonnerVectorMouvement()
@@ -52,7 +51,8 @@ namespace AtelierXNA
         }
         protected override void SuivreTerrain(Soldat a)
         {
-            a.ModifierPosition(a.VarPosition + DifferencePosition);
+           a.ModifierPosition(a.VarPosition + DifferencePosition);
+           
            
         }
 

@@ -95,6 +95,7 @@
     <Compile Include="ICollisionable.cs" />
     <Compile Include="InputManager.cs" />
     <Compile Include="ObjetBase.cs" />
+    <Compile Include="OmbreSoldat.cs" />
     <Compile Include="PrimitiveDeBase.cs" />
     <Compile Include="PrimitiveDeBaseAnimée.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
