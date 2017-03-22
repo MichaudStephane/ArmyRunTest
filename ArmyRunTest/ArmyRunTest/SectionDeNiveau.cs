@@ -17,6 +17,7 @@ namespace AtelierXNA
     /// </summary>
     public class SectionDeNiveau : Microsoft.Xna.Framework.GameComponent
     {
+        protected List<ObjetBase> ObjetCollisionables { get; set; }
         protected Game Jeu { get; set;}
         protected List<ObjetBase> PartiesDeSections { get; set; }
         protected Vector3 PositionInitiale { get; set; }

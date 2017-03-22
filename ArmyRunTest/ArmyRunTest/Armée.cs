@@ -21,17 +21,22 @@ namespace AtelierXNA
         float IntervalleMAJ { get; set; }
         int NombreSoldat { get; set; }
         Vector2 PosFlag { get; set; }
+        public float INTERVALLE_STANDARD { get; private set; }
+        bool test { get; set; }
+        
+
         Vector2 Espacement = new Vector2(1, 1); 
        
 
         public Armée(Game game, int nombreSoldats,Vector2 posFlag, float intervalleMAJ)
         :base(game)
         {
-           
             IntervalleMAJ = intervalleMAJ;
             NombreSoldat = nombreSoldats;
             PosFlag = posFlag;
-            Positions = new Vector2[3,3]; // pour l'instant
+            Positions = new Vector2[3,3]; // pour l'instant dépend du nbSoldats
+            test = true;
+            
         }
 
 
@@ -39,7 +44,12 @@ namespace AtelierXNA
         {
             float tempsÉcouléDepuisMAJ = (float)gameTime.ElapsedGameTime.TotalSeconds;
             TempsÉcoulé += tempsÉcouléDepuisMAJ;
-            if(TempsÉcoulé >= IntervalleMAJ)
+            if (test && gameTime.ElapsedGameTime.TotalSeconds >=2)
+            {
+                test = false;
+                CréerSoldats();
+            }
+            if (TempsÉcoulé >= IntervalleMAJ)
             {
                 OptimiserPosition();
                 TempsÉcoulé = 0;
@@ -95,13 +105,14 @@ namespace AtelierXNA
         }
         void CréerSoldats()
         {
-            for (int i = 0; i < Positions.GetLength(0); i++)
-            {
-                for (int j = 0; j < Positions.GetLength(1); j++)
-                {
-
-                }
-            }
+            Game.Components.Add(new Soldat(Game, 1, Vector3.Zero, new Vector3(- 1, 20, - 1), new Vector2(1, 2), "LoupGarou", "LoupGarou", new Vector2(4, 4), new Vector2(4, 4), INTERVALLE_STANDARD));
+            //for (int i = 0; i < Positions.GetLength(0); i++)
+            //{
+            //    for (int j = 0; j < Positions.GetLength(1); j++)
+            //    {
+            //        Game.Components.Add(new Soldat(Game, 0, Vector3.Zero, new Vector3(i-1, 20, j-1), new Vector2(1, 2), "LoupGarou", "LoupGarou", new Vector2(4, 4), new Vector2(4, 4), INTERVALLE_STANDARD));
+            //    }
+            //}
         }
     }
 }
