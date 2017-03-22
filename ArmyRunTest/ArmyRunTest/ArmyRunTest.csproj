@@ -104,6 +104,7 @@
     <Compile Include="RessourcesManager.cs" />
     <Compile Include="SectionDeNiveau.cs" />
     <Compile Include="SectionHache.cs" />
+    <Compile Include="SectionRepos.cs" />
     <Compile Include="SectionVentilateur.cs" />
     <Compile Include="Soldat.cs" />
     <Compile Include="SoldatDeArmée.cs" />

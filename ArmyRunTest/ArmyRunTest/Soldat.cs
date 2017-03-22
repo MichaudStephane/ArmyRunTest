@@ -16,15 +16,15 @@ namespace AtelierXNA
     {
         public const float CONSTANTE_SAUT = 6000f;
         const float CONSTANTE_GRAVITE = 9.81F;
-        protected const float NB_PIXEL_DÉPLACEMENT = 10f;
+        protected const float NB_PIXEL_DÉPLACEMENT = 100f;
         const float INTERVALLE_DE_DEPART_STANDARD = 1f/30;
         const float MASSE_SOLDAT_KG = 10;
         const float DENSITER_AIR =1.225F;  //KG/M CUBE
-        const float DRAG_COEFFICIENT = 1.05F;
+        const float DRAG_COEFFICIENT = 10.05F;
         const float NORMALE = (MASSE_SOLDAT_KG * 9.8f) ;
         const float FROTTEMENT = 0.75F * NORMALE * INTERVALLE_CALCUL_PHYSIQUE*5 ;
         const float INTERVALLE_CALCUL_PHYSIQUE = 1f / 60;
-        Vector3 VarPosition { get; set; }
+        public Vector3 VarPosition { get; set; }
         public BoundingBox HitBoxGénérale { get; protected set; }   
         Vector3 VecteurGravité { get; set; }
         Vector3 AnciennePosition { get; set; }
@@ -157,7 +157,7 @@ namespace AtelierXNA
         }
        public void ModifierPosition(Vector3 NouvellePosition)
         {
-            Position = NouvellePosition;
+            VarPosition = NouvellePosition;
         }
      /*  protected override void AnimerImage()
         {
@@ -286,7 +286,10 @@ namespace AtelierXNA
                 VecteurResultantForce += Vector3.Multiply(VecteurGravité, MASSE_SOLDAT_KG);
             }
             GererFrottement();
-       }
+            Vitesse = new Vector3((float)Math.Round(Vitesse.X, 2), (float)Math.Round(Vitesse.Y, 2), (float)Math.Round(Vitesse.Z, 2));
+            Acceleration = new Vector3((float)Math.Round(Acceleration.X, 2), (float)Math.Round(Acceleration.Y, 2), (float)Math.Round(Acceleration.Z, 2));
+            VecteurResultantForce = new Vector3((float)Math.Round(VecteurResultantForce.X, 2), (float)Math.Round(VecteurResultantForce.Y, 2), (float)Math.Round(VecteurResultantForce.Z, 2));
+        }
        void CalculerAcceleration()
        {
            Vector3 accelerationPrecedente = Acceleration;
