@@ -37,8 +37,8 @@ namespace AtelierXNA
             IntervalleMAJ = intervalleMAJ;
             NombreSoldat = nombreSoldats;
             PosFlag = posFlag;
-            Positions = new Vector3[5, 5]; // pour l'instant dépend du nbSoldats
-            Armés = new Soldat[5, 5];
+            Positions = new Vector3[(int)Math.Ceiling(Math.Sqrt(NombreSoldat)), (int)Math.Ceiling(Math.Sqrt(NombreSoldat))]; // pour l'instant dépend du nbSoldats
+            Armés = new Soldat[(int)Math.Ceiling(Math.Sqrt(NombreSoldat)), (int)Math.Ceiling(Math.Sqrt(NombreSoldat))];
             test = true;
 
         }
@@ -115,12 +115,18 @@ namespace AtelierXNA
 
         void CréerSoldats()
         {
-            for (int i = 0; i < Positions.GetLength(0); i++)
+            int soldatscréees = 0;
+            for (int i = 0; i < Positions.GetLength(0) ; i++)
             {
-                for (int j = 0; j < Positions.GetLength(1); j++)
+                for (int j = 0; j < Positions.GetLength(1) && soldatscréees < NombreSoldat; j++)
                 {
-                    Armés[i,j] = new Soldat(Game,0.7F,Vector3.Zero,Positions[i,j],new Vector2(1,2),"LoupGarou",string.Empty, new Vector2(4, 4), new Vector2(4, 4), 1f / 30);
-                    Game.Components.Add(Armés[i, j]);
+                    Armés[j,i] = new Soldat(Game,0.7F,Vector3.Zero,Positions[j,i],new Vector2(1,2),"LoupGarou",string.Empty, new Vector2(4, 4), new Vector2(4, 4), 1f / 30);
+                    Game.Components.Add(Armés[j, i]);
+                    soldatscréees++;
+                }
+                if(soldatscréees==NombreSoldat)
+                {
+                    break;
                 }
             }
 
