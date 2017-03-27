@@ -12,20 +12,33 @@ using Microsoft.Xna.Framework.Media;
 
 namespace AtelierXNA
 {
+
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class SectionDeNiveau : Microsoft.Xna.Framework.GameComponent
+    abstract class SectionDeNiveau : Microsoft.Xna.Framework.GameComponent
     {
+        protected const float TAILLE_TERRAIN_Z = 0.785F;
+        protected const float TAILLE_TERRAIN_X = 1F;
+
+        protected const int HOMOTHÉTIE_INITIALE_TERRAIN = 10;
+        protected const int HOMOTHÉTIE_INITIALE = 1;
+        protected const float INTERVAL_MAJ = 1 / 60F;
+        protected Vector3 ROTATION_INITIALE = new Vector3(0, 0, 0);
         protected List<ObjetBase> ObjetCollisionables { get; set; }
         protected Game Jeu { get; set;}
-        protected List<ObjetBase> PartiesDeSections { get; set; }
         protected Vector3 PositionInitiale { get; set; }
+        
+        protected BoundingSphere HitBoxSection { get; set; }
+        protected float TailleSectionNiveau { get; set; }
+
+
         public SectionDeNiveau(Game jeu,Vector3 positionInitiale ,string nomSection)
             : base(jeu)
         {
             PositionInitiale = positionInitiale;
             Jeu = jeu;
+            ObjetCollisionables = new List<ObjetBase>();
           //  DéterminerSection();
         }
 
@@ -44,6 +57,9 @@ namespace AtelierXNA
 
             base.Initialize();
         }
+
+        protected abstract void CréerHitboxSection();
+        
 
         /// <summary>
         /// Allows the game component to update itself.

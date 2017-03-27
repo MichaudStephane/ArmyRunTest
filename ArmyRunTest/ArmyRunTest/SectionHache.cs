@@ -17,12 +17,6 @@ namespace AtelierXNA
     /// </summary>
     public class SectionHache : SectionDeNiveau
     {
-        const float TAILLE_TERRAIN_Z = 0.785F;
-        const int HOMOTHÉTIE_INITIALE_TERRAIN = 10;
-        const int HOMOTHÉTIE_INITIALE = 1;
-        Vector3 ROTATION_INITIALE =new Vector3(0,0,0);
-        const float INTERVAL_MAJ = 1 / 60F;
-
         HachePendule Hache { get; set; }
 
         List<TerrainDeBase> ListeTerrains { get; set; }
@@ -48,7 +42,7 @@ namespace AtelierXNA
 
         private void CréerSection()
         {
-            Hache = new HachePendule(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN,Vector3.Zero, new Vector3(PositionInitiale.X, PositionInitiale.Y + 3.5f, PositionInitiale.Z + 7),INTERVAL_MAJ,"StefAxe");
+            Hache = new HachePendule(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN,Vector3.Zero, new Vector3(PositionInitiale.X, PositionInitiale.Y + 3.5f, PositionInitiale.Z + 7),INTERVAL_MAJ,"StefAxe",0);
             ListeTerrains.Add(new TerrainDeBase(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X, PositionInitiale.Y , PositionInitiale.Z), INTERVAL_MAJ, "stefpath"));
             ListeTerrains.Add(new TerrainDeBase(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X, PositionInitiale.Y, PositionInitiale.Z+TAILLE_TERRAIN_Z*HOMOTHÉTIE_INITIALE_TERRAIN), INTERVAL_MAJ, "stefpath"));
             ListeTerrains.Add(new TerrainDeBase(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X, PositionInitiale.Y, PositionInitiale.Z+TAILLE_TERRAIN_Z * HOMOTHÉTIE_INITIALE_TERRAIN*2), INTERVAL_MAJ, "stefpath"));
