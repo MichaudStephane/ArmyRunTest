@@ -69,7 +69,7 @@ namespace AtelierXNA
             for (int i = 0; i < ObjetCollisionné.GetLength(0); i++)
             {
                 for (int j = 0; j < ObjetCollisionné.GetLength(1); j++)
-                {
+                {   
                     if ((ObjetCollisionné[i][j] as Soldat).Position.Y <= HAUTEUR_MINIMAL)
                     {
                         Game.Components.Remove(ObjetCollisionné[i][j]);
@@ -80,7 +80,7 @@ namespace AtelierXNA
 
         void AjouterVecteurDéplacement()
         {
-
+            
         }
 
         Vector3 GetPosition(int i) //méthode pour trouver la position d'un soldat de l'armé sans avoir a utiliser les double boucles à chaque fois
