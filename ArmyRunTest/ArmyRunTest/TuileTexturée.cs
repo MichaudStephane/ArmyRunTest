@@ -62,6 +62,7 @@ namespace AtelierXNA
             EffetDeBase.TextureEnabled = true;
             EffetDeBase.Texture = textureTuile;
             GestionAlpha = BlendState.AlphaBlend;
+          
         }
 
         public override void Draw(GameTime gameTime)

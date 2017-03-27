@@ -86,6 +86,7 @@
     <Compile Include="ArrièrePlan.cs" />
     <Compile Include="CameraSubjective.cs" />
     <Compile Include="Caméra.cs" />
+    <Compile Include="CaméraAutomate.cs" />
     <Compile Include="CaméraFixe.cs" />
     <Compile Include="HachePendule.cs" />
     <Compile Include="HitBoxAngulaire.cs" />
