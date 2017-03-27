@@ -17,12 +17,6 @@ namespace AtelierXNA
     /// </summary>
     public class SectionRepos : SectionDeNiveau
     {
-        const float TAILLE_TERRAIN_Z = 0.785F;
-        const int HOMOTHÉTIE_INITIALE_TERRAIN = 10;
-        const int HOMOTHÉTIE_INITIALE = 1;
-        Vector3 ROTATION_INITIALE = new Vector3(0, 0, 0);
-        const float INTERVAL_MAJ = 1 / 60F;
-
         HachePendule Hache { get; set; }
 
         List<TerrainDeBase> ListeTerrains { get; set; }
