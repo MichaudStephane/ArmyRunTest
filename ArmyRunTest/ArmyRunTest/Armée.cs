@@ -13,59 +13,61 @@ using Microsoft.Xna.Framework.Media;
 
 namespace AtelierXNA
 {
-    class Armée: Microsoft.Xna.Framework.GameComponent
+    class Armée : Microsoft.Xna.Framework.GameComponent
     {
+
+        Vector2 DimensionCase = new Vector2(2, 2);
         List<Humanoide> Soldats { get; set; }
-        Vector2[,] Positions { get; set; }
+        Vector3[,] Positions { get; set; }
+        Soldat[,] Armés { get; set; }
         float TempsÉcoulé { get; set; }
         float IntervalleMAJ { get; set; }
         int NombreSoldat { get; set; }
-        Vector2 PosFlag { get; set; }
+        Vector3 PosFlag { get; set; }
         public float INTERVALLE_STANDARD { get; private set; }
         bool test { get; set; }
-        
+        GameComponent[][] ObjetCollisionné { get; set; }
 
-        Vector2 Espacement = new Vector2(1, 1); 
-       
+        Vector2 Espacement = new Vector2(1, 1);
 
-        public Armée(Game game, int nombreSoldats,Vector2 posFlag, float intervalleMAJ)
-        :base(game)
+
+        public Armée(Game game, int nombreSoldats, Vector3 posFlag, float intervalleMAJ)
+        : base(game)
         {
             IntervalleMAJ = intervalleMAJ;
             NombreSoldat = nombreSoldats;
             PosFlag = posFlag;
-            Positions = new Vector2[3,3]; // pour l'instant dépend du nbSoldats
+            Positions = new Vector3[5, 5]; // pour l'instant dépend du nbSoldats
+            Armés = new Soldat[5, 5];
             test = true;
-            
+
         }
-
-
+        public override void Initialize()
+        {
+        //    CréerPositionsSoldats();
+          //  CréerSoldats();
+            base.Initialize();
+        }
         public override void Update(GameTime gameTime)
         {
+
+            if(test)
+            {
+                CréerPositionsSoldats();
+                CréerSoldats();
+                test = false;
+            }
+          
+
+
             float tempsÉcouléDepuisMAJ = (float)gameTime.ElapsedGameTime.TotalSeconds;
             TempsÉcoulé += tempsÉcouléDepuisMAJ;
-            if (test && gameTime.ElapsedGameTime.TotalSeconds >=2)
-            {
-                test = false;
-                CréerSoldats();
-            }
+         
             if (TempsÉcoulé >= IntervalleMAJ)
             {
                 OptimiserPosition();
                 TempsÉcoulé = 0;
             }
-        }
-
-        public override void Initialize()
-        {
-            CréerPositionsSoldats();
-            CréerSoldats();
-
-            //foreach (Humanoide s in Soldats)
-            //{
-            //    Game.Components.Add(s as Soldat);
-            //}
-            base.Initialize();
         }
 
         void OptimiserPosition()
@@ -82,7 +84,7 @@ namespace AtelierXNA
         bool NbSoldatCarré()
         {
             bool EstCarré = false;
-            for (int i = 0; i >= 6; i++) 
+            for (int i = 0; i >= 6; i++)
             {
                 if (Math.Pow(i, 2) == NombreSoldat)
                 {
@@ -94,25 +96,36 @@ namespace AtelierXNA
 
         void CréerPositionsSoldats()
         {
+            int nbCases = NombreSoldat + Convert.ToInt32(NbSoldatPair());
+
+
             for (int i = 0; i < Positions.GetLength(0); i++)
             {
                 for (int j = 0; j < Positions.GetLength(1); j++)
                 {
-                    Positions[i, j] = new Vector2((((-Positions.GetLength(0) - 1) / 2) * Espacement.X + Espacement.X * i),
-                                                  (((-Positions.GetLength(1) - 1) / 2) * Espacement.Y + Espacement.Y * j));
+                    Positions[i, j] = new Vector3((PosFlag.X - DimensionCase.X / 2 * (Positions.GetLength(0) - 1) + DimensionCase.X / 2 * i), 5, PosFlag.Y - DimensionCase.Y / 2 * (Positions.GetLength(1) - 1) + DimensionCase.Y / 2 * j);
+
+
                 }
             }
+
+
+
         }
+
         void CréerSoldats()
         {
-            Game.Components.Add(new Soldat(Game, 1, Vector3.Zero, new Vector3(- 1, 20, - 1), new Vector2(1, 2), "LoupGarou", "LoupGarou", new Vector2(4, 4), new Vector2(4, 4), INTERVALLE_STANDARD));
-            //for (int i = 0; i < Positions.GetLength(0); i++)
-            //{
-            //    for (int j = 0; j < Positions.GetLength(1); j++)
-            //    {
-            //        Game.Components.Add(new Soldat(Game, 0, Vector3.Zero, new Vector3(i-1, 20, j-1), new Vector2(1, 2), "LoupGarou", "LoupGarou", new Vector2(4, 4), new Vector2(4, 4), INTERVALLE_STANDARD));
-            //    }
-            //}
+            for (int i = 0; i < Positions.GetLength(0); i++)
+            {
+                for (int j = 0; j < Positions.GetLength(1); j++)
+                {
+                    Armés[i,j] = new Soldat(Game,0.7F,Vector3.Zero,Positions[i,j],new Vector2(1,2),"LoupGarou",string.Empty, new Vector2(4, 4), new Vector2(4, 4), 1f / 30);
+                    Game.Components.Add(Armés[i, j]);
+                }
+            }
+
+
+
         }
     }
 }
