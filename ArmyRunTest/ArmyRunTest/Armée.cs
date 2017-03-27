@@ -27,19 +27,23 @@ namespace AtelierXNA
         public float INTERVALLE_STANDARD { get; private set; }
         bool test { get; set; }
         GameComponent[][] ObjetCollisionné { get; set; }
-
+        CaméraAutomate Caméra { get; set; }
         Vector2 Espacement = new Vector2(1, 1);
+        Vector3 AnciennePosition { get; set; }
+        Vector3 IntervalPosition { get; set; }
 
 
         public Armée(Game game, int nombreSoldats, Vector3 posFlag, float intervalleMAJ)
         : base(game)
         {
+            AnciennePosition = posFlag;
             IntervalleMAJ = intervalleMAJ;
             NombreSoldat = nombreSoldats;
             PosFlag = posFlag;
             Positions = new Vector3[5, 5]; // pour l'instant dépend du nbSoldats
             Armés = new Soldat[5, 5];
             test = true;
+            Caméra = Game.Services.GetService(typeof(Caméra)) as CaméraAutomate;
 
         }
         public override void Initialize()
@@ -62,12 +66,20 @@ namespace AtelierXNA
 
             float tempsÉcouléDepuisMAJ = (float)gameTime.ElapsedGameTime.TotalSeconds;
             TempsÉcoulé += tempsÉcouléDepuisMAJ;
-         
-            if (TempsÉcoulé >= IntervalleMAJ)
+            Vector3 Pos = new Vector3(Armés[0, 0].Position.X, Armés[0, 0].Position.Y, Armés[0, 0].Position.Z);
+
+            if (AnciennePosition != Pos)
+            {
+                IntervalPosition = Pos - AnciennePosition;
+                AnciennePosition = Pos;
+            }
+                if (TempsÉcoulé >= IntervalleMAJ)
             {
                 OptimiserPosition();
+                
                 TempsÉcoulé = 0;
             }
+            //ModifierPositionCaméra();
         }
 
         void OptimiserPosition()
@@ -123,9 +135,11 @@ namespace AtelierXNA
                     Game.Components.Add(Armés[i, j]);
                 }
             }
-
-
-
         }
+        //void ModifierPositionCaméra()
+        //{
+        //    Vector3 pos = new Vector3(Armés[0,0].Position.X, Armés[0, 0].Position.Y, Armés[0, 0].Position.Z);
+        //    Caméra.DéplacerCaméra(IntervalPosition);
+        //}
     }
 }
