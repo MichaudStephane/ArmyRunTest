@@ -24,7 +24,7 @@ namespace AtelierXNA
         const float NORMALE = (MASSE_SOLDAT_KG * 9.8f) ;
         const float FROTTEMENT = 0.75F * NORMALE * INTERVALLE_CALCUL_PHYSIQUE*5 ;
         const float INTERVALLE_CALCUL_PHYSIQUE = 1f / 60;
-       public Vector3 VarPosition { get; set; }
+        public Vector3 VarPosition { get; set; }
         public BoundingBox HitBoxGénérale { get; protected set; }   
         Vector3 VecteurGravité { get; set; }
         Vector3 AnciennePosition { get; set; }
@@ -40,14 +40,14 @@ namespace AtelierXNA
         public bool EstSurTerrain { get; set; }
         SoundEffect SonSaut { get; set; }
         RessourcesManager<SoundEffect> GestionnaireDeSons { get; set; }
-
+        CaméraAutomate Caméra { get; set; }
 
 
 
         public Soldat(Game jeu, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, Vector2 étendue, string nomImageDos,string nomImageFace ,Vector2 descriptionImageDos,Vector2 DescriptionImageFace, float intervalleMAJ)
             : base(jeu, homothétieInitiale, rotationInitiale, positionInitiale, étendue, nomImageDos,nomImageFace, descriptionImageDos,DescriptionImageFace, intervalleMAJ) 
         {
-           
+            Caméra = Game.Services.GetService(typeof(Caméra)) as CaméraAutomate;
         }
         public override void Initialize()
         {
@@ -64,6 +64,8 @@ namespace AtelierXNA
           
             Intervalle_MAJ_Mouvement = INTERVALLE_DE_DEPART_STANDARD;
             TempsEcouleDepuisMajMouvement = 0;
+
+            
 
             GestionnaireDeSons = Game.Services.GetService(typeof(RessourcesManager<SoundEffect>)) as RessourcesManager<SoundEffect>;
             SonSaut = GestionnaireDeSons.Find("Saut");
@@ -93,17 +95,18 @@ namespace AtelierXNA
                 CalculerMatriceMonde();
                 TempsEcouleDepuisMajMouvement = 0;            
             }
-            GameWindow a =Game.Window;
-            a.Title = "Vitesse:[ " + Math.Round(Vitesse.X, 2) + "   " + Math.Round(Vitesse.Y, 2) + "   " + Math.Round(Vitesse.Z, 2) + 
-                "] Position: [" + Math.Round(Position.X, 2) + "   " + Math.Round(Position.Y, 2) + "   " + Math.Round(Position.Z, 2) + "]"
-                + "  Acceleration:[ " + Math.Round(Acceleration.X, 2) + "   " + Math.Round(Acceleration.Y, 2) + "   " + Math.Round(Acceleration.Z, 2) + "]"
-                + "  VecteurForce:[ " + Math.Round(VecteurResultantForce.X, 2) + "   " + Math.Round(VecteurResultantForce.Y, 2) + "   " + Math.Round(VecteurResultantForce.Z, 2) + "]";
+            //GameWindow a =Game.Window;
+            //a.Title = "Vitesse:[ " + Math.Round(Vitesse.X, 2) + "   " + Math.Round(Vitesse.Y, 2) + "   " + Math.Round(Vitesse.Z, 2) + 
+            //    "] Position: [" + Math.Round(Position.X, 2) + "   " + Math.Round(Position.Y, 2) + "   " + Math.Round(Position.Z, 2) + "]"
+            //    + "  Acceleration:[ " + Math.Round(Acceleration.X, 2) + "   " + Math.Round(Acceleration.Y, 2) + "   " + Math.Round(Acceleration.Z, 2) + "]"
+            //    + "  VecteurForce:[ " + Math.Round(VecteurResultantForce.X, 2) + "   " + Math.Round(VecteurResultantForce.Y, 2) + "   " + Math.Round(VecteurResultantForce.Z, 2) + "]";
            
         }
 
        //TEMPORAIRE
         protected override void GérerClavier()
         {
+            
             /// POUR TESTER HITBOX SEULEUMENT SOLDAT DE LARMER NE SE CONTROLE PAS DIRECTEMENT
             float déplacementGaucheDroite = GérerTouche(Keys.D) - GérerTouche(Keys.A); //à inverser au besoin
             float déplacementAvantArrière = GérerTouche(Keys.S) - GérerTouche(Keys.W);
@@ -128,6 +131,8 @@ namespace AtelierXNA
                        // VarPosition = new Vector3(VarPosition.X, VarPosition.Y + 1, VarPosition.Z);
                      //   Position = new Vector3(Position.X, Position.Y + 1, Position.Z);
                         BougerHitbox();
+                        
+                        
                         AjouterVecteur(CONSTANTE_SAUT);
                         SonSaut.Play(1f,0f,0f);
                     }
@@ -135,13 +140,16 @@ namespace AtelierXNA
                 if (déplacementGaucheDroite != 0 || déplacementAvantArrière != 0)
                 {
                     AjouterVecteur(déplacementAvantArrière, déplacementGaucheDroite);
+                   
                 }
+                
             }
 
 
             //--------------------------------------------------------------------
             
         }
+   
 
         void AjouterVecteur(float déplacementAvantArrière, float déplacementGaucheDroite)
         {     

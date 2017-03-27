@@ -1,9 +1,17 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.GamerServices;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 
 namespace AtelierXNA
 {
-    public class CaméraSubjective : Caméra
+    public class CaméraAutomate : Caméra
     {
         const float INTERVALLE_MAJ_STANDARD = 1f / 60f;
         const float ACCÉLÉRATION = 0.001f;
@@ -42,7 +50,7 @@ namespace AtelierXNA
             }
         }
 
-        public CaméraSubjective(Game jeu, Vector3 positionCaméra, Vector3 cible, Vector3 orientation, float intervalleMAJ)
+        public CaméraAutomate(Game jeu, Vector3 positionCaméra, Vector3 cible, Vector3 orientation, float intervalleMAJ)
            : base(jeu)
         {
             IntervalleMAJ = intervalleMAJ;
@@ -107,15 +115,19 @@ namespace AtelierXNA
             GestionClavier();
             if (TempsÉcouléDepuisMAJ >= IntervalleMAJ)
             {
-                if (GestionInput.EstEnfoncée(Keys.LeftShift) || GestionInput.EstEnfoncée(Keys.RightShift))
-                {
-                    GérerAccélération();
-                    GérerDéplacement();
-                    GérerRotation();
+                { 
+                    //GérerAccélération();
+                    //GérerDéplacement();
+                    //GérerRotation();
                     CréerPointDeVue();
                 }
                 TempsÉcouléDepuisMAJ = 0;
             }
+             GameWindow a = Game.Window;
+            a.Title =
+                " Position: [" + Math.Round(Position.X, 2) + "   " + Math.Round(Position.Y, 2) + "   " + Math.Round(Position.Z, 2) + "]";
+               
+
             base.Update(gameTime);
         }
 
@@ -132,6 +144,14 @@ namespace AtelierXNA
                 IntervalleMAJ += ACCÉLÉRATION * valAccélération;
                 IntervalleMAJ = MathHelper.Max(INTERVALLE_MAJ_STANDARD, IntervalleMAJ);
             }
+        }
+        public void DéplacerCaméra(Vector3 déplacement)
+        {
+            Position = new Vector3(Position.X + déplacement.X, Position.Y + déplacement.Y, Position.Z + déplacement.Z);
+            //Position = Vector3.Normalize(Position);
+            Cible = new Vector3(Cible.X + déplacement.X, Cible.Y + déplacement.Y, Cible.Z + déplacement.Z);
+            //Cible = Vector3.Normalize(Cible);
+
         }
 
         private void GérerDéplacement()

@@ -64,8 +64,8 @@ namespace AtelierXNA
         public override void Draw(GameTime gameTime)
         {
 
-            if (Vector3.Distance(CaméraJeu.Position, Position)<Distance)
-            {
+          //  if (Vector3.Distance(CaméraJeu.Position, Position)<Distance)
+            //{
                 DepthStencilState dss = new DepthStencilState();
 
                 RasterizerState JeuRasterizerState = new RasterizerState();
@@ -119,7 +119,7 @@ namespace AtelierXNA
                 GraphicsDevice.BlendState = ancienGraphics.BlendState;
                 GraphicsDevice.DepthStencilState = ancienGraphics.DepthStencilState;
                 GraphicsDevice.RasterizerState = JeuRasterizerState;
-            }
+           // }
 
         }
       
