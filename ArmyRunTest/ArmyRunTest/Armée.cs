@@ -23,7 +23,7 @@ namespace AtelierXNA
         Vector2 PosFlag { get; set; }
         public float INTERVALLE_STANDARD { get; private set; }
         bool test { get; set; }
-        
+        CaméraAutomate Caméra { get; set; }
 
         Vector2 Espacement = new Vector2(1, 1); 
        
@@ -36,7 +36,8 @@ namespace AtelierXNA
             PosFlag = posFlag;
             Positions = new Vector2[3,3]; // pour l'instant dépend du nbSoldats
             test = true;
-            
+            Caméra = Game.Services.GetService(typeof(Caméra)) as CaméraAutomate;
+
         }
 
 
@@ -54,6 +55,7 @@ namespace AtelierXNA
                 OptimiserPosition();
                 TempsÉcoulé = 0;
             }
+            ModifierPositionCaméra();
         }
 
         public override void Initialize()
@@ -114,5 +116,12 @@ namespace AtelierXNA
             //    }
             //}
         }
+
+        void ModifierPositionCaméra()
+        {
+            Vector3 pos = new Vector3(PosFlag.X, 0, PosFlag.Y);
+            Caméra.DéplacerCaméra(pos);
+        }
+
     }
 }

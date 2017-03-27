@@ -21,6 +21,7 @@ namespace AtelierXNA
         public const float INTERVALLE_CALCUL_FPS = 1f;
 
         CaméraSubjective CaméraJeu { get; set; }
+        CaméraAutomate CaméraJeuAutomate{ get; set; }
         InputManager GestionInput;
         GraphicsDeviceManager PériphériqueGraphique { get; set; }
         RessourcesManager<Texture2D> GestionnaireDeTextures { get; set; }
@@ -60,18 +61,19 @@ namespace AtelierXNA
 
             const float DELTA_X = 3.3f;
             Vector3 positionDragon = new Vector3(0, 0, 3);
-            Vector3 positionCaméra = new Vector3(0, 0, 15);
+            Vector3 positionCaméra = new Vector3(0, 15, 15);
             Vector3 positionTuileDragon = positionDragon + Vector3.Right * (DELTA_X * 2);
 
             GestionnaireDeTextures = new RessourcesManager<Texture2D>(this, "Textures");
             GestionnairesDeModele = new RessourcesManager<Model>(this, "Modeles");
             GestionInput = new InputManager(this);
             Components.Add(GestionInput);
-            CaméraJeu = new CaméraSubjective(this, positionCaméra, positionDragon, Vector3.Up, INTERVALLE_STANDARD);
-
+            //CaméraJeu = new CaméraSubjective(this, positionCaméra, positionDragon, Vector3.Up, INTERVALLE_STANDARD);
+            CaméraJeuAutomate = new CaméraAutomate(this, positionCaméra, positionDragon, Vector3.Up, INTERVALLE_STANDARD);
             Soldats = new Soldat[3,3];
 
-            Components.Add(CaméraJeu);
+            //Components.Add(CaméraJeu);
+            Components.Add(CaméraJeuAutomate);
             Services.AddService(typeof(RessourcesManager<SpriteFont>), new RessourcesManager<SpriteFont>(this, "Fonts"));
             Services.AddService(typeof(Random), new Random());
 
@@ -85,7 +87,8 @@ namespace AtelierXNA
 
             Services.AddService(typeof(InputManager), GestionInput);
             Services.AddService(typeof(RessourcesManager<Model>), GestionnairesDeModele);
-            Services.AddService(typeof(Caméra), CaméraJeu);
+            //Services.AddService(typeof(Caméra), CaméraJeu);
+            Services.AddService(typeof(Caméra), CaméraJeuAutomate);
             Services.AddService(typeof(SpriteBatch), new SpriteBatch(GraphicsDevice));
             Components.Add(new AfficheurFPS(this, "Arial", Color.Red, INTERVALLE_CALCUL_FPS));
            // Components.Add(new TerrainBasePlanIncline(this,10, new Vector3(0, 0, 0), new Vector3(0.47f,0.2f,-0.33f),Color.Black, INTERVALLE_STANDARD));
@@ -119,12 +122,12 @@ namespace AtelierXNA
             //        Soldats[i,j] = new Soldat(this, 1f, Vector3.Zero, new Vector3(i - 1, 40, j-1), new Vector2(1, 2), "LoupGarou", "LoupGarou", new Vector2(4, 4), new Vector2(4, 4), 1f / 30);
             //    }
             //}
-            Components.Add(new Armée(this, 9, new Vector2(0, 0), INTERVALLE_STANDARD));
+            //Components.Add(new Armée(this, 9, new Vector2(0, 0), INTERVALLE_STANDARD));
             //Components.Add(new SoldatDeArmée(this,0,Vector3.Zero,new Vector3(0,0,0),new Vector2(1,2),"LoupGarou", "LoupGarou",new Vector2(4,4),new Vector2(4, 4),INTERVALLE_STANDARD,)
             //Components.Add(new Soldat(this, 1f, Vector3.Zero, new Vector3(-2, 10, -1), new Vector2(1, 2), "LoupGarou", "LoupGarou", new Vector2(4, 4), new Vector2(4, 4), 1f / 30));
 
             //Components.Add(new Soldat(this, 1f, Vector3.Zero, new Vector3(1, 40, -1), new Vector2(1, 2), "LoupGarou", "LoupGarou", new Vector2(4, 4), new Vector2(4, 4), 1f / 30));
-            //Components.Add(new Soldat(this, 1f, Vector3.Zero, new Vector3(0, 40, -1), new Vector2(1, 2), "LoupGarou", "LoupGarou", new Vector2(4, 4), new Vector2(4, 4), 1f / 30));
+            Components.Add(new Soldat(this, 1f, Vector3.Zero, new Vector3(0, 10, -1), new Vector2(1, 2), "LoupGarou", "LoupGarou", new Vector2(4, 4), new Vector2(4, 4), 1f / 30));
 
             //Components.Add(new Soldat(this, 1f, Vector3.Zero, new Vector3(1, 10, 0), new Vector2(1, 2), "LoupGarou", "LoupGarou", new Vector2(4, 4), new Vector2(4, 4), 1f / 30));
             //Components.Add(new Soldat(this, 1f, Vector3.Zero, new Vector3(-1, 10, 0), new Vector2(1, 2), "LoupGarou", "LoupGarou", new Vector2(4, 4), new Vector2(4, 4), 1f / 30));
