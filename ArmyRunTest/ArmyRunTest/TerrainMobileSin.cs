@@ -17,13 +17,16 @@ namespace AtelierXNA
    
     {
         float Distance { get; set; }
-        int sens { get; set; }
+        Vector3 DifferencePosition { get; set; }
+        Vector3 VitesseTerrain { get; set; }
 
 
         public TerrainMobileSin(Game jeu, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, float intervalleMAJ, string nomModel, string direction, float intervalleDeplacement, float distance) 
             : base(jeu, homothétieInitiale, rotationInitiale, positionInitiale, intervalleMAJ, nomModel,direction,intervalleDeplacement)
         {
             Distance = distance;
+            DifferencePosition = Vector3.Zero;
+   
         }
 
         /// <summary>
@@ -35,16 +38,24 @@ namespace AtelierXNA
         {
             Vector3 PositionPrecedente = Position;
 
-            Position = PositionInitiale + (float)Math.Sin(gameTime.TotalGameTime.TotalSeconds)*Distance*Direction;
-           
+            Position = PositionInitiale + (float)Math.Sin(gameTime.TotalGameTime.TotalSeconds) * Direction * Distance;
+
+
+
+            DifferencePosition = -PositionPrecedente + Position;        
         }
 
         protected override Vector3 DonnerVectorMouvement()
         {
             return Vector3.Zero;
         }
+        protected override void SuivreTerrain(Soldat a)
+        {
+           a.ModifierPosition(a.VarPosition + DifferencePosition);
+           
+           
+        }
 
-       
 
     }
 }
