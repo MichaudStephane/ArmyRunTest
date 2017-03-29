@@ -23,8 +23,8 @@ namespace AtelierXNA
         List<HachePendule> ListeHaches { get; set; }
         int NbHaches { get; set; }
 
-        public SectionHachesMultiples(Game jeu, Vector3 positionInitiale, string nomSection, int nbHaches)
-            : base(jeu, positionInitiale, nomSection)
+        public SectionHachesMultiples(Game jeu, Vector3 positionInitiale, int nbHaches)
+            : base(jeu, positionInitiale)
         {
             NbHaches = nbHaches;
             ListeTerrains = new List<TerrainDeBase>();

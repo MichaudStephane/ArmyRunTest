@@ -95,6 +95,7 @@
     <Compile Include="IBougeable.cs" />
     <Compile Include="ICollisionable.cs" />
     <Compile Include="InputManager.cs" />
+    <Compile Include="Niveau.cs" />
     <Compile Include="ObjetBase.cs" />
     <Compile Include="OmbreSoldat.cs" />
     <Compile Include="PrimitiveDeBase.cs" />
