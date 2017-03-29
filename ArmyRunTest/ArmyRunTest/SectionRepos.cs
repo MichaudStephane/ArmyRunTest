@@ -21,8 +21,8 @@ namespace AtelierXNA
 
         List<TerrainDeBase> ListeTerrains { get; set; }
 
-        public SectionRepos(Game jeu, Vector3 positionInitiale, string nomSection)
-            : base(jeu, positionInitiale, nomSection)
+        public SectionRepos(Game jeu, Vector3 positionInitiale)
+            : base(jeu, positionInitiale)
         {
             ListeTerrains = new List<TerrainDeBase>();
             CréerSection();
