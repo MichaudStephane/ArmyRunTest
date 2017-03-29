@@ -33,7 +33,7 @@ namespace AtelierXNA
         float TempsEcoulerDepuisMAJCalcul { get; set; }
         public bool EstEnCollision { get; set; }
         public Vector3 VecteurResultantForce { get; protected set; }
-        Vector3 Acceleration { get; set; }
+       protected Vector3 Acceleration { get; set; }
         public Vector3 Vitesse { get; set; }
       //  public Vector3 VitesseDutATerrain { get; set; }
         protected Vector3 Commande { get; set; }
@@ -164,7 +164,7 @@ namespace AtelierXNA
          {
             return GestionInput.EstEnfoncée(k) ? NB_PIXEL_DÉPLACEMENT : 0;
         }
-       public void ModifierPosition(Vector3 NouvellePosition)
+       public override void ModifierPosition(Vector3 NouvellePosition)
         {
             VarPosition = NouvellePosition;
         }
@@ -224,26 +224,25 @@ namespace AtelierXNA
         }
 
         //----A MODIFIER----
-        protected override  void GererCollision()
+        protected override void GererCollision()
         {
 
             EstEnCollision = false; ;
             EstSurTerrain = false;
             Vector3 V = VecteurResultantForce;
             // FAIRE EN SORTE QUELLE NE VEFIE QUE LES ELEMENTS PROCHES
-            foreach(GameComponent G in Game.Components.Where(x=>x is ICollisionable).ToList())
+            foreach (GameComponent G in Game.Components.Where(x => x is ICollisionable).ToList())
             {
-                VecteurResultantForce+=((G as ICollisionable).DonnerVectorCollision(this));         
+                VecteurResultantForce += ((G as ICollisionable).DonnerVectorCollision(this));
             }
-            if(V!=VecteurResultantForce)
+            if (V != VecteurResultantForce)
             {
                 EstEnCollision = true;
-              //  EstSurTerrain = true;
+                //  EstSurTerrain = true;
             }
-            int a = 1;
         }
 
-       void CreerHitbox()
+      protected void CreerHitbox()
         {
             Vector3 minHB = new Vector3(-0.5f * Delta.X, -0.4f * Delta.Y, -0.1f);
             Vector3 maxHB = new Vector3(0.5f * Delta.X, 0.5f * Delta.Y, 0.1f);

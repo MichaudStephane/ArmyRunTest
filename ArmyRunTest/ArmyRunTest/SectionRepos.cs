@@ -34,6 +34,7 @@ namespace AtelierXNA
             foreach (TerrainDeBase a in ListeTerrains)
             {
                 Jeu.Components.Add(a);
+                ObjetCollisionables.Add(a);
             }
         }
 
@@ -64,6 +65,11 @@ namespace AtelierXNA
             // TODO: Add your update code here
 
             base.Update(gameTime);
+        }
+        protected override void CréerHitboxSection()
+        {
+
+
         }
     }
 }

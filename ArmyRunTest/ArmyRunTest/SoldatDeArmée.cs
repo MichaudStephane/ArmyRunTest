@@ -18,157 +18,120 @@ namespace AtelierXNA
     public class SoldatDeArmée : Soldat, ICollisionable
     {
         const int HAUTEUR_MINIMAL = -50;
+        const int INTERVALLE_VERIFICATION=1;
+        const int DISTANCE_MAX = 60;
         int NuméroSoldat { get; set; }
-        GameComponent[][] ObjetCollisionné { get; set; }
+        List<PrimitiveDeBase>[] ObjetCollisionné { get; set; }
         int Compteur { get; set; }
-        Vector2[][] GrillePosition { get; set; }
+        float TempsDepuisDernierCible { get; set; }
+        Vector3 PositionCible { get; set; }
         Vector2 Déplacement { get; set; }
+        float TempsVerification { get; set; }
+      public  bool EstVivant{get;protected set;}
+
+
 
         public SoldatDeArmée(Game jeu, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, 
-                            Vector2 étendue, string nomImageDos, string nomImageFace, Vector2 descriptionImageDos, 
-                            Vector2 DescriptionImageFace, float intervalleMAJ, GameComponent[][] objetCollisionné)
+                            Vector2 étendue, string nomImageDos, string nomImageFace, Vector2 descriptionImageDos,
+                            Vector2 DescriptionImageFace, float intervalleMAJ, List<PrimitiveDeBase>[] objetCollisionné)
             : base(jeu, homothétieInitiale, rotationInitiale, positionInitiale, étendue, nomImageDos, nomImageFace, descriptionImageDos, DescriptionImageFace, intervalleMAJ)
         {
             ObjetCollisionné = objetCollisionné;
         }
-
         public override void Initialize()
-        {
-            GrillePosition = new Vector2[ObjetCollisionné.GetLength(0)][];  // a changer
-            InitialiserPositionsGrille();
+        {  // a changer
             Déplacement = new Vector2(7,7);// valeur test
             Compteur = 0;
+            TempsDepuisDernierCible = 0;
+            TempsVerification = 0;
+            EstVivant = true;
             base.Initialize();
         }
-
-        //protected override void GererCollision()
-        //{
-
-        //}
-
         public override void Update(GameTime gameTime)
         {
-            //TempsEcouleDepuisMajMouvement += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            
-             ReplacementPositionSoldat();
-            
-            base.Update(gameTime);
-        }
-
-        void ReplacementPositionSoldat()
-        {
-            for (int i = 0; i < ObjetCollisionné.GetLength(0); i++)
+            if (EstVivant)
             {
-                for (int j = 0; j < ObjetCollisionné.GetLength(1); j++)
+                TempsDepuisDernierCible += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                TempsVerification += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                if (TempsDepuisDernierCible > Intervalle_MAJ_Mouvement)
                 {
-                    if(!EstÀLaBonnePosition(i,j))
-                    {
-                        //Super calcul à Lesage
-                        float deltaX = GrillePosition[i][j].X - (ObjetCollisionné[i][j] as Soldat).Position.X;
-                        float deltaZ = GrillePosition[i][j].Y - (ObjetCollisionné[i][j] as Soldat).Position.Z;
-                        VecteurResultantForce += new Vector3(deltaX * Déplacement.X, 0, deltaZ * Déplacement.Y);
-                        //pt changer vitesse??
-                    }
+                    TenterDAtteindrePositionCible();
+                    TempsDepuisDernierCible = 0;
+
                 }
+                if (TempsVerification >= INTERVALLE_VERIFICATION)
+                {
+                    VerifierSiMort();
+                    TempsVerification = 0;
+                }
+                base.Update(gameTime);
+            }          
+        }
+        void TenterDAtteindrePositionCible()
+        {
+           Vector3 difference = new Vector3(PositionCible.X - VarPosition.X, 0, PositionCible.Z - VarPosition.Z);
+           float intensiteDifference = difference.Length();
+
+           if (difference != Vector3.Zero)
+           {
+               difference.Normalize();
+           }
+           intensiteDifference = Math.Min(Math.Max(intensiteDifference, 20), 200);
+            if(EstSurTerrain)
+            {
+                Commande = intensiteDifference * difference;
             }
         }
+        public void ModifierCompteur(int nouveauCompteur)
+        {
+            Compteur = nouveauCompteur;
+        }
+        public void ModifierPositionCible(Vector3 positionCible)
+        {
+            PositionCible = positionCible;
+        }
+        protected override void GererCollision()
+        {
+            EstEnCollision = false; ;
+            EstSurTerrain = false;
+            Vector3 V = VecteurResultantForce;
 
+            foreach (ICollisionable g in ObjetCollisionné[Compteur])
+            {
+              VecteurResultantForce += ((g as ICollisionable).DonnerVectorCollision(this));  
+              
+            }
+            if (V != VecteurResultantForce)
+            {
+                EstEnCollision = true;
+                //  EstSurTerrain = true;
+            }
+        }
         protected override void GérerClavier()
         {
-            float déplacementGaucheDroite = GérerTouche(Keys.D) - GérerTouche(Keys.A); 
-            float déplacementAvantArrière = GérerTouche(Keys.S) - GérerTouche(Keys.W);
-
-
             if (GestionInput.EstNouvelleTouche(Keys.R))
             {
                 Position = PositionInitiale;
+                VecteurResultantForce = Vector3.Zero;
+                Vitesse = Vector3.Zero;
+                Acceleration = Vector3.Zero;
+                VarPosition = Position;
+                CreerHitbox();
             }
-            if (!GestionInput.EstEnfoncée(Keys.LeftShift))
+        }
+        void VerifierSiMort()
+        {
+            if (VarPosition.Y < -20 || DISTANCE_MAX < Vector3.Distance(VarPosition, PositionCible))
             {
-                if (déplacementGaucheDroite != 0 || déplacementAvantArrière != 0)
-                {
-                    ChangerPositionsDeGrille(déplacementGaucheDroite, déplacementAvantArrière);
-                }
-            }
+                EstVivant = false;
+            }         
         }
-        void InitialiserPositionsGrille()
+        public override void Draw(GameTime gameTime)
         {
-            for (int i = 0; i < GrillePosition.GetLength(0); i++)
-            {
-                for (int j = 0; j < GrillePosition.GetLength(1); j++)
-                {
-                    GrillePosition[i][j] = new Vector2((ObjetCollisionné[i][j] as Soldat).Position.X, (ObjetCollisionné[i][j] as Soldat).Position.Z);
-                }
-            }
+            if(EstVivant)
+            base.Draw(gameTime);
         }
 
-        void ChangerPositionsDeGrille(float x, float z)
-        {
-            for (int i = 0; i < GrillePosition.GetLength(0); i++)
-            {
-                for (int j = 0; j < GrillePosition.GetLength(1); j++)
-                {
-                    GrillePosition[i][j].X += x;
-                    GrillePosition[i][j].Y += z;
-                }
-            }
-        }
-
-        float GérerTouche(Keys k)
-        {
-            return GestionInput.EstEnfoncée(k) ? NB_PIXEL_DÉPLACEMENT : 0;
-        }
-
-        protected void Saut()
-        {
-            for (int i = 0; i < ObjetCollisionné.GetLength(0); i++)
-            {
-                for (int j = 0; j < ObjetCollisionné.GetLength(1); j++)
-                {
-                    if ((ObjetCollisionné[i][j] as Soldat).EstSurTerrain)
-                    {
-                        VecteurResultantForce = new Vector3(VecteurResultantForce.X, VecteurResultantForce.Y + CONSTANTE_SAUT, VecteurResultantForce.Z);
-                    }
-                }
-            }
-        }
-
-        void MourrirChute()
-        {
-            for (int i = 0; i < ObjetCollisionné.GetLength(0); i++)
-            {
-                for (int j = 0; j < ObjetCollisionné.GetLength(1); j++)
-                {   
-                    if ((ObjetCollisionné[i][j] as Soldat).Position.Y <= HAUTEUR_MINIMAL)
-                    {
-                        Game.Components.Remove(ObjetCollisionné[i][j]);
-                    }
-                }
-            }
-        }
-
-        void AjouterVecteurDéplacement()
-        {
-            
-        }
-
-        Vector3 GetPosition(int i, int j) //méthode pour trouver la position d'un soldat de l'armé sans avoir a utiliser les double boucles à chaque fois
-        {
-            Vector3 position = Vector3.Zero;
-
-            position = (ObjetCollisionné[i][j] as Soldat).Position;
-
-            return position;
-        }
-        bool EstÀLaBonnePosition(int i,int j)
-        {
-            bool estÀLaBonnePLace = false;
-            if ((ObjetCollisionné[i][j] as Soldat).Position.X == GrillePosition[i][j].X &&
-                ((ObjetCollisionné[i][j]as Soldat).Position.Z == GrillePosition[i][j].Y))
-            {
-                estÀLaBonnePLace = true;
-            }
-            return estÀLaBonnePLace;
-        }
     }
 }

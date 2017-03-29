@@ -87,5 +87,10 @@ namespace AtelierXNA
 
             base.Update(gameTime);
         }
+        protected override void CréerHitboxSection()
+        {
+
+
+        }
     }
 }

@@ -84,5 +84,9 @@ namespace AtelierXNA
         {
             GraphicsDevice.DrawUserPrimitives<VertexPositionTexture>(PrimitiveType.TriangleStrip, Sommets, 0, NB_TRIANGLES);
         }
+        public virtual void ModifierPosition(Vector3 a)
+        {
+            Position=a;
+        }
     }
 }

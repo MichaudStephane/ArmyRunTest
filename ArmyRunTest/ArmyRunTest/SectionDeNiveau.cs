@@ -16,16 +16,16 @@ namespace AtelierXNA
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    abstract class SectionDeNiveau : Microsoft.Xna.Framework.GameComponent
+    public abstract class SectionDeNiveau : Microsoft.Xna.Framework.GameComponent
     {
-        protected const float TAILLE_TERRAIN_Z = 0.785F;
+        protected const float TAILLE_TERRAIN_Z = 0.724F;
         protected const float TAILLE_TERRAIN_X = 1F;
 
         protected const int HOMOTHÉTIE_INITIALE_TERRAIN = 10;
         protected const int HOMOTHÉTIE_INITIALE = 1;
         protected const float INTERVAL_MAJ = 1 / 60F;
         protected Vector3 ROTATION_INITIALE = new Vector3(0, 0, 0);
-        protected List<ObjetBase> ObjetCollisionables { get; set; }
+        protected List<PrimitiveDeBase> ObjetCollisionables { get; set; }
         protected Game Jeu { get; set;}
         protected Vector3 PositionInitiale { get; set; }
         
@@ -38,7 +38,7 @@ namespace AtelierXNA
         {
             PositionInitiale = positionInitiale;
             Jeu = jeu;
-            ObjetCollisionables = new List<ObjetBase>();
+            ObjetCollisionables = new List<PrimitiveDeBase>();
           //  DéterminerSection();
         }
 
@@ -70,6 +70,11 @@ namespace AtelierXNA
             // TODO: Add your update code here
 
             base.Update(gameTime);
+        }
+
+        public List<PrimitiveDeBase> GetListeCollisions()
+        {
+            return ObjetCollisionables;
         }
     }
 }
