@@ -96,14 +96,15 @@ namespace AtelierXNA
          //   Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, 0), INTERVALLE_STANDARD, "stefpath"));
             SectionRepos test = new SectionRepos(this, new Vector3(0, 0, 0), "A");
 
+
             List<PrimitiveDeBase>[] ObjetCollisionné = new List<PrimitiveDeBase>[1];
             ObjetCollisionné[0] = test.GetListeCollisions();
             //for (int i = 0; i < 1000; i++)
             //{
-            //     Components.Add(new Soldat(this, 0.7F, Vector3.Zero, new Vector3(0, 5, 5), new Vector2(1, 2), "LoupGarou", string.Empty, new Vector2(4, 4), new Vector2(4, 4), 1f / 30));
+            //    Components.Add(new Soldat(this, 0.7F, Vector3.Zero, new Vector3(0, 5, 5), new Vector2(1, 2), "LoupGarou", string.Empty, new Vector2(4, 4), new Vector2(4, 4), 1f / 30));
             //}
-          
-           Components.Add(new Armée(this, 1000, new Vector3(0, 2, 12), INTERVALLE_STANDARD, ObjetCollisionné));
+
+             Components.Add(new Armée(this, 100, new Vector3(0, 2, 12), INTERVALLE_STANDARD, ObjetCollisionné));
 
 
             Components.Add(new Afficheur3D(this));

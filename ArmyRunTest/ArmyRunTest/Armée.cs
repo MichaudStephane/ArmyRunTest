@@ -16,7 +16,7 @@ namespace AtelierXNA
     class Armée : Microsoft.Xna.Framework.GameComponent
     {
         const int INTERVALLE_VERIFICATION = 2;
-        Vector2 DimensionCase = new Vector2(2, 2);
+        Vector2 DimensionCase = new Vector2(1, 1);
         List<Humanoide> Soldats { get; set; }
         Vector3[,] Positions { get; set; }
         SoldatDeArmée[,] Armés { get; set; }
@@ -49,8 +49,8 @@ namespace AtelierXNA
             NbVivants = NombreSoldat;
             PosFlag = posFlag;
             PosFlagInitial = PosFlag;
-            Positions = new Vector3[(int)Math.Ceiling(Math.Sqrt(NombreSoldat)), (int)Math.Ceiling(Math.Sqrt(NombreSoldat))]; // pour l'instant dépend du nbSoldats
-            Armés = new SoldatDeArmée[(int)Math.Ceiling(Math.Sqrt(NombreSoldat)), (int)Math.Ceiling(Math.Sqrt(NombreSoldat))];
+            CalculerFormation(); // pour l'instant dépend du nbSoldats
+            Armés = new SoldatDeArmée[Positions.GetLength(0),Positions.GetLength(1)];
             test = true;
             Caméra = Game.Services.GetService(typeof(Caméra)) as CaméraAutomate;
             ObjetCollisionné = objetCollisionné;
@@ -75,13 +75,13 @@ namespace AtelierXNA
             
             TempsÉcoulé += (float)gameTime.ElapsedGameTime.TotalSeconds;
             TempsEcouleVerification+=(float)gameTime.ElapsedGameTime.TotalSeconds;
-            Vector3 Pos = new Vector3(Armés[0, 0].Position.X, Armés[0, 0].Position.Y, Armés[0, 0].Position.Z);
+            //Vector3 Pos = new Vector3(Armés[0, 0].Position.X, Armés[0, 0].Position.Y, Armés[0, 0].Position.Z);
             
-            if (AnciennePosition != Pos)
-            {
-                IntervalPosition = Pos - AnciennePosition;
-                AnciennePosition = Pos;
-            }
+            //if (AnciennePosition != Pos)
+            //{
+            //    IntervalPosition = Pos - AnciennePosition;
+            //    AnciennePosition = Pos;
+            //}
              if (TempsÉcoulé >= IntervalleMAJ)
             {
                 GererClavier();
@@ -146,32 +146,39 @@ namespace AtelierXNA
 
         void CréerPositionsSoldats()
         {
-            int nbCases = NombreSoldat + Convert.ToInt32(NbSoldatPair());
+            float largeurArmé = Positions.GetLength(1) * DimensionCase.X;
+            float longeurArmé = Positions.GetLength(0) * DimensionCase.Y;
 
+            Vector3 limGaucheHaut = new Vector3(-0.5F * largeurArmé + 0.5F * DimensionCase.X,0, -0.5F * largeurArmé + 0.5F * DimensionCase.Y);
 
-            for (int i = 0; i < Positions.GetLength(0); i++)
+            for (int j = 0; j < Positions.GetLength(1); j++)
             {
-                for (int j = 0; j < Positions.GetLength(1); j++)
+                for (int i = 0; i < Positions.GetLength(0); i++)
                 {
-                    Positions[i, j] = new Vector3((- DimensionCase.X / 2 * (Positions.GetLength(0)/2 ) + DimensionCase.X / 2 * i), 5, - DimensionCase.Y / 2 * (Positions.GetLength(1)/2 ) + DimensionCase.Y / 2 * j);
+
+                    Positions[i, j] = new Vector3(limGaucheHaut.X + j * DimensionCase.X, 3, limGaucheHaut.Y + i * DimensionCase.Y);
                 }
             }
+            int A = 1;
+
+
         }
 
         void CréerSoldats()
         {
-            int soldatscréees = 0;
-           
-            for (int i = 0; i < Positions.GetLength(0) ; i++)
+            int nbSoldatsCreés = 0;
+            for (int i = 0; i < Positions.GetLength(0); i++)
             {
-                for (int j = 0; j < Positions.GetLength(1) && soldatscréees < NombreSoldat; j++)
+                for (int j = 0; j < Positions.GetLength(1); j++)
                 {
-                    Armés[i, j] = new SoldatDeArmée(Game, 0.7F, Vector3.Zero, Positions[i, j] + new Vector3(PosFlag.X, 0, PosFlag.Z), new Vector2(1, 2), "LoupGarou", string.Empty, new Vector2(4, 4), new Vector2(4, 4), 1f / 30, ObjetCollisionné);
-                    Game.Components.Add(Armés[i, j]);
-                    soldatscréees++;
-                }           
+                    if (nbSoldatsCreés < NombreSoldat)
+                    {
+                        Armés[i, j] = new SoldatDeArmée(Game, 0.7F, Vector3.Zero, PosFlag + Positions[i, j], new Vector2(1, 2), "LoupGarou", string.Empty, new Vector2(4, 4), new Vector2(4, 4), 1f / 60, ObjetCollisionné);
+                        Game.Components.Add(Armés[i, j]);
+                        nbSoldatsCreés++;
+                    }
+                }
             }
-           
 
         }
 
@@ -205,24 +212,9 @@ namespace AtelierXNA
         }
         bool VerifierLesMorts()
         {
-            NbVivants = 0;
-            bool doitReformer = false;
-            for (int i = 0; i < Armés.GetLength(0); i++)
-            {
-                for (int j = 0; j < Armés.GetLength(1); j++)
-                {
-                   if(Armés[i,j]!=null &&!Armés[i,j].EstVivant)
-                   {
-                     //  Game.Components.Remove(Armés[i, j]);
-                       doitReformer = true;
-                   }
-                   else
-                   {
-                       NbVivants++;
-                   }
-                }
-            }
-            return doitReformer;
+
+            return false;
+
         }
         void ToutDetruire()
         {
@@ -239,38 +231,31 @@ namespace AtelierXNA
         }
         void ReformerRang()
         {
-            SoldatDeArmée[,] temp =new SoldatDeArmée[(int)Math.Ceiling(Math.Sqrt(NbVivants)), (int)Math.Ceiling(Math.Sqrt(NbVivants))];
-
-            int tempA=0;
-            int tempB=0;
-
-            for (int i = 0; i < Armés.GetLength(0); i++)
+           
+           
+        }
+        void CalculerFormation()
+        {
+            int a = 0;
+            if(NbVivants<=9)
             {
-                for (int j = 0; j < Armés.GetLength(1); j++)
+                Positions = new Vector3[3, (NbVivants/3)+1];
+            }
+            else
+            {
+                if (NbVivants <= 30)
                 {
-                    if(Armés[i,j]!=null&&Armés[i,j].EstVivant)
-                    {
-                        temp[tempA, tempB] = Armés[i, j];
-                        tempA++;
-
-                        if(tempA==temp.GetLength(0))
-                        {
-                            tempA = 0;
-                            tempB++;
-                        }
-                    }
-
+                    Positions = new Vector3[(NbVivants / 4) + 1, 4];
+                }
+                else
+                {
+                    Positions = new Vector3[(NbVivants / 5) + 1, 5];
                 }
             }
-            Armés = temp;
 
-            NombreSoldat = NbVivants;
-            CréerPositionsSoldats();
-
-
-
-
+            int b = 6;
         }
+
 
 
     }
