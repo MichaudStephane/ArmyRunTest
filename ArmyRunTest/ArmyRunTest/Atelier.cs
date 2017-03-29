@@ -94,8 +94,8 @@ namespace AtelierXNA
 
            
          //   Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, 0), INTERVALLE_STANDARD, "stefpath"));
-            SectionRepos test = new SectionRepos(this, new Vector3(0, 0, 0), "A");
-            SectionRepos test2 = new SectionRepos(this, new Vector3(0, 0, -20), "A");
+            SectionRepos test = new SectionRepos(this, new Vector3(0, 0, 0));
+            SectionRepos test2 = new SectionRepos(this, new Vector3(0, 0, -20));
 
             List<PrimitiveDeBase>[] ObjetCollisionné = new List<PrimitiveDeBase>[1];
             List<PrimitiveDeBase>[] ObjetCollisionné2 = new List<PrimitiveDeBase>[1];
