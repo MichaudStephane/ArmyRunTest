@@ -37,13 +37,13 @@ namespace AtelierXNA
 
         SoldatDeArmée Flag { get; set; }
         public int NbVivants { get; private set; }
+        Vector3 MoyennePosition { get; set; }
 
 
 
         public Armée(Game game, int nombreSoldats, Vector3 posFlag, float intervalleMAJ, List<PrimitiveDeBase>[] objetCollisionné)
         : base(game)
         {
-            AnciennePosition = posFlag;
             IntervalleMAJ = intervalleMAJ;
             NombreSoldat = nombreSoldats;
             NbVivants = NombreSoldat;
@@ -51,6 +51,7 @@ namespace AtelierXNA
             PosFlagInitial = PosFlag;
             Positions = new Vector3[(int)Math.Ceiling(Math.Sqrt(NombreSoldat)), (int)Math.Ceiling(Math.Sqrt(NombreSoldat))]; // pour l'instant dépend du nbSoldats
             Armés = new SoldatDeArmée[(int)Math.Ceiling(Math.Sqrt(NombreSoldat)), (int)Math.Ceiling(Math.Sqrt(NombreSoldat))];
+            
             test = true;
             Caméra = Game.Services.GetService(typeof(Caméra)) as CaméraAutomate;
             ObjetCollisionné = objetCollisionné;
@@ -61,26 +62,28 @@ namespace AtelierXNA
         public override void Initialize()
         {
             CréerPositionsSoldats();
-         //   Game jeu, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, Vector2 étendue, string nomTextureTuile,Vector2 descriptionImage, float intervalleMAJ)
+            //   Game jeu, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, Vector2 étendue, string nomTextureTuile,Vector2 descriptionImage, float intervalleMAJ)
             Flag = new SoldatDeArmée(Game, 0.7F, Vector3.Zero, PosFlag, new Vector2(1, 2), "FeuFollet", string.Empty, new Vector2(20, 1), new Vector2(20, 1), 1f / 30, ObjetCollisionné);
             Game.Components.Add(Flag);
             CréerSoldats();
+            CalculerMoyennePosition();
+            AnciennePosition = MoyennePosition;
             GestionInput = Game.Services.GetService(typeof(InputManager)) as InputManager;
             base.Initialize();
         }
         public override void Update(GameTime gameTime)
         {
-
            
-            
             TempsÉcoulé += (float)gameTime.ElapsedGameTime.TotalSeconds;
             TempsEcouleVerification+=(float)gameTime.ElapsedGameTime.TotalSeconds;
-            Vector3 Pos = new Vector3(Armés[0, 0].Position.X, Armés[0, 0].Position.Y, Armés[0, 0].Position.Z);
-            
-            if (AnciennePosition != Pos)
+            //Vector3 Pos = new Vector3(PosFlag.X, PosFlag.Y-5, PosFlag.Z +5);
+            CalculerMoyennePosition();
+
+            DéplacerCaméra();
+            if (AnciennePosition != MoyennePosition)
             {
-                IntervalPosition = Pos - AnciennePosition;
-                AnciennePosition = Pos;
+                IntervalPosition = MoyennePosition - AnciennePosition;
+                AnciennePosition = MoyennePosition;
             }
              if (TempsÉcoulé >= IntervalleMAJ)
             {
@@ -213,7 +216,7 @@ namespace AtelierXNA
                 {
                    if(Armés[i,j]!=null &&!Armés[i,j].EstVivant)
                    {
-                     //  Game.Components.Remove(Armés[i, j]);
+                       Game.Components.Remove(Armés[i, j]);
                        doitReformer = true;
                    }
                    else
@@ -266,12 +269,29 @@ namespace AtelierXNA
 
             NombreSoldat = NbVivants;
             CréerPositionsSoldats();
-
-
-
-
         }
 
+        public void DéplacerCaméra()
+        {
+            Caméra.DéplacerCaméra(IntervalPosition,PosFlag);
+            IntervalPosition = new Vector3(0,0,0);
+        }
+        void CalculerMoyennePosition()
+        {
+            Vector3 moyenne = Vector3.Zero;
+            int temp = NbVivants;
+            for (int i = 0; i < Positions.GetLength(0); i++)
+            {
+                for (int j = 0; j < Positions.GetLength(1); j++)
+                {
+                    if (NbVivants != 0) // fonctionne pas ???
+                    {
+                        moyenne = new Vector3(moyenne.X + Armés[i, j].VarPosition.X, moyenne.Y + Armés[i, j].VarPosition.Y, moyenne.Z + Armés[i, j].Position.Z);
+                    }
+                }
+            }
 
+            MoyennePosition = new Vector3(moyenne.X / temp, moyenne.Y / temp, moyenne.Z / temp);
+        }
     }
 }
