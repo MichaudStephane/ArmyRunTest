@@ -22,8 +22,8 @@ namespace AtelierXNA
         HéliceVentilateur Hélice { get; set; }
         List<TerrainDeBase> ListeTerrains { get; set; }
 
-        public SectionVentilateur(Game jeu, Vector3 positionInitiale, string nomSection)
-            : base(jeu, positionInitiale, nomSection)
+        public SectionVentilateur(Game jeu, Vector3 positionInitiale)
+            : base(jeu, positionInitiale)
         {
             ListeTerrains = new List<TerrainDeBase>();
             CréerSection();
@@ -33,11 +33,13 @@ namespace AtelierXNA
         private void AjouterAuComponents()
         {
             Jeu.Components.Add(Ventilateur1);
+            ObjetCollisionables.Add(Ventilateur1);
             Jeu.Components.Add(Hélice);
 
             foreach(TerrainDeBase a in ListeTerrains)
             {
                 Jeu.Components.Add(a);
+                ObjetCollisionables.Add(a);
             }
         }
 

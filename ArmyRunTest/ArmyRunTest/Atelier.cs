@@ -92,9 +92,11 @@ namespace AtelierXNA
             Services.AddService(typeof(SpriteBatch), new SpriteBatch(GraphicsDevice));
             Components.Add(new AfficheurFPS(this, "Arial", Color.Red, INTERVALLE_CALCUL_FPS));
 
+            Niveau a = new Niveau(this, 5);
+
            
          //   Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, 0), INTERVALLE_STANDARD, "stefpath"));
-            SectionRepos test = new SectionRepos(this, new Vector3(0, 0, 0), "A");
+            SectionRepos test = new SectionRepos(this, new Vector3(0, 0, 0));
 
 
             List<PrimitiveDeBase>[] ObjetCollisionné = new List<PrimitiveDeBase>[1];
