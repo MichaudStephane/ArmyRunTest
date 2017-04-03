@@ -17,7 +17,7 @@ namespace AtelierXNA
     /// </summary>
     public class Ventilateur : ObjetBase, ICollisionable
     {
-        const int Distance_Avec_Terrain_X = 7;
+        const int Distance_Avec_Terrain_X = 4;
         const int Distance_Avec_Terrain_Y = 2;
         const int Grandeur_HitBox_Z = 7;
         const int Distance_Avec_min_Z = 3;
@@ -50,8 +50,8 @@ namespace AtelierXNA
         
         void CréerHitboxGénérale()
         {
-            Vector3 min = new Vector3(PositionInitiale.X + Distance_Avec_Terrain_X, PositionInitiale.Y - Distance_Avec_Terrain_Y, PositionInitiale.Z - Distance_Avec_min_Z);
-            Vector3 max = new Vector3(PositionInitiale.X + Distance_Avec_Terrain_X + 3, PositionInitiale.Y + Distance_Avec_Terrain_Y, PositionInitiale.Z + Distance_Avec_min_Z);
+            Vector3 min = new Vector3(PositionInitiale.X + Distance_Avec_Terrain_X -1, PositionInitiale.Y - Distance_Avec_Terrain_Y*5, PositionInitiale.Z - Distance_Avec_min_Z);
+            Vector3 max = new Vector3(PositionInitiale.X + Distance_Avec_Terrain_X +10 , PositionInitiale.Y + Distance_Avec_Terrain_Y *5, PositionInitiale.Z + Distance_Avec_min_Z);
             HitBoxGénérale = new BoundingBox(min, max);
         }
         public Vector3 DonnerVectorCollision(PrimitiveDeBaseAnimée a)
@@ -61,7 +61,7 @@ namespace AtelierXNA
 
             if ((a as Soldat).HitBoxGénérale.Intersects(HitBoxGénérale))
             {
-                v = new Vector3(10, 0, 0);
+                v = new Vector3(20, 0, 0);
             }
             return v;
         }

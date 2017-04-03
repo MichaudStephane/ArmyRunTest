@@ -15,7 +15,7 @@ namespace AtelierXNA
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class HachePendule : ObjetBase,ICollisionable
+    public class HachePendule : ObjetBase, ICollisionable
     {
         const int GRANDEUR_HACHE_STANDARD = 12;
         const int NB_HITBOX_PRÉCISES = 8;
@@ -32,10 +32,12 @@ namespace AtelierXNA
         BoundingSphere HitBoxGénérale { get; set; }
         int sens { get; set; }
         float AnglePrécédent { get; set; }
-        public HachePendule(Game jeu, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, float intervalleMAJ, string nomModel)
+        float AngleDépart { get; set; }
+        public HachePendule(Game jeu, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, float intervalleMAJ, string nomModel,float angleDépart)
             : base(jeu, homothétieInitiale, rotationInitiale, positionInitiale, intervalleMAJ, nomModel)
         {
             INTERVALLE_MAJ = 1 / 60f;
+            AngleDépart = angleDépart;
         }
 
         /// <summary>
@@ -53,6 +55,14 @@ namespace AtelierXNA
             AnglePrécédent = 0;
             Angle = 0;
             MondeInitial = Monde;
+            PlacerHachce();
+        }
+
+        private void PlacerHachce()
+        {
+            //MondeInitial = Monde* Matrix.CreateTranslation(-Position.X, -GRANDEUR_HACHE_STANDARD, -Position.Z) *
+            //          Matrix.CreateRotationZ(0) *
+            //          Matrix.CreateTranslation(Position.X, GRANDEUR_HACHE_STANDARD, Position.Z);
         }
 
         /// <summary>
@@ -69,7 +79,7 @@ namespace AtelierXNA
 
                 CalculerNouvellePositionHache();
                 BougerHitBox();
-                Angle = MathHelper.PiOver2 * (float)Math.Sin((float)gameTime.TotalGameTime.TotalSeconds);
+                Angle = MathHelper.PiOver2 * (float)Math.Sin(AngleDépart+(float)gameTime.TotalGameTime.TotalSeconds) ;
 
                 if( Angle>AnglePrécédent )
                 {

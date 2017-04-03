@@ -64,7 +64,7 @@ namespace AtelierXNA
 
         void ChoisirDirection()
         {
-            int a = 1;
+           
             Direction = VECTOR_GAUCHE;
 
             if(ChoixUtilisateur==DROITE_NOM)

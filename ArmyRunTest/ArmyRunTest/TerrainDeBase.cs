@@ -15,7 +15,7 @@ namespace AtelierXNA
     public class TerrainDeBase : ObjetBase, ICollisionable
     {
         const int HOMOTHETHIE_STANDARD = 10;
-       protected Vector3 TAILLE_HITBOX_STANDARD = new Vector3(1,0.555f,0.785F);
+       protected Vector3 TAILLE_HITBOX_STANDARD = new Vector3(1,0.555f,0.724f);
        protected Vector3 VECTOR_HAUT = new Vector3(0, 1, 0);
        protected Vector3 VECTOR_BAS = new Vector3(0, -1, 0);
        protected Vector3 VECTOR_GAUCHE = new Vector3(-1, 0, 0);
@@ -46,7 +46,7 @@ namespace AtelierXNA
                 // c mon
 
                 v = a.Position - Position;
-                v = new Vector3(v.X / (HOMOTHETHIE_STANDARD * TAILLE_HITBOX_STANDARD.X), v.Y / (HOMOTHETHIE_STANDARD * TAILLE_HITBOX_STANDARD.Y ), (v.Z*1.05F / HOMOTHETHIE_STANDARD * TAILLE_HITBOX_STANDARD.Z));
+                v = new Vector3(v.X / (HOMOTHETHIE_STANDARD * TAILLE_HITBOX_STANDARD.X), v.Y / (HOMOTHETHIE_STANDARD * TAILLE_HITBOX_STANDARD.Y ), (v.Z / HOMOTHETHIE_STANDARD * TAILLE_HITBOX_STANDARD.Z));
 
                 v = Convert.ToInt32((v.Y >= v.X) && (v.Y >= v.Z) && (vitesseTemp.Y < -0.0001f) && v.Y >= 0.0001f) * VECTOR_HAUT
 
@@ -106,7 +106,7 @@ namespace AtelierXNA
 
 
 
-            int A = 1;
+       
 
 
         }

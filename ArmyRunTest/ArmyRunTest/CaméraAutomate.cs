@@ -73,14 +73,9 @@ namespace AtelierXNA
             // Méthode appelée s'il est nécessaire de recalculer la matrice de vue.
             // Calcul et normalisation de certains vecteurs
             // (à compléter)
-
-
-
             // a checker
             Direction = Vector3.Normalize(Direction);
-
-
-            Vue = Matrix.CreateLookAt(Position, Position + Direction, OrientationVerticale);
+            Vue = Matrix.CreateLookAt(Position, Cible, OrientationVerticale);
             GénérerFrustum();
         }
 
@@ -89,21 +84,15 @@ namespace AtelierXNA
             // À la construction, initialisation des propriétés Position, Cible et OrientationVerticale,
             // ainsi que le calcul des vecteur Direction, Latéral et le recalcul du vecteur OrientationVerticale
             // permettant de calculer la matrice de vue de la caméra subjective
-
             // (à compléter)
             Position = position;
             OrientationVerticale = orientation;
             Cible = cible;
-
-
             //   Direction = new Vector3(Cible.X - Position.X, Cible.Y - Position.Y, Cible.Z - Position.Z);
-
             // a checker
             Direction = Vector3.Normalize(Vector3.Subtract(Cible, Position));
-
             Latéral = Vector3.Cross(Direction, OrientationVerticale);
             OrientationVerticale = Vector3.Normalize(Vector3.Cross(Latéral, Direction));
-
             //Création de la matrice de vue (point de vue)
             CréerPointDeVue();
         }
@@ -126,8 +115,6 @@ namespace AtelierXNA
              GameWindow a = Game.Window;
             a.Title =
                 " Position: [" + Math.Round(Position.X, 2) + "   " + Math.Round(Position.Y, 2) + "   " + Math.Round(Position.Z, 2) + "]";
-               
-
             base.Update(gameTime);
         }
 
@@ -145,11 +132,12 @@ namespace AtelierXNA
                 IntervalleMAJ = MathHelper.Max(INTERVALLE_MAJ_STANDARD, IntervalleMAJ);
             }
         }
-        public void DéplacerCaméra(Vector3 déplacement)
+        public void DéplacerCaméra(Vector3 déplacement, Vector3 cible)
         {
             Position = new Vector3(Position.X + déplacement.X, Position.Y + déplacement.Y, Position.Z + déplacement.Z);
             //Position = Vector3.Normalize(Position);
-            Cible = new Vector3(Cible.X + déplacement.X, Cible.Y + déplacement.Y, Cible.Z + déplacement.Z);
+            //Cible = new Vector3(Cible.X + déplacement.X, Cible.Y + déplacement.Y  ,Cible.Z+ déplacement.Z);
+            Cible = new Vector3(cible.X, cible.Y ,cible.Z);
             //Cible = Vector3.Normalize(Cible);
 
         }

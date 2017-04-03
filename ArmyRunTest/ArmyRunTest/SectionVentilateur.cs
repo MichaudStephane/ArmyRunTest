@@ -17,18 +17,13 @@ namespace AtelierXNA
     /// </summary>
     public class SectionVentilateur : SectionDeNiveau
     {
-        const float TAILLE_TERRAIN_Z = 0.785F;
-        const int HOMOTHÉTIE_INITIALE_TERRAIN = 10;
-        const int HOMOTHÉTIE_INITIALE = 1;
-        Vector3 ROTATION_INITIALE = new Vector3(0, 0, 0);
-        const float INTERVAL_MAJ = 1 / 60F;
 
         Ventilateur Ventilateur1 { get; set; }
         HéliceVentilateur Hélice { get; set; }
         List<TerrainDeBase> ListeTerrains { get; set; }
 
-        public SectionVentilateur(Game jeu, Vector3 positionInitiale, string nomSection)
-            : base(jeu, positionInitiale, nomSection)
+        public SectionVentilateur(Game jeu, Vector3 positionInitiale)
+            : base(jeu, positionInitiale)
         {
             ListeTerrains = new List<TerrainDeBase>();
             CréerSection();
@@ -38,11 +33,13 @@ namespace AtelierXNA
         private void AjouterAuComponents()
         {
             Jeu.Components.Add(Ventilateur1);
+            ObjetCollisionables.Add(Ventilateur1);
             Jeu.Components.Add(Hélice);
 
             foreach(TerrainDeBase a in ListeTerrains)
             {
                 Jeu.Components.Add(a);
+                ObjetCollisionables.Add(a);
             }
         }
 
@@ -54,6 +51,11 @@ namespace AtelierXNA
             ListeTerrains.Add(new TerrainDeBase(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X, PositionInitiale.Y, PositionInitiale.Z), INTERVAL_MAJ, "stefpath"));
             ListeTerrains.Add(new TerrainDeBase(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X, PositionInitiale.Y, PositionInitiale.Z + TAILLE_TERRAIN_Z * HOMOTHÉTIE_INITIALE_TERRAIN), INTERVAL_MAJ, "stefpath"));
             ListeTerrains.Add(new TerrainDeBase(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X, PositionInitiale.Y, PositionInitiale.Z + TAILLE_TERRAIN_Z * HOMOTHÉTIE_INITIALE_TERRAIN * 2), INTERVAL_MAJ, "stefpath"));
+        }
+        protected override void CréerHitboxSection()
+        {
+            
+            
         }
 
         /// <summary>
