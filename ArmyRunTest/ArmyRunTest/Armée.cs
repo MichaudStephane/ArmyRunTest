@@ -77,7 +77,7 @@ namespace AtelierXNA
             TempsÉcoulé += (float)gameTime.ElapsedGameTime.TotalSeconds;
             TempsEcouleVerification+=(float)gameTime.ElapsedGameTime.TotalSeconds;
             //Vector3 Pos = new Vector3(Armés[0, 0].Position.X, Armés[0, 0].Position.Y, Armés[0, 0].Position.Z);
-            CalculerMoyennePosition();
+           // CalculerMoyennePosition();
             if (AnciennePosition != MoyennePosition)
             {
                IntervalPosition = MoyennePosition - AnciennePosition;
@@ -213,9 +213,31 @@ namespace AtelierXNA
         }
         bool VerifierLesMorts()
         {
+            bool aReformer = false;
+            int soldatCompte = 0;
+            int tempNbVivants = 0;
+            for (int i = 0; i < Armés.GetLength(0); i++)
+            {
+                for (int j = 0; j < Armés.GetLength(1); j++)
+                {
+                    if (soldatCompte < NbVivants)
+                    {
+                        if (Armés[i, j] == null || !Armés[i, j].EstVivant)
+                        {
+                            aReformer = true;
 
-            return false;
+                        }
+                        else
+                        {
+                            tempNbVivants++;
+                        }
+                    }
+                    soldatCompte++;
 
+                }
+            }
+            NbVivants = tempNbVivants;
+            return aReformer;
         }
         void ToutDetruire()
         {
@@ -232,7 +254,12 @@ namespace AtelierXNA
         }
         void ReformerRang()
         {
-           
+            CalculerFormation();
+            RecrerArme();
+            
+            CréerPositionsSoldats();
+            
+          
            
         }
         void CalculerFormation()
@@ -264,6 +291,7 @@ namespace AtelierXNA
          void CalculerMoyennePosition()
          {
              Vector3 moyenne = Vector3.Zero;
+             int soldatsCompte = 0;
              int temp = NbVivants;
              for (int i = 0; i<Positions.GetLength(0); i++)
              {
@@ -271,14 +299,50 @@ namespace AtelierXNA
                  {
                      if (NbVivants != 0) // fonctionne pas ???
                     {
+                         if(soldatsCompte<NbVivants)
                          moyenne = new Vector3(moyenne.X + Armés[i, j].VarPosition.X, moyenne.Y + Armés[i, j].VarPosition.Y, moyenne.Z + Armés[i, j].Position.Z);
+
+                         soldatsCompte++;
                      }
                  }
              }
   
              MoyennePosition = new Vector3(moyenne.X / temp, moyenne.Y / temp, moyenne.Z / temp);
         }
+         void RecrerArme()
+         {
 
+             SoldatDeArmée[,] temp = new SoldatDeArmée[Positions.GetLength(0),Positions.GetLength(1)];
+             int soldatsAjoute = 0;
+             int tempI = 0;
+             int tempJ = 0;
+             for (int i = 0; i < Armés.GetLength(0); i++)
+             {
+                 for (int j = 0; j < Armés.GetLength(1); j++)
+                 {
+
+                     if (soldatsAjoute < NbVivants)
+                     {
+                         if (Armés[i, j] != null && Armés[i, j].EstVivant)
+                         {
+
+                             temp[tempI, tempJ] = Armés[i, j];
+                             tempJ++;
+                             if (tempJ == Positions.GetLength(1))
+                             {
+                                 tempJ = 0;
+                                 tempI++;
+                             }
+                             soldatsAjoute++;
+                         }
+                     }
+
+                 }
+             }
+             Armés = temp;
+
+
+         }
 
 
     }

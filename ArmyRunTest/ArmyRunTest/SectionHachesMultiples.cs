@@ -46,6 +46,7 @@ namespace AtelierXNA
                 Jeu.Components.Add(b);
                 ObjetCollisionables.Add(b);
             }
+            int c = 1;
         }
 
         private void CréerSection()

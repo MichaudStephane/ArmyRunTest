@@ -15,7 +15,7 @@ namespace AtelierXNA
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class HachePendule : ObjetBase,ICollisionable
+    public class HachePendule : ObjetBase, ICollisionable
     {
         const int GRANDEUR_HACHE_STANDARD = 12;
         const int NB_HITBOX_PRÉCISES = 8;

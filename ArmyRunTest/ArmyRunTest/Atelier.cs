@@ -68,12 +68,12 @@ namespace AtelierXNA
             GestionnairesDeModele = new RessourcesManager<Model>(this, "Modeles");
             GestionInput = new InputManager(this);
             Components.Add(GestionInput);
-            //CaméraJeu = new CaméraSubjective(this, positionCaméra, positionDragon, Vector3.Up, INTERVALLE_STANDARD);
-            CaméraJeuAutomate = new CaméraAutomate(this, positionCaméra, positionDragon, Vector3.Up, INTERVALLE_STANDARD);
+            CaméraJeu = new CaméraSubjective(this, positionCaméra, positionDragon, Vector3.Up, INTERVALLE_STANDARD);
+           // CaméraJeu = new CaméraAutomate(this, positionCaméra, positionDragon, Vector3.Up, INTERVALLE_STANDARD);
             Soldats = new Soldat[3,3];
 
             //Components.Add(CaméraJeu);
-            Components.Add(CaméraJeuAutomate);
+            Components.Add(CaméraJeu);
             Services.AddService(typeof(RessourcesManager<SpriteFont>), new RessourcesManager<SpriteFont>(this, "Fonts"));
             Services.AddService(typeof(Random), new Random());
 
@@ -88,14 +88,17 @@ namespace AtelierXNA
             Services.AddService(typeof(InputManager), GestionInput);
             Services.AddService(typeof(RessourcesManager<Model>), GestionnairesDeModele);
             //Services.AddService(typeof(Caméra), CaméraJeu);
-            Services.AddService(typeof(Caméra), CaméraJeuAutomate);
+            Services.AddService(typeof(Caméra), CaméraJeu);
             Services.AddService(typeof(SpriteBatch), new SpriteBatch(GraphicsDevice));
             Components.Add(new AfficheurFPS(this, "Arial", Color.Red, INTERVALLE_CALCUL_FPS));
 
            
          //   Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, 0), INTERVALLE_STANDARD, "stefpath"));
-            SectionRepos test = new SectionRepos(this, new Vector3(0, 0, 0));
-            SectionRepos test2 = new SectionRepos(this, new Vector3(0, 0, -20));
+            SectionHachesMultiples test = new SectionHachesMultiples(this, new Vector3(0, 0, 0),3);
+            SectionVentilateur test2 = new SectionVentilateur(this, new Vector3(0, 0, -20));
+            SectionRepos test3 = new SectionRepos(this, new Vector3(0, 0, -40));
+            SectionRepos test4 = new SectionRepos(this, new Vector3(0, 0, 20));
+
 
             List<PrimitiveDeBase>[] ObjetCollisionné = new List<PrimitiveDeBase>[1];
             List<PrimitiveDeBase>[] ObjetCollisionné2 = new List<PrimitiveDeBase>[1];
@@ -103,16 +106,32 @@ namespace AtelierXNA
             temp[0] = new List<PrimitiveDeBase> { };
             for (int i = 0; i < test.GetListeCollisions().Count; i++)
             {
+               
                 temp[0].Add(test.GetListeCollisions()[i]);
+            }
+            for (int i = 0; i < test2.GetListeCollisions().Count; i++)
+            {
+
                 temp[0].Add(test2.GetListeCollisions()[i]);
             }
+            for (int i = 0; i < test3.GetListeCollisions().Count; i++)
+            {
+
+                temp[0].Add(test3.GetListeCollisions()[i]);
+            }
+            for (int i = 0; i < test4.GetListeCollisions().Count; i++)
+            {
+
+                temp[0].Add(test4.GetListeCollisions()[i]);
+            }
+
             ObjetCollisionné[0] = test.GetListeCollisions();
-            //for (int i = 0; i < 1000; i++)
-            //{
-            //     Components.Add(new Soldat(this, 0.7F, Vector3.Zero, new Vector3(0, 5, 5), new Vector2(1, 2), "LoupGarou", string.Empty, new Vector2(4, 4), new Vector2(4, 4), 1f / 30));
-            //}
+            for (int i = 0; i < 50; i++)
+            {
+                Components.Add(new Soldat(this, 0.7F, Vector3.Zero, new Vector3(0, 2, 25), new Vector2(1, 2), "LoupGarou", string.Empty, new Vector2(4, 4), new Vector2(4, 4), 1f / 30));
+            }
           
-           Components.Add(new Armée(this, 9, new Vector3(0, 2, 12), INTERVALLE_STANDARD, temp));
+       //    Components.Add(new Armée(this, 50, new Vector3(0, 2, 25), INTERVALLE_STANDARD, temp));
 
 
             Components.Add(new Afficheur3D(this));

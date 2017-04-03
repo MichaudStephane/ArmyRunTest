@@ -61,7 +61,7 @@ namespace AtelierXNA
 
             if ((a as Soldat).HitBoxGénérale.Intersects(HitBoxGénérale))
             {
-                v = new Vector3(100, 0, 0);
+                v = new Vector3(20, 0, 0);
             }
             return v;
         }
