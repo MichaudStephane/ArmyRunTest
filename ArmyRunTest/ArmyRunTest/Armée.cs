@@ -138,7 +138,7 @@ namespace AtelierXNA
         }
         //void ModifierPositionCaméra()
         //{
-        //    Vector3 pos = new Vector3(Armés[0,0].Position.X, Armés[0, 0].Position.Y, Armés[0, 0].Position.Z);
+        //    Vector3 pos = new Vector3(Armés[0, 0].Position.X, Armés[0, 0].Position.Y, Armés[0, 0].Position.Z);
         //    Caméra.DéplacerCaméra(IntervalPosition);
         //}
     }
