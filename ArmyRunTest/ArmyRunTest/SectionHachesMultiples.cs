@@ -23,8 +23,8 @@ namespace AtelierXNA
         List<HachePendule> ListeHaches { get; set; }
         int NbHaches { get; set; }
 
-        public SectionHachesMultiples(Game jeu, Vector3 positionInitiale, int nbHaches)
-            : base(jeu, positionInitiale)
+        public SectionHachesMultiples(Game jeu, Vector3 positionInitiale, int nbHaches, int indexTableau)
+            : base(jeu, positionInitiale, indexTableau)
         {
             NbHaches = nbHaches;
             ListeTerrains = new List<TerrainDeBase>();
@@ -58,9 +58,7 @@ namespace AtelierXNA
                 ListeHaches.Add(new HachePendule(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X, PositionInitiale.Y + 3.5f, PositionInitiale.Z +12 -distance*i), INTERVAL_MAJ, "StefAxe", angle));
                 angle += MathHelper.PiOver2;
             }
-            
-            //Hache1 = new HachePendule(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X, PositionInitiale.Y + 3.5f, PositionInitiale.Z + 7), INTERVAL_MAJ, "StefAxe", 0);
-           
+                       
 
             ListeTerrains.Add(new TerrainDeBase(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X, PositionInitiale.Y, PositionInitiale.Z), INTERVAL_MAJ, "stefpath"));
             ListeTerrains.Add(new TerrainDeBase(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X, PositionInitiale.Y, PositionInitiale.Z + TAILLE_TERRAIN_Z * HOMOTHÉTIE_INITIALE_TERRAIN), INTERVAL_MAJ, "stefpath"));
@@ -88,10 +86,6 @@ namespace AtelierXNA
 
             base.Update(gameTime);
         }
-        protected override void CréerHitboxSection()
-        {
-
-
-        }
+  
     }
 }

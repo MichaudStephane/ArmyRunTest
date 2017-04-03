@@ -36,14 +36,16 @@ namespace AtelierXNA
         protected BoundingSphere HitBoxSection { get; set; }
         protected float TailleSectionNiveau { get; set; }
 
+        protected int IndexTableau { get; set; }
 
-        public SectionDeNiveau(Game jeu,Vector3 positionInitiale)
+        public SectionDeNiveau(Game jeu,Vector3 positionInitiale, int indexTableau)
             : base(jeu)
         {
+            IndexTableau = indexTableau;
             PositionInitiale = positionInitiale;
             Jeu = jeu;
             ObjetCollisionables = new List<PrimitiveDeBase>();
-          //  DéterminerSection();
+          
         }
 
         private void DéterminerSection()
@@ -62,7 +64,11 @@ namespace AtelierXNA
             base.Initialize();
         }
 
-        protected abstract void CréerHitboxSection();
+        protected virtual void CréerHitboxSection()
+        {
+
+            HitBoxSection = new BoundingSphere(new Vector3(PositionInitiale.X + TAILLE_TERRAIN_X/2, PositionInitiale.Y, PositionInitiale.Z - LongueurNiveau / 2f), LongueurNiveau / 2f);
+        }
         
 
         /// <summary>
