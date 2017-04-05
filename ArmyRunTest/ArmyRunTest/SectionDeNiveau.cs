@@ -33,10 +33,10 @@ namespace AtelierXNA
         {
             get { return (GetListeCollisions().Where(x => x is TerrainDeBase).Count())*TAILLE_TERRAIN_Z*10; }
         }
-        protected BoundingSphere HitBoxSection { get; set; }
+        public BoundingSphere HitBoxSection { get;protected set; }
         protected float TailleSectionNiveau { get; set; }
 
-        protected int IndexTableau { get; set; }
+        public int IndexTableau { get;private set; }
 
         public SectionDeNiveau(Game jeu,Vector3 positionInitiale, int indexTableau)
             : base(jeu)
@@ -45,7 +45,6 @@ namespace AtelierXNA
             PositionInitiale = positionInitiale;
             Jeu = jeu;
             ObjetCollisionables = new List<PrimitiveDeBase>();
-          
         }
 
         private void DéterminerSection()
@@ -62,12 +61,12 @@ namespace AtelierXNA
             
 
             base.Initialize();
+            CréerHitboxSection();
         }
 
         protected virtual void CréerHitboxSection()
         {
-
-            HitBoxSection = new BoundingSphere(new Vector3(PositionInitiale.X + TAILLE_TERRAIN_X/2, PositionInitiale.Y, PositionInitiale.Z - LongueurNiveau / 2f), LongueurNiveau / 2f);
+            HitBoxSection = new BoundingSphere(new Vector3(PositionInitiale.X , PositionInitiale.Y, PositionInitiale.Z + LongueurNiveau / 2f),1000* LongueurNiveau / 2f);
         }
         
 

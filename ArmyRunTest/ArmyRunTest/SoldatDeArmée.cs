@@ -29,13 +29,14 @@ namespace AtelierXNA
         float TempsVerification { get; set; }
       public  bool EstVivant{get;protected set;}
 
-
+        List<SectionDeNiveau> ListeSections { get; set; }
 
         public SoldatDeArmée(Game jeu, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, 
                             Vector2 étendue, string nomImageDos, string nomImageFace, Vector2 descriptionImageDos,
-                            Vector2 DescriptionImageFace, float intervalleMAJ, List<PrimitiveDeBase>[] objetCollisionné)
+                            Vector2 DescriptionImageFace, float intervalleMAJ, List<PrimitiveDeBase>[] objetCollisionné, List<SectionDeNiveau> listeSections)
             : base(jeu, homothétieInitiale, rotationInitiale, positionInitiale, étendue, nomImageDos, nomImageFace, descriptionImageDos, DescriptionImageFace, intervalleMAJ)
         {
+            ListeSections = listeSections;
             ObjetCollisionné = objetCollisionné;
         }
         public override void Initialize()
@@ -101,12 +102,25 @@ namespace AtelierXNA
             EstEnCollision = false; ;
             EstSurTerrain = false;
             Vector3 V = VecteurResultantForce;
-
-            foreach (ICollisionable g in ObjetCollisionné[Compteur])
+            int index = 0;
+            foreach(SectionDeNiveau a in ListeSections)
             {
-              VecteurResultantForce += ((g as ICollisionable).DonnerVectorCollision(this));  
-              
+                if(HitBoxGénérale.Intersects(a.HitBoxSection))
+                {
+                    foreach (ICollisionable g in ObjetCollisionné[a.IndexTableau])
+                    {
+                        VecteurResultantForce += ((g as ICollisionable).DonnerVectorCollision(this));
+
+                    }
+
+                }
             }
+
+            //foreach (ICollisionable g in ObjetCollisionné[index])
+            //{
+            //  VecteurResultantForce += ((g as ICollisionable).DonnerVectorCollision(this));  
+              
+            //}
             if (V != VecteurResultantForce)
             {
                 EstEnCollision = true;
