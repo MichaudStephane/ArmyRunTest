@@ -71,14 +71,14 @@ namespace AtelierXNA
         }
         void TenterDAtteindrePositionCible()
         {
-           Vector3 difference = new Vector3(PositionCible.X - VarPosition.X, 0, PositionCible.Z - VarPosition.Z);
-           float intensiteDifference = difference.Length();
+           Vector3 difference = new Vector3(PositionCible.X - VarPosition.X, 0,2* (PositionCible.Z - VarPosition.Z));
+            float intensiteDifference = difference.Length();
 
            if (difference != Vector3.Zero)
            {
                difference.Normalize();
            }
-           intensiteDifference = Math.Min(Math.Max(intensiteDifference, 20), 400);
+           intensiteDifference = Math.Min(Math.Max(intensiteDifference, 30), 200);
             if(EstSurTerrain)
             {
                 Commande = intensiteDifference * difference;

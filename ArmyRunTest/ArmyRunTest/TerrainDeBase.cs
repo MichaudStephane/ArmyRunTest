@@ -14,8 +14,8 @@ namespace AtelierXNA
 {
     public class TerrainDeBase : ObjetBase, ICollisionable
     {
-        const int HOMOTHETHIE_STANDARD = 10;
-       protected Vector3 TAILLE_HITBOX_STANDARD = new Vector3(1,0.555f,0.724f);
+       const int HOMOTHETHIE_STANDARD = 10;
+       static public Vector3 TAILLE_HITBOX_STANDARD = new Vector3(1,0.555f,0.724f);
        protected Vector3 VECTOR_HAUT = new Vector3(0, 1, 0);
        protected Vector3 VECTOR_BAS = new Vector3(0, -1, 0);
        protected Vector3 VECTOR_GAUCHE = new Vector3(-1, 0, 0);
