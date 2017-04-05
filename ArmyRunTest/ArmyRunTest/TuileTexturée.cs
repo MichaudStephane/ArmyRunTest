@@ -87,6 +87,7 @@ namespace AtelierXNA
         public virtual void ModifierPosition(Vector3 a)
         {
             Position=a;
+            CalculerMatriceMonde();
         }
     }
 }

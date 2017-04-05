@@ -18,7 +18,7 @@ namespace AtelierXNA
         const int MAX_DISTANCE_CAMÉRA = 20;
         const int MIN_DISTANCE_CAMÉRA = 10;
         const int INTERVALLE_VERIFICATION = 2;
-        Vector2 DimensionCase = new Vector2(1, 1);
+        Vector2 DimensionCase = new Vector2(0.7F, 0.7F);
         List<Humanoide> Soldats { get; set; }
         Vector3[,] Positions { get; set; }
         SoldatDeArmée[,] Armés { get; set; }
@@ -39,7 +39,7 @@ namespace AtelierXNA
         Vector3 DifférencePositionCaméraAvecArmée { get; set; }
         protected InputManager GestionInput { get; private set; }
 
-        SoldatDeArmée Flag { get; set; }
+        Flag Flag { get; set; }
         public int NbVivants { get; private set; }
         Vector3 MoyennePosition { get; set; }
 
@@ -68,14 +68,14 @@ namespace AtelierXNA
             CréerPositionsSoldats();
             
             //   Game jeu, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, Vector2 étendue, string nomTextureTuile,Vector2 descriptionImage, float intervalleMAJ)
-            Flag = new SoldatDeArmée(Game, 0.7F, Vector3.Zero, PosFlag, new Vector2(1, 2), "FeuFollet", string.Empty, new Vector2(20, 1), new Vector2(20, 1), 1f / 30, ObjetCollisionné);
+            Flag = new Flag(Game, 1F, Vector3.Zero, new Vector3(PosFlag.X,5,PosFlag.Z), new Vector2(1, 1), "FeuFollet",new Vector2(20,1),1f/60);
             Game.Components.Add(Flag);
             CréerSoldats();
             CalculerMoyennePosition();
-            Caméra.SetPosCaméra(new Vector3(0, 8.5f, Flag.Position.Z + 35));
             AnciennePosition = MoyennePosition;
             GestionInput = Game.Services.GetService(typeof(InputManager)) as InputManager;
             base.Initialize();
+            Caméra.SetPosCaméra(new Vector3(0, 9f,-60));
         }
 
         public override void Update(GameTime gameTime)
@@ -84,8 +84,8 @@ namespace AtelierXNA
             TempsÉcoulé2 += (float)gameTime.ElapsedGameTime.TotalSeconds;
             TempsEcouleVerification += (float)gameTime.ElapsedGameTime.TotalSeconds;
             //Vector3 Pos = new Vector3(Armés[0, 0].Position.X, Armés[0, 0].Position.Y, Armés[0, 0].Position.Z);
+
             
-         
             if (TempsÉcoulé >= IntervalleMAJ)
             {
                 GererClavier();
@@ -104,11 +104,12 @@ namespace AtelierXNA
                     
                     TempsÉcoulé2 = 0;
                 }
-                DéplacerCaméra();
+                
                 TempsÉcoulé = 0;
             }
             if (TempsEcouleVerification >= INTERVALLE_VERIFICATION)
             {
+                
                 if (VerifierLesMorts())
                 {
                     ReformerRang();
@@ -116,11 +117,7 @@ namespace AtelierXNA
             }
            
             Flag.ModifierPosition(new Vector3(PosFlag.X, 7, PosFlag.Z));
-            Game jeu = Game;
-            jeu.Window.Title = jeu.Window.Title + " " + "PosFlag: " +
-                PosFlag.X + " " + PosFlag.Y + " " + PosFlag.Z +
-                "MoyennePosition: " + MoyennePosition.X + " " +
-                MoyennePosition.Y + " " + MoyennePosition.Z;
+
 
             CalculerMoyennePosition();
 
@@ -197,7 +194,7 @@ namespace AtelierXNA
                 {
                     if (nbSoldatsCreés < NombreSoldat)
                     {
-                        Armés[i, j] = new SoldatDeArmée(Game, 0.7F, Vector3.Zero, PosFlag + Positions[i, j], new Vector2(1, 2), "LoupGarou", string.Empty, new Vector2(4, 4), new Vector2(4, 4), 1f / 60, ObjetCollisionné);
+                        Armés[i, j] = new SoldatDeArmée(Game, 0.5F, Vector3.Zero, PosFlag + Positions[i, j], new Vector2(1, 2), "LoupGarou", string.Empty, new Vector2(4, 4), new Vector2(4, 4), 1f / 60, ObjetCollisionné);
                         Game.Components.Add(Armés[i, j]);
                         nbSoldatsCreés++;
                     }
@@ -322,28 +319,13 @@ namespace AtelierXNA
                 }
             }
 
-            int b = 6;
+       
         }
         public void DéplacerCaméra()
         {
-            //if (!(Vector3.Distance(PosFlag, Caméra.Position + DifférencePositionCaméraAvecArmée) < 3 * MIN_DISTANCE_CAMÉRA) && !(Vector3.Distance(PosFlag,Caméra.Position+DifférencePositionCaméraAvecArmée)< 3*MIN_DISTANCE_CAMÉRA))
-            //{
-            //if(10<=Vector3.Distance(PosFlag,Caméra.Position+DifférencePositionCaméraAvecArmée))
-            //{
-            //    DifférencePositionCaméraAvecArmée = new Vector3(0,0,(-Caméra.Position.Z + PosFlag.Z + 10));
-            //}
-                Caméra.DéplacerCaméra(DifférencePositionCaméraAvecArmée, PosFlag);
-
-            if (Vector3.Distance(Caméra.Position, PosFlag) >= 10)
-            {
-                Caméra.SetPosCaméra(new Vector3(Caméra.Position.X, Caméra.Position.Y, PosFlag.Z + 10));
-            }
+            CréerHitboxCaméra();
 
 
-            DifférencePositionCaméraAvecArmée = new Vector3(0, 0, 0);
-            //}
-            
-            //IntervalPosition = new Vector3(0, 0, 0);
         }
         void CalculerMoyennePosition()
         {
@@ -372,16 +354,14 @@ namespace AtelierXNA
         {
             bool estDansLimite = false;
             Vector3 limite = TerrainDeBase.TAILLE_HITBOX_STANDARD * 10;
-            
-            if (soldatDeArmée.VarPosition.X < limite.X/2 && soldatDeArmée.VarPosition.X > -limite.X/2)
-            {
-                if(soldatDeArmée.VarPosition.Y < 7 && soldatDeArmée.VarPosition.Y > -7)
+         
+                if(soldatDeArmée.VarPosition.Y < 25 && soldatDeArmée.VarPosition.Y > -7)
                 {
-                   
+                   if(Math.Abs(-soldatDeArmée.Position.X+PosFlag.X)<20)
                     estDansLimite = true;
                 }
                 
-            }
+            
             return estDansLimite;
         }
 
@@ -416,10 +396,45 @@ namespace AtelierXNA
                 }
             }
             Armés = temp;
-
-
         }
-
+        void CréerHitboxCaméra()
+        {
+            BoundingSphere temp = new BoundingSphere();
+            bool firstTime = true;
+            int soldatsComptées = 0; ;
+            for (int i = 0; i < Armés.GetLength(0); i++)
+            {
+                for (int j = 0; j < Armés.GetLength(1); j++)
+                {
+                    if (soldatsComptées <= NbVivants)
+                    {
+                        if (Armés[i, j] != null)
+                        {
+                            if (Armés[i, j].EstVivant)
+                            {
+                                if (EstDansLimiteTerrain(Armés[i, j]))
+                                {
+                                    if(firstTime)
+                                     {
+                                        temp = BoundingSphere.CreateFromBoundingBox(Armés[i, j].HitBoxGénérale);
+                                        firstTime = false;
+                                        soldatsComptées++;
+                                    }
+                                    temp = BoundingSphere.CreateMerged(temp, BoundingSphere.CreateFromBoundingBox(Armés[i, j].HitBoxGénérale));
+                                    soldatsComptées++;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+  
+            if(temp.Center.Z<0)
+            {
+                int a = 1;
+            }
+            Caméra.DonnerBoundingSphere(BoundingSphere.CreateMerged(temp,Flag.ViewFlag));
+        }
 
     }
 }

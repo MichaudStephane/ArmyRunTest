@@ -13,6 +13,10 @@ namespace AtelierXNA
 {
     public class CaméraAutomate : Caméra
     {
+        const float NORMALE = (9.8f);
+        const float FROTTEMENT = 0.75F * NORMALE * INTERVALLE_CALCUL_PHYSIQUE * 5;
+        const float INTERVALLE_CALCUL_PHYSIQUE = 1f / 60;
+
         const float INTERVALLE_MAJ_STANDARD = 1f / 60f;
         const float ACCÉLÉRATION = 0.001f;
         const float VITESSE_INITIALE_ROTATION = 5f;
@@ -21,11 +25,16 @@ namespace AtelierXNA
         const float DELTA_TANGAGE = MathHelper.Pi / 180; // 1 degré à la fois
         const float DELTA_ROULIS = MathHelper.Pi / 180; // 1 degré à la fois
         const float RAYON_COLLISION = 1f;
-
+        bool Avance { get; set; }
+        bool Present { get; set; }
+        bool Ancient { get; set; }
+        BoundingSphere HitBoxArmée { get; set;}
         Vector3 Direction { get; set; }
         Vector3 Latéral { get; set; }
         float VitesseTranslation { get; set; }
         float VitesseRotation { get; set; }
+        Vector3 Vitesse { get; set; }
+        Vector3 Force { get; set; }
 
         float IntervalleMAJ { get; set; }
         float TempsÉcouléDepuisMAJ { get; set; }
@@ -61,11 +70,17 @@ namespace AtelierXNA
 
         public override void Initialize()
         {
+            Vitesse = Vector3.Zero;
+            Force = Vector3.Zero;
+
+            HitBoxArmée = new BoundingSphere();
             VitesseRotation = VITESSE_INITIALE_ROTATION;
             VitesseTranslation = VITESSE_INITIALE_TRANSLATION;
             TempsÉcouléDepuisMAJ = 0;
             base.Initialize();
             GestionInput = Game.Services.GetService(typeof(InputManager)) as InputManager;
+
+          
         }
 
         protected override void CréerPointDeVue()
@@ -104,17 +119,18 @@ namespace AtelierXNA
             GestionClavier();
             if (TempsÉcouléDepuisMAJ >= IntervalleMAJ)
             {
-                { 
-                    //GérerAccélération();
-                    //GérerDéplacement();
-                    //GérerRotation();
+                
+                    DéterminerVitesse();
+              
+                    Position = new Vector3(Position.X + IntervalleMAJ * Vitesse.X, Position.Y + IntervalleMAJ * Vitesse.Y, Position.Z + IntervalleMAJ * Vitesse.Z);
+                
                     CréerPointDeVue();
-                }
+                
                 TempsÉcouléDepuisMAJ = 0;
             }
              GameWindow a = Game.Window;
             a.Title =
-                " Position: [" + Math.Round(Position.X, 2) + "   " + Math.Round(Position.Y, 2) + "   " + Math.Round(Position.Z, 2) + "]";
+                " Position: [" + Math.Round(Position.X, 2) + "   " + Math.Round(Position.Y, 2) + "   " + Math.Round(Position.Z, 2) + "]" + "       CentreArmé: [ " +HitBoxArmée.Center.Z ;
             base.Update(gameTime);
         }
 
@@ -221,6 +237,60 @@ namespace AtelierXNA
             {
                 EstEnZoom = !EstEnZoom;
             }
+        }
+         
+        public void DonnerBoundingSphere(BoundingSphere a)
+        {
+            HitBoxArmée = a;
+        }
+        void DéterminerVitesse()
+        {
+            Ancient = Avance;
+            Vector3 AnciennneVitesse = Force;     
+
+            if(Position.Z<-1)
+            {
+                int A = 1;
+            }
+          if(Frustum.Contains(HitBoxArmée) ==ContainmentType.Contains)
+            {
+              
+
+                //if (Frustum.Contains(new BoundingSphere(HitBoxArmée.Center, 1.02F * HitBoxArmée.Radius)) == ContainmentType.Contains)
+                //{
+                    
+                        Force += 100 * IntervalleMAJ * (new Vector3(0, 0, -1));
+                    
+                //}
+               
+            }
+          else
+            {
+
+
+
+                //if (Frustum.Contains(new BoundingSphere(HitBoxArmée.Center, 0.98F * HitBoxArmée.Radius)) != ContainmentType.Contains)
+                //{
+                    Force -= 100 * IntervalleMAJ * (new Vector3(0, 0, -1));
+                //}
+            
+            
+
+            }
+       
+
+            //if (Vitesse.Z != 0)
+            //{
+            //    Force -= new Vector3(0, 0, FROTTEMENT * (Vitesse.Z / Math.Abs(Vitesse.Z)));
+            //}
+
+
+            Force = Force - IntervalleMAJ*(1f / Force.Length()) * Force.LengthSquared()* Force;
+            Force = new Vector3(Force.X, Math.Max(Force.Y,0), Force.Z);
+
+            Vitesse = Force;
+          
+
         }
     }
 }

@@ -79,7 +79,7 @@ namespace AtelierXNA
 
                 CalculerNouvellePositionHache();
                 BougerHitBox();
-                Angle = MathHelper.PiOver2 * (float)Math.Sin(AngleDépart+(float)gameTime.TotalGameTime.TotalSeconds) ;
+                Angle = MathHelper.PiOver2 * (float)Math.Sin(AngleDépart+(float)gameTime.TotalGameTime.TotalSeconds/3) ;
 
                 if( Angle>AnglePrécédent )
                 {

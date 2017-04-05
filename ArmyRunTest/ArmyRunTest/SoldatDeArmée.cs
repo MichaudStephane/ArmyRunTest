@@ -81,6 +81,11 @@ namespace AtelierXNA
             if(EstSurTerrain)
             {
                 Commande = intensiteDifference * difference;
+                Commande = new Vector3(1.5F * Commande.X, Commande.Y, Commande.Z);
+            }
+            if( Commande.X<0 && PositionCible.X-Position.X >0)
+            {
+                Commande = new Vector3(1.5F * Commande.X, Commande.Y, Commande.Z);
             }
         }
         public void ModifierCompteur(int nouveauCompteur)

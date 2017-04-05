@@ -216,11 +216,12 @@ namespace AtelierXNA
                 }
             }
 
-            //frottement air
+        
             Vector3 vitesseCal = Vitesse;
-            Vector3 fAir = Vector3.Multiply(Vector3.Multiply(vitesseCal, vitesseCal), 0.010f*2*0.5f * DENSITER_AIR * DRAG_COEFFICIENT);
+            Vector3 fAir = Vector3.Multiply(Vector3.Multiply(vitesseCal, vitesseCal), 0.010f * 2 * 0.5f * DENSITER_AIR * DRAG_COEFFICIENT);
 
-            VecteurResultantForce += fAir;
+
+            VecteurResultantForce += new Vector3(Convert.ToInt32(Vitesse.X>0)*-fAir.X + Convert.ToInt32(Vitesse.X < 0) * fAir.X, Convert.ToInt32(Vitesse.X > 0) * -fAir.Y + Convert.ToInt32(Vitesse.Y < 0) * fAir.Y, Convert.ToInt32(Vitesse.Z > 0) * -fAir.Z + Convert.ToInt32(Vitesse.Z < 0) * fAir.Z);
         }
 
         //----A MODIFIER----
