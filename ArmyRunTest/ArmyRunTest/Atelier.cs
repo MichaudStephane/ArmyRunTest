@@ -91,13 +91,12 @@ namespace AtelierXNA
             Services.AddService(typeof(Caméra), CaméraJeu);
             Services.AddService(typeof(SpriteBatch), new SpriteBatch(GraphicsDevice));
             Components.Add(new AfficheurFPS(this, "Arial", Color.Red, INTERVALLE_CALCUL_FPS));
-            //Components.Add(new Menu(this));
 
-
-            //   Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, 0), INTERVALLE_STANDARD, "stefpath"));
+           
+         //   Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, 0), INTERVALLE_STANDARD, "stefpath"));
             SectionHachesMultiples test = new SectionHachesMultiples(this, new Vector3(0, 0, 0),3);
             SectionVentilateur test2 = new SectionVentilateur(this, new Vector3(0, 0, -20));
-            SectionRepos test3 = new SectionRepos(this, new Vector3(0, 0, -40));
+            SectionMobileHorizontale test3 = new SectionMobileHorizontale(this, new Vector3(0, 0, -40));
             SectionRepos test4 = new SectionRepos(this, new Vector3(0, 0, 20));
 
 
@@ -107,7 +106,7 @@ namespace AtelierXNA
             temp[0] = new List<PrimitiveDeBase> { };
             for (int i = 0; i < test.GetListeCollisions().Count; i++)
             {
-
+               
                 temp[0].Add(test.GetListeCollisions()[i]);
             }
             for (int i = 0; i < test2.GetListeCollisions().Count; i++)
@@ -131,8 +130,8 @@ namespace AtelierXNA
             //{
             //    Components.Add(new Soldat(this, 0.7F, Vector3.Zero, new Vector3(0, 2, 25), new Vector2(1, 2), "LoupGarou", string.Empty, new Vector2(4, 4), new Vector2(4, 4), 1f / 30));
             //}
-
-            Components.Add(new Armée(this, 50, new Vector3(0, 2, 25), INTERVALLE_STANDARD, temp));
+          
+           Components.Add(new Armée(this, 50, new Vector3(0, 2, 25), INTERVALLE_STANDARD, temp));
 
 
             Components.Add(new Afficheur3D(this));

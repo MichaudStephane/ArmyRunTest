@@ -141,6 +141,10 @@ namespace AtelierXNA
             //Cible = Vector3.Normalize(Cible);
 
         }
+        public void SetPosCaméra(Vector3 pos)
+        {
+            Position = pos;
+        }
 
         private void GérerDéplacement()
         {

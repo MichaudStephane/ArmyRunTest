@@ -21,8 +21,8 @@ namespace AtelierXNA
 
         List<TerrainDeBase> ListeTerrains { get; set; }
 
-        public SectionHache(Game jeu, Vector3 positionInitiale)
-            : base(jeu, positionInitiale)
+        public SectionHache(Game jeu, Vector3 positionInitiale,int indexTableau)
+            : base(jeu, positionInitiale, indexTableau)
         {
             ListeTerrains = new List<TerrainDeBase>();
             CréerSection();
@@ -69,10 +69,6 @@ namespace AtelierXNA
 
             base.Update(gameTime);
         }
-        protected override void CréerHitboxSection()
-        {
-
-
-        }
+      
     }
 }
