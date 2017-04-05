@@ -83,7 +83,8 @@ namespace AtelierXNA
             Services.AddService(typeof(RessourcesManager<Song>), new RessourcesManager<Song>(this, "Chansons"));
             GestionnaireDeMusiques = new RessourcesManager<Song>(this, "Chansons");
             ChansonJeu = GestionnaireDeMusiques.Find("Starboy");
-         //   MediaPlayer.Play(ChansonJeu);
+            //   MediaPlayer.Play(ChansonJeu);
+            //Components.Add(new Menu(this));
 
             Services.AddService(typeof(InputManager), GestionInput);
             Services.AddService(typeof(RessourcesManager<Model>), GestionnairesDeModele);
@@ -91,13 +92,13 @@ namespace AtelierXNA
             Services.AddService(typeof(Caméra), CaméraJeuAutomate);
             Services.AddService(typeof(SpriteBatch), new SpriteBatch(GraphicsDevice));
             Components.Add(new AfficheurFPS(this, "Arial", Color.Red, INTERVALLE_CALCUL_FPS));
-           // Components.Add(new TuileTextureeAnime(this, 100, Vector3.Zero, Vector3.Zero, new Vector2(1, 1), "FeuFollet", new Vector2(1, 1), 1f / 60));
+            Components.Add(new TuileTextureeAnime(this, 100, Vector3.Zero, Vector3.Zero, new Vector2(1, 1), "FeuFollet", new Vector2(1, 1), 1f / 60));
 
-            //   Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, 0), INTERVALLE_STANDARD, "stefpath"));
-            SectionRepos test = new SectionRepos(this, new Vector3(0, 0, 20),1);
-            SectionVentilateur test2 = new SectionVentilateur(this, new Vector3(0, 0, -40),2);
-            SectionRepos test3 = new SectionRepos(this, new Vector3(0, 0, 0),1);
-            SectionRepos test4 = new SectionRepos(this, new Vector3(0, 0, -20),1);
+            Components.Add(new TerrainDeBase(this, 10, new Vector3(0, 0, 0), new Vector3(0, 0, 0), INTERVALLE_STANDARD, "stefpath"));
+            SectionRepos test = new SectionRepos(this, new Vector3(0, 0, 20), 1);
+            SectionVentilateur test2 = new SectionVentilateur(this, new Vector3(0, 0, -40), 2);
+            SectionRepos test3 = new SectionRepos(this, new Vector3(0, 0, 0), 1);
+            SectionRepos test4 = new SectionRepos(this, new Vector3(0, 0, -20), 1);
             SectionHache test5 = new SectionHache(this, new Vector3(0, 0, -60), 1);
             SectionRepos test6 = new SectionRepos(this, new Vector3(0, 0, 40), 1);
             SectionRepos test7 = new SectionRepos(this, new Vector3(0, 0, -80), 1);
@@ -109,7 +110,7 @@ namespace AtelierXNA
             temp[0] = new List<PrimitiveDeBase> { };
             for (int i = 0; i < test.GetListeCollisions().Count; i++)
             {
-               
+
                 temp[0].Add(test.GetListeCollisions()[i]);
             }
             for (int i = 0; i < test2.GetListeCollisions().Count; i++)
@@ -144,8 +145,8 @@ namespace AtelierXNA
             }
 
             ObjetCollisionné[0] = test.GetListeCollisions();
-       
-           Components.Add(new Armée(this, 50, new Vector3(0, 2, -60), INTERVALLE_STANDARD, temp));
+
+            Components.Add(new Armée(this, 50, new Vector3(0, 2, -60), INTERVALLE_STANDARD, temp));
             Components.Add(CaméraJeuAutomate);
 
             Components.Add(new Afficheur3D(this));

@@ -43,9 +43,9 @@ namespace AtelierXNA
             base.LoadContent();
         }
 
-        public Vector2 GetDimensionBoutton()
+        public Rectangle GetDimensionBoutton()
         {
-            return new Vector2(Dimension.X + Position.X, Dimension.Y + Position.Y);
+            return new Rectangle((int)Position.X, (int)Position.Y, (int)Dimension.X, (int)Dimension.Y);
         }
 
         public override void Draw(GameTime gameTime)

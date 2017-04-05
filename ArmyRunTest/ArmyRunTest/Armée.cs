@@ -194,7 +194,7 @@ namespace AtelierXNA
                 {
                     if (nbSoldatsCreés < NombreSoldat)
                     {
-                        Armés[i, j] = new SoldatDeArmée(Game, 0.5F, Vector3.Zero, PosFlag + Positions[i, j], new Vector2(1, 2), "LoupGarou", string.Empty, new Vector2(4, 4), new Vector2(4, 4), 1f / 60, ObjetCollisionné);
+                        //Armés[i, j] = new SoldatDeArmée(Game, 0.5F, Vector3.Zero, PosFlag + Positions[i, j], new Vector2(1, 2), "LoupGarou", string.Empty, new Vector2(4, 4), new Vector2(4, 4), 1f / 60, ObjetCollisionné);
                         Game.Components.Add(Armés[i, j]);
                         nbSoldatsCreés++;
                     }
