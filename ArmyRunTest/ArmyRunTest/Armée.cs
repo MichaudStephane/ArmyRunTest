@@ -39,11 +39,12 @@ namespace AtelierXNA
         public int NbVivants { get; private set; }
         Vector3 MoyennePosition { get; set; }
 
+        List<SectionDeNiveau> ListeSections { get; set; }
 
-
-        public Armée(Game game, int nombreSoldats, Vector3 posFlag, float intervalleMAJ, List<PrimitiveDeBase>[] objetCollisionné)
+        public Armée(Game game, int nombreSoldats, Vector3 posFlag, float intervalleMAJ, List<PrimitiveDeBase>[] objetCollisionné, List<SectionDeNiveau> listeSections)
         : base(game)
         {
+            ListeSections = listeSections;
             IntervalleMAJ = intervalleMAJ;
             NombreSoldat = nombreSoldats;
             NbVivants = NombreSoldat;
@@ -63,7 +64,7 @@ namespace AtelierXNA
         {
             CréerPositionsSoldats();
          //   Game jeu, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, Vector2 étendue, string nomTextureTuile,Vector2 descriptionImage, float intervalleMAJ)
-            Flag = new SoldatDeArmée(Game, 0.7F, Vector3.Zero, PosFlag, new Vector2(1, 2), "FeuFollet", string.Empty, new Vector2(20, 1), new Vector2(20, 1), 1f / 30, ObjetCollisionné);
+            Flag = new SoldatDeArmée(Game, 0.7F, Vector3.Zero, PosFlag, new Vector2(1, 2), "FeuFollet", string.Empty, new Vector2(20, 1), new Vector2(20, 1), 1f / 30, ObjetCollisionné,ListeSections);
             Game.Components.Add(Flag);
             CréerSoldats();
             CalculerMoyennePosition();
@@ -174,7 +175,7 @@ namespace AtelierXNA
                 {
                     if (nbSoldatsCreés < NombreSoldat)
                     {
-                        Armés[i, j] = new SoldatDeArmée(Game, 0.7F, Vector3.Zero, PosFlag + Positions[i, j], new Vector2(1, 2), "LoupGarou", string.Empty, new Vector2(4, 4), new Vector2(4, 4), 1f / 60, ObjetCollisionné);
+                        Armés[i, j] = new SoldatDeArmée(Game, 0.7F, Vector3.Zero, PosFlag + Positions[i, j], new Vector2(1, 2), "LoupGarou", string.Empty, new Vector2(4, 4), new Vector2(4, 4), 1f / 60, ObjetCollisionné,ListeSections);
                         Game.Components.Add(Armés[i, j]);
                         nbSoldatsCreés++;
                     }
