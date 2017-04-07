@@ -83,7 +83,7 @@ namespace AtelierXNA
             Services.AddService(typeof(RessourcesManager<Song>), new RessourcesManager<Song>(this, "Chansons"));
             GestionnaireDeMusiques = new RessourcesManager<Song>(this, "Chansons");
             ChansonJeu = GestionnaireDeMusiques.Find("Starboy");
-            //   MediaPlayer.Play(ChansonJeu);
+            //MediaPlayer.Play(ChansonJeu);
             //Components.Add(new Menu(this));
 
             Services.AddService(typeof(InputManager), GestionInput);
