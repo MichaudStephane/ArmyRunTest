@@ -24,6 +24,18 @@ namespace AtelierXNA
         int NbrSections { get; set; }
         Game Jeu { get; set; }
         Vector3 Position { get; set; }
+        public float LongueurNiveau
+        {
+            get
+            {
+                float longueur =0;
+                foreach(SectionDeNiveau a in ListSections)
+                {
+                    longueur += a.LongueurNiveau;
+                }
+                return longueur;
+            }
+        }
         public Niveau(Game jeu, int nbrSections, Vector3 positionInitiale)
         {
             Jeu = jeu;
@@ -103,13 +115,27 @@ namespace AtelierXNA
 
             }
         }
-            public List<PrimitiveDeBase>[] GetTableauListObjetCollisionables()
-           {
-             return TabListObjetCollisionables;
+        public List<PrimitiveDeBase>[] GetTableauListObjetCollisionables()
+        {
+            List<PrimitiveDeBase>[] Copie = new List<PrimitiveDeBase>[TabListObjetCollisionables.Count()];
+
+            for(int i=0; i < TabListObjetCollisionables.Count();++i )
+            {
+                foreach(PrimitiveDeBase a in TabListObjetCollisionables[i])
+                {
+                    Copie[i].Add(a);
+                }
+            }
+             return Copie;
            }
          public List<SectionDeNiveau> GetListSectionNiveau()
         {
-            return ListSections;
+            List<SectionDeNiveau> Copie = new List<SectionDeNiveau>(NbrSections);
+            foreach(SectionDeNiveau a in ListSections)
+            {
+                Copie.Add(a);
+            }
+            return Copie;
         }
         }
     }
