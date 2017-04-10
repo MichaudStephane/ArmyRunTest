@@ -112,12 +112,28 @@ namespace AtelierXNA
                     }
                     Position = new Vector3(Position.X, Position.Y, Position.Z - a.LongueurNiveau);
                 }
+                //else if (nombreAléatoire == 5)
+                //{
+                //    SectionMobileMultiples a = new SectionMobileMultiples(Jeu, Position, i);
+                //    ListSections.Add(a);
+                //    Jeu.Components.Add(a);
+                //    foreach (PrimitiveDeBase b in a.ObjetCollisionables)
+                //    {
+                //        TabListObjetCollisionables[i].Add(b);
+                //    }
+                //    Position = new Vector3(Position.X, Position.Y, Position.Z - a.LongueurNiveau);
+                //}
 
             }
         }
         public List<PrimitiveDeBase>[] GetTableauListObjetCollisionables()
         {
             List<PrimitiveDeBase>[] Copie = new List<PrimitiveDeBase>[TabListObjetCollisionables.Count()];
+            for(int cpt=0; cpt < Copie.Count(); ++ cpt)
+            {
+                Copie[cpt] = new List<PrimitiveDeBase>();
+            }
+
 
             for(int i=0; i < TabListObjetCollisionables.Count();++i )
             {
