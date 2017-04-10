@@ -14,7 +14,7 @@
     </TargetFrameworkProfile>
     <XnaFrameworkVersion>v4.0</XnaFrameworkVersion>
     <XnaPlatform>Windows</XnaPlatform>
-    <XnaProfile>Reach</XnaProfile>
+    <XnaProfile>HiDef</XnaProfile>
     <XnaCrossPlatformGroupID>ec8b2074-0451-4117-8cf1-3a4e54bdb8d9</XnaCrossPlatformGroupID>
     <XnaOutputType>Game</XnaOutputType>
     <ApplicationIcon>
@@ -85,6 +85,7 @@
   <ItemGroup>
     <Compile Include="Afficheur3D.cs" />
     <Compile Include="AfficheurFPS.cs" />
+    <Compile Include="AfficheurNbVivant.cs" />
     <Compile Include="Armée.cs" />
     <Compile Include="ArrièrePlan.cs" />
     <Compile Include="Boutton.cs" />
