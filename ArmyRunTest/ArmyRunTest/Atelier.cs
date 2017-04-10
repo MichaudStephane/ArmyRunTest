@@ -92,62 +92,64 @@ namespace AtelierXNA
             Services.AddService(typeof(Caméra), CaméraJeuAutomate);
             Services.AddService(typeof(SpriteBatch), new SpriteBatch(GraphicsDevice));
             Components.Add(new AfficheurFPS(this, "Arial", Color.Red, INTERVALLE_CALCUL_FPS));
-          //  Components.Add(new TuileTextureeAnime(this, 100, Vector3.Zero, Vector3.Zero, new Vector2(1, 1), "FeuFollet", new Vector2(1, 1), 1f / 60));
+            Components.Add(new TuileTextureeAnime(this, 100, Vector3.Zero, Vector3.Zero, new Vector2(1, 1), "FeuFollet", new Vector2(1, 1), 1f / 60));
 
           
-            SectionRepos test = new SectionRepos(this, new Vector3(0, 0, 100), 1);
+            //SectionRepos test = new SectionRepos(this, new Vector3(0, 0, 20020), 1);
             
-            SectionRepos test3 = new SectionRepos(this, new Vector3(0, 0, 80), 1);
-            SectionRepos test4 = new SectionRepos(this, new Vector3(0, 0, 60), 1);
-            SectionRepos test2 = new SectionRepos(this, new Vector3(0, 0, 40), 2);
-            SectionRepos test5 = new SectionRepos(this, new Vector3(0, 0, 20), 1);
-            SectionRepos test6 = new SectionRepos(this, new Vector3(0, 0, 0), 1);
-            SectionRepos test7 = new SectionRepos(this, new Vector3(0, 0, -20), 1);
+            //SectionRepos test3 = new SectionRepos(this, new Vector3(0, 0, 19980), 1);
+            //SectionRepos test4 = new SectionRepos(this, new Vector3(0, 0, 19960), 1);
+            //SectionVentilateur test2 = new SectionVentilateur(this, new Vector3(0, 0, 19920), 2);
+            //SectionHache test5 = new SectionHache(this, new Vector3(0, 0, 19940), 1);
+            //SectionRepos test6 = new SectionRepos(this, new Vector3(0, 0, 20000), 1);
+            //SectionRepos test7 = new SectionRepos(this, new Vector3(0, 0, 19900), 1);
 
+            Niveau level = new Niveau(this, 6, new Vector3(0, 0, 20020));
+            //List<PrimitiveDeBase>[] ObjetCollisionné = new List<PrimitiveDeBase>[1];
+            //List<PrimitiveDeBase>[] ObjetCollisionné2 = new List<PrimitiveDeBase>[1];
 
-            List<PrimitiveDeBase>[] ObjetCollisionné = new List<PrimitiveDeBase>[1];
-            List<PrimitiveDeBase>[] ObjetCollisionné2 = new List<PrimitiveDeBase>[1];
-            List<PrimitiveDeBase>[] temp = new List<PrimitiveDeBase>[1];
-            temp[0] = new List<PrimitiveDeBase> { };
-            for (int i = 0; i < test.GetListeCollisions().Count; i++)
-            {
+            List<PrimitiveDeBase>[] temp = level.GetTableauListObjetCollisionables();
 
-                temp[0].Add(test.GetListeCollisions()[i]);
-            }
-            for (int i = 0; i < test2.GetListeCollisions().Count; i++)
-            {
+            //temp[0] = new List<PrimitiveDeBase> { };
+            //for (int i = 0; i < test.GetListeCollisions().Count; i++)
+            //{
 
-                temp[0].Add(test2.GetListeCollisions()[i]);
-            }
-            for (int i = 0; i < test3.GetListeCollisions().Count; i++)
-            {
+            //    temp[0].Add(test.GetListeCollisions()[i]);
+            //}
+            //for (int i = 0; i < test2.GetListeCollisions().Count; i++)
+            //{
 
-                temp[0].Add(test3.GetListeCollisions()[i]);
-            }
-            for (int i = 0; i < test4.GetListeCollisions().Count; i++)
-            {
+            //    temp[0].Add(test2.GetListeCollisions()[i]);
+            //}
+            //for (int i = 0; i < test3.GetListeCollisions().Count; i++)
+            //{
 
-                temp[0].Add(test4.GetListeCollisions()[i]);
-            }
-            for (int i = 0; i < test5.GetListeCollisions().Count; i++)
-            {
+            //    temp[0].Add(test3.GetListeCollisions()[i]);
+            //}
+            //for (int i = 0; i < test4.GetListeCollisions().Count; i++)
+            //{
 
-                temp[0].Add(test5.GetListeCollisions()[i]);
-            }
-            for (int i = 0; i < test6.GetListeCollisions().Count; i++)
-            {
+            //    temp[0].Add(test4.GetListeCollisions()[i]);
+            //}
+            //for (int i = 0; i < test5.GetListeCollisions().Count; i++)
+            //{
 
-                temp[0].Add(test6.GetListeCollisions()[i]);
-            }
-            for (int i = 0; i < test7.GetListeCollisions().Count; i++)
-            {
+            //    temp[0].Add(test5.GetListeCollisions()[i]);
+            //}
+            //for (int i = 0; i < test6.GetListeCollisions().Count; i++)
+            //{
 
-                temp[0].Add(test7.GetListeCollisions()[i]);
-            }
+            //    temp[0].Add(test6.GetListeCollisions()[i]);
+            //}
+            //for (int i = 0; i < test7.GetListeCollisions().Count; i++)
+            //{
 
-            ObjetCollisionné[0] = test.GetListeCollisions();
+            //    temp[0].Add(test7.GetListeCollisions()[i]);
+            //}
 
-            Components.Add(new Armée(this, 50, new Vector3(0, 2, 80), INTERVALLE_STANDARD, temp));
+            //ObjetCollisionné[0] = test.GetListeCollisions();
+
+            Components.Add(new Armée(this, 50, new Vector3(0, 2, 20000), INTERVALLE_STANDARD, temp,level.GetListSectionNiveau()));
             Components.Add(CaméraJeuAutomate);
 
             Components.Add(new Afficheur3D(this));
