@@ -92,17 +92,17 @@ namespace AtelierXNA
             Services.AddService(typeof(Caméra), CaméraJeuAutomate);
             Services.AddService(typeof(SpriteBatch), new SpriteBatch(GraphicsDevice));
             Components.Add(new AfficheurFPS(this, "Arial", Color.Red, INTERVALLE_CALCUL_FPS));
-            Components.Add(new TuileTextureeAnime(this, 100, Vector3.Zero, Vector3.Zero, new Vector2(1, 1), "FeuFollet", new Vector2(1, 1), 1f / 60));
+          //  Components.Add(new TuileTextureeAnime(this, 100, Vector3.Zero, Vector3.Zero, new Vector2(1, 1), "FeuFollet", new Vector2(1, 1), 1f / 60));
 
           
-            SectionRepos test = new SectionRepos(this, new Vector3(0, 0, 20020), 1);
+            SectionRepos test = new SectionRepos(this, new Vector3(0, 0, 100), 1);
             
-            SectionRepos test3 = new SectionRepos(this, new Vector3(0, 0, 19980), 1);
-            SectionRepos test4 = new SectionRepos(this, new Vector3(0, 0, 19960), 1);
-            SectionVentilateur test2 = new SectionVentilateur(this, new Vector3(0, 0, 19920), 2);
-            SectionHache test5 = new SectionHache(this, new Vector3(0, 0, 19940), 1);
-            SectionRepos test6 = new SectionRepos(this, new Vector3(0, 0, 20000), 1);
-            SectionRepos test7 = new SectionRepos(this, new Vector3(0, 0, 19900), 1);
+            SectionRepos test3 = new SectionRepos(this, new Vector3(0, 0, 80), 1);
+            SectionRepos test4 = new SectionRepos(this, new Vector3(0, 0, 60), 1);
+            SectionRepos test2 = new SectionRepos(this, new Vector3(0, 0, 40), 2);
+            SectionRepos test5 = new SectionRepos(this, new Vector3(0, 0, 20), 1);
+            SectionRepos test6 = new SectionRepos(this, new Vector3(0, 0, 0), 1);
+            SectionRepos test7 = new SectionRepos(this, new Vector3(0, 0, -20), 1);
 
 
             List<PrimitiveDeBase>[] ObjetCollisionné = new List<PrimitiveDeBase>[1];
@@ -147,7 +147,7 @@ namespace AtelierXNA
 
             ObjetCollisionné[0] = test.GetListeCollisions();
 
-            Components.Add(new Armée(this, 50, new Vector3(0, 2, 20000), INTERVALLE_STANDARD, temp));
+            Components.Add(new Armée(this, 50, new Vector3(0, 2, 80), INTERVALLE_STANDARD, temp));
             Components.Add(CaméraJeuAutomate);
 
             Components.Add(new Afficheur3D(this));
