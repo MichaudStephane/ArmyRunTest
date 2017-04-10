@@ -55,6 +55,7 @@ namespace AtelierXNA
                         Jeu partie = new AtelierXNA.Jeu(Game, 7, new Vector3(0, 0, 20060), 30, INTERVALLE_MOYEN);
                         Game.Components.Add(partie);
                         Game.Components.Remove(Start);
+                        this.Enabled = false;
                     }
                 }
             }
