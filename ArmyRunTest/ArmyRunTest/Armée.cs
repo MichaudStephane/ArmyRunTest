@@ -75,7 +75,7 @@ namespace AtelierXNA
             AnciennePosition = MoyennePosition;
             GestionInput = Game.Services.GetService(typeof(InputManager)) as InputManager;
             base.Initialize();
-            Caméra.SetPosCaméra(new Vector3(0, 9f,-60));
+            Caméra.SetPosCaméra(new Vector3(0, 9f,PosFlag.Z+20));
         }
 
         public override void Update(GameTime gameTime)
