@@ -43,11 +43,13 @@ namespace AtelierXNA
         public int NbVivants { get; private set; }
         Vector3 MoyennePosition { get; set; }
         List<SectionDeNiveau> ListeSections { get; set; }
+        bool EstFormationStandard { get; set; }
 
 
         public Armée(Game game, int nombreSoldats, Vector3 posFlag, float intervalleMAJ, List<PrimitiveDeBase>[] objetCollisionné, List<SectionDeNiveau> listeSections)
         : base(game)
         {
+            EstFormationStandard = true;
             ListeSections = listeSections;
             IntervalleMAJ = intervalleMAJ;
             NombreSoldat = nombreSoldats;
@@ -60,6 +62,7 @@ namespace AtelierXNA
             Caméra = Game.Services.GetService(typeof(Caméra)) as CaméraAutomate;
             ObjetCollisionné = objetCollisionné;
             TempsEcouleVerification = 0;
+           
 
 
         }
@@ -303,20 +306,22 @@ namespace AtelierXNA
         }
         void CalculerFormation()
         {
-            int a = 0;
-            if (NbVivants <= 9)
+            if (EstFormationStandard)
             {
-                Positions = new Vector3[3, (NbVivants / 3) + 1];
-            }
-            else
-            {
-                if (NbVivants <= 30)
+                if (NbVivants <= 9)
                 {
-                    Positions = new Vector3[(NbVivants / 4) + 1, 4];
+                    Positions = new Vector3[3, (NbVivants / 3) + 1];
                 }
                 else
                 {
-                    Positions = new Vector3[(NbVivants / 5) + 1, 5];
+                    if (NbVivants <= 30)
+                    {
+                        Positions = new Vector3[(NbVivants / 4) + 1, 4];
+                    }
+                    else
+                    {
+                        Positions = new Vector3[(NbVivants / 5) + 1, 5];
+                    }
                 }
             }
 
