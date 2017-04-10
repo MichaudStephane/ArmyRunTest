@@ -90,7 +90,7 @@ namespace AtelierXNA
             // (à compléter)
             // a checker
             Direction = Vector3.Normalize(Direction);
-            Vue = Matrix.CreateLookAt(Position, Cible, OrientationVerticale);
+            Vue = Matrix.CreateLookAt(Position, Position + Direction, OrientationVerticale);
             GénérerFrustum();
         }
 
@@ -129,9 +129,11 @@ namespace AtelierXNA
                 TempsÉcouléDepuisMAJ = 0;
             }
              GameWindow a = Game.Window;
+            //a.Title =
+            //    " Position: [" + Math.Round(Position.X, 2) + "   " + Math.Round(Position.Y, 2) + "   " + Math.Round(Position.Z, 2) + "]" + "       CentreArmé: [ " + HitBoxArmée.Center.Z;
             a.Title =
-                " Position: [" + Math.Round(Position.X, 2) + "   " + Math.Round(Position.Y, 2) + "   " + Math.Round(Position.Z, 2) + "]" + "       CentreArmé: [ " +HitBoxArmée.Center.Z ;
-            base.Update(gameTime);
+                " Cible: [" + Cible.ToString() + "]" + "       CentreArmé: [ " + HitBoxArmée.Center.ToString();
+            //base.Update(gameTime);
         }
 
         private int GérerTouche(Keys touche)
@@ -247,35 +249,18 @@ namespace AtelierXNA
         {
             Ancient = Avance;
             Vector3 AnciennneVitesse = Force;     
-
-            if(Position.Z<-1)
+            if(HitBoxArmée.Center.Z<0)
             {
-                int A = 1;
+                int a = 1;
             }
           if(Frustum.Contains(HitBoxArmée) ==ContainmentType.Contains)
-            {
-              
-
-                //if (Frustum.Contains(new BoundingSphere(HitBoxArmée.Center, 1.02F * HitBoxArmée.Radius)) == ContainmentType.Contains)
-                //{
-                    
-                        Force += 100 * IntervalleMAJ * (new Vector3(0, 0, -1));
-                    
-                //}
+            {              
+                        Force += 100 * IntervalleMAJ * (new Vector3(0, 0, -1));                   
                
             }
           else
             {
-
-
-
-                //if (Frustum.Contains(new BoundingSphere(HitBoxArmée.Center, 0.98F * HitBoxArmée.Radius)) != ContainmentType.Contains)
-                //{
                     Force -= 100 * IntervalleMAJ * (new Vector3(0, 0, -1));
-                //}
-            
-            
-
             }
        
 
