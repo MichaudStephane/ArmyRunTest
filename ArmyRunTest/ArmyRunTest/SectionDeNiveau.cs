@@ -66,7 +66,7 @@ namespace AtelierXNA
 
         protected virtual void CréerHitboxSection()
         {
-            HitBoxSection = new BoundingSphere(new Vector3(PositionInitiale.X , PositionInitiale.Y, PositionInitiale.Z + LongueurNiveau / 2f),1000* LongueurNiveau / 2f);
+            HitBoxSection = new BoundingSphere(new Vector3(PositionInitiale.X , PositionInitiale.Y, PositionInitiale.Z + LongueurNiveau/4f),LongueurNiveau /2f +3);
         }
         
 

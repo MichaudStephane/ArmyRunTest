@@ -66,7 +66,7 @@ namespace AtelierXNA
         }
         protected override void CréerHitboxSection()
         {
-            HitBoxSection = new BoundingSphere(new Vector3(PositionInitiale.X + TAILLE_TERRAIN_X, PositionInitiale.Y, PositionInitiale.Z - LongueurNiveau / 2f), LongueurNiveau / 2f);
+            HitBoxSection = new BoundingSphere(new Vector3(PositionInitiale.X + TAILLE_TERRAIN_X, PositionInitiale.Y, PositionInitiale.Z + LongueurNiveau / 4f), LongueurNiveau/ 2f +4);
 
     }
     }

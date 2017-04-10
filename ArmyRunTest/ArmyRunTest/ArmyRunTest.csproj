@@ -101,6 +101,7 @@
     <Compile Include="ICollisionable.cs" />
     <Compile Include="ImagesFond.cs" />
     <Compile Include="InputManager.cs" />
+    <Compile Include="Jeu.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="Niveau.cs" />
     <Compile Include="ObjetBase.cs" />
