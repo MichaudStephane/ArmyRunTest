@@ -84,8 +84,9 @@ namespace AtelierXNA
             //Services.AddService(typeof(Caméra), CaméraJeu);
             Services.AddService(typeof(Caméra), CaméraJeuAutomate);
             Services.AddService(typeof(SpriteBatch), new SpriteBatch(GraphicsDevice));
-            Components.Add(new AfficheurFPS(this, "Arial", Color.Red, INTERVALLE_CALCUL_FPS));
+           
             Components.Add(new ArrièrePlan(this, "fond ecran"));
+            Components.Add(new AfficheurFPS(this, "Arial", Color.Red, INTERVALLE_CALCUL_FPS));
             Components.Add(new Menu(this));
                
             
