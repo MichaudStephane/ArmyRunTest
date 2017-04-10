@@ -21,7 +21,7 @@ namespace AtelierXNA
         Vector2 DimensionCase = new Vector2(0.7F, 0.7F);
         List<Humanoide> Soldats { get; set; }
         Vector3[,] Positions { get; set; }
-        SoldatDeArmée[,] Armés { get; set; }
+        public SoldatDeArmée[,] Armés { get; set; }
         float TempsÉcoulé { get; set; }
         float TempsÉcoulé2 { get; set; }
         float TempsEcouleVerification { get; set; }

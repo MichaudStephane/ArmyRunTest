@@ -27,7 +27,7 @@ namespace AtelierXNA
         Vector3 PositionCible { get; set; }
         Vector2 Déplacement { get; set; }
         float TempsVerification { get; set; }
-      public  bool EstVivant{get;protected set;}
+        public bool EstVivant{get; set;}
 
         List<SectionDeNiveau> ListeSections { get; set; }
 
