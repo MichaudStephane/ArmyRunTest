@@ -13,6 +13,8 @@ namespace AtelierXNA
 {
     class Jeu : Microsoft.Xna.Framework.GameComponent
     {
+        Armée Armées { get; set; }
+        Niveau _Niveau { get; set; }
         CaméraAutomate CaméraJeu { get; set; }
         int NombreSectionsNiveau { get; set; }
         Vector3 PositionInitialeNiveau { get; set; }
@@ -20,10 +22,11 @@ namespace AtelierXNA
         float IntervalleMaj { get; set; }
         Song ChansonJeu { get; set; }
         RessourcesManager<Song> GestionnaireDeMusiques { get; set; }
+        int NombreSoldatsVivant { get; set; }
 
 
         public Jeu(Game jeu, int nombreSectionsNiveau, Vector3 positionInitialeNiveau, int nombreSoldats, float intervalleMaj)
-            :base(jeu)
+            : base(jeu)
         {
             NombreSectionsNiveau = nombreSectionsNiveau;
             PositionInitialeNiveau = positionInitialeNiveau;
@@ -37,11 +40,35 @@ namespace AtelierXNA
             CaméraJeu = Game.Services.GetService(typeof(Caméra)) as CaméraAutomate;
             Game.Components.Add(CaméraJeu);
 
-            Niveau niveau = new Niveau(Game, NombreSectionsNiveau, PositionInitialeNiveau);
-            Game.Components.Add(new Armée(Game, NombreSoldats, new Vector3(0, 2, PositionInitialeNiveau.Z-50), IntervalleMaj, niveau.GetTableauListObjetCollisionables(),niveau.GetListSectionNiveau()));
+
+            _Niveau = new Niveau(Game, NombreSectionsNiveau, PositionInitialeNiveau);
+            Armées = new Armée(Game, NombreSoldats, new Vector3(0, 2, 20000), IntervalleMaj, _Niveau.GetTableauListObjetCollisionables(), _Niveau.GetListSectionNiveau());
+            Game.Components.Add(Armées);
             GestionnaireDeMusiques = Game.Services.GetService(typeof(RessourcesManager<Song>)) as RessourcesManager<Song>;
             ChansonJeu = GestionnaireDeMusiques.Find("Starboy");
             //MediaPlayer.Play(ChansonJeu);
         }
+
+        public void ChangerDeNiveau()
+        {
+            for (int i = 0; i < Armées.Armés.GetLength(0); i++)
+            {
+                for (int j = 0; j < Armées.Armés.GetLength(1); j++)
+                {
+                    if (Armées.Armés[i, j] != null)
+                    {
+                        if(Armées.Armés[i,j].EstVivant)
+                        //{
+                        //    if(Armées.Armés[i,j].Position.Z >= _Niveau)
+                        //    {
+                        //        ++NombreSoldatsVivant;
+                        //        Armées.Armés[i, j].EstVivant = false;
+                        //    }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
+
