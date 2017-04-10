@@ -225,14 +225,14 @@ namespace AtelierXNA
 
 
              
-                    direction = new Vector3(déplacementGaucheDroite, 0, déplacementAvantArrière);
+                    direction = new Vector3(déplacementGaucheDroite*2, 0, déplacementAvantArrière);
                 
                 
                 PosFlag = PosFlag + 0.1f * direction;
 
                 
-                 PosFlag = new Vector3(PosFlag.X, PosFlag.Y, Math.Max(MoyennePosition.Z - 10, PosFlag.Z));
-               
+               //  PosFlag = new Vector3(PosFlag.X, PosFlag.Y, Math.Max(MoyennePosition.Z - 10, PosFlag.Z));
+                PosFlag = new Vector3(PosFlag.X, PosFlag.Y,  PosFlag.Z);
 
                 //Pour les tests
                 if (GestionInput.EstNouvelleTouche(Keys.R))
