@@ -43,6 +43,9 @@ namespace AtelierXNA
         public int NbVivants { get; private set; }
         Vector3 MoyennePosition { get; set; }
         List<SectionDeNiveau> ListeSections { get; set; }
+        AfficheurNbVivant AfficheurNbVivant { get; set; }
+        
+
 
 
         public Armée(Game game, int nombreSoldats, Vector3 posFlag, float intervalleMAJ, List<PrimitiveDeBase>[] objetCollisionné, List<SectionDeNiveau> listeSections)
@@ -60,8 +63,6 @@ namespace AtelierXNA
             Caméra = Game.Services.GetService(typeof(Caméra)) as CaméraAutomate;
             ObjetCollisionné = objetCollisionné;
             TempsEcouleVerification = 0;
-
-
         }
 
         public override void Initialize()
@@ -75,6 +76,8 @@ namespace AtelierXNA
             CalculerMoyennePosition();
             AnciennePosition = MoyennePosition;
             GestionInput = Game.Services.GetService(typeof(InputManager)) as InputManager;
+            AfficheurNbVivant = new AfficheurNbVivant(Game, "185281", Color.Red, NbVivants, INTERVALLE_STANDARD);
+            Game.Components.Add(AfficheurNbVivant);
             base.Initialize();
             Caméra.SetPosCaméra(new Vector3(0, 9f,PosFlag.Z));
         }
@@ -85,8 +88,7 @@ namespace AtelierXNA
             TempsÉcoulé2 += (float)gameTime.ElapsedGameTime.TotalSeconds;
             TempsEcouleVerification += (float)gameTime.ElapsedGameTime.TotalSeconds;
             //Vector3 Pos = new Vector3(Armés[0, 0].Position.X, Armés[0, 0].Position.Y, Armés[0, 0].Position.Z);
-
-            
+            AfficheurNbVivant.ChangerNombreVivant(NbVivants);
             if (TempsÉcoulé >= IntervalleMAJ)
             {
                 GererClavier();
@@ -102,10 +104,8 @@ namespace AtelierXNA
                         AnciennePosition = MoyennePosition;
                         DéplacerCaméra();
                     }
-                    
                     TempsÉcoulé2 = 0;
                 }
-                
                 TempsÉcoulé = 0;
             }
             if (TempsEcouleVerification >= INTERVALLE_VERIFICATION)

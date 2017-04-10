@@ -39,6 +39,7 @@ namespace AtelierXNA
 
             Niveau niveau = new Niveau(Game, NombreSectionsNiveau, PositionInitialeNiveau);
             Game.Components.Add(new Armée(Game, NombreSoldats, PositionInitialeNiveau+new Vector3(0,0,10), IntervalleMaj, niveau.GetTableauListObjetCollisionables(), niveau.GetListSectionNiveau()));
+
             GestionnaireDeMusiques = Game.Services.GetService(typeof(RessourcesManager<Song>)) as RessourcesManager<Song>;
             ChansonJeu = GestionnaireDeMusiques.Find("Starboy");
             //MediaPlayer.Play(ChansonJeu);

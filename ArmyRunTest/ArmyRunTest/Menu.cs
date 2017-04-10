@@ -20,6 +20,7 @@ namespace AtelierXNA
         CaméraAutomate CaméraJeuAutomate { get; set; }
         Boutton Start{ get; set; }
 
+
         public Menu(Game jeu)
             : base(jeu)
         {  }
