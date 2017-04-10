@@ -41,7 +41,16 @@ namespace AtelierXNA
 
         private void CréerNiveau()
         {
-            for (int i = 0; i < NbrSections; ++i)
+            SectionRepos c = new SectionRepos(Jeu, Position, 0);
+            ListSections.Add(c);
+            Jeu.Components.Add(c);
+            foreach (PrimitiveDeBase b in c.ObjetCollisionables)
+            {
+                TabListObjetCollisionables[0].Add(b);
+            }
+            Position = new Vector3(Position.X, Position.Y, Position.Z - c.LongueurNiveau);
+
+            for (int i = 1; i < NbrSections; ++i)
             {
                 int nombreAléatoire = GénérateurAléatoire.Next(0, NbrSectionsDisponibles + 1);
                 if (nombreAléatoire == 0)
