@@ -43,14 +43,15 @@ namespace AtelierXNA
         public int NbVivants { get; private set; }
         Vector3 MoyennePosition { get; set; }
         List<SectionDeNiveau> ListeSections { get; set; }
-        AfficheurNbVivant AfficheurNbVivant { get; set; }
-        
-
+        bool EstFormationStandard { get; set; }
+        bool EstFormationLigne { get; set; }
 
 
         public Armée(Game game, int nombreSoldats, Vector3 posFlag, float intervalleMAJ, List<PrimitiveDeBase>[] objetCollisionné, List<SectionDeNiveau> listeSections)
         : base(game)
         {
+            EstFormationLigne = false;
+            EstFormationStandard = true;
             ListeSections = listeSections;
             IntervalleMAJ = intervalleMAJ;
             NombreSoldat = nombreSoldats;
@@ -63,6 +64,9 @@ namespace AtelierXNA
             Caméra = Game.Services.GetService(typeof(Caméra)) as CaméraAutomate;
             ObjetCollisionné = objetCollisionné;
             TempsEcouleVerification = 0;
+           
+
+
         }
 
         public override void Initialize()
@@ -76,8 +80,6 @@ namespace AtelierXNA
             CalculerMoyennePosition();
             AnciennePosition = MoyennePosition;
             GestionInput = Game.Services.GetService(typeof(InputManager)) as InputManager;
-            AfficheurNbVivant = new AfficheurNbVivant(Game, "185281", Color.Red, NbVivants, INTERVALLE_STANDARD);
-            Game.Components.Add(AfficheurNbVivant);
             base.Initialize();
             Caméra.SetPosCaméra(new Vector3(0, 9f,PosFlag.Z));
         }
@@ -88,7 +90,8 @@ namespace AtelierXNA
             TempsÉcoulé2 += (float)gameTime.ElapsedGameTime.TotalSeconds;
             TempsEcouleVerification += (float)gameTime.ElapsedGameTime.TotalSeconds;
             //Vector3 Pos = new Vector3(Armés[0, 0].Position.X, Armés[0, 0].Position.Y, Armés[0, 0].Position.Z);
-            AfficheurNbVivant.ChangerNombreVivant(NbVivants);
+
+            
             if (TempsÉcoulé >= IntervalleMAJ)
             {
                 GererClavier();
@@ -104,8 +107,10 @@ namespace AtelierXNA
                         AnciennePosition = MoyennePosition;
                         DéplacerCaméra();
                     }
+                    
                     TempsÉcoulé2 = 0;
                 }
+                
                 TempsÉcoulé = 0;
             }
             if (TempsEcouleVerification >= INTERVALLE_VERIFICATION)
@@ -206,25 +211,14 @@ namespace AtelierXNA
 
         void GererClavier()
         {
-     
-            
-            
-
-            if (!GestionInput.EstEnfoncée(Keys.LeftShift))
-            {
                 float déplacementGaucheDroite = 0;
-                float déplacementAvantArrière = 0;
-                
-                      //à inverser au besoin
+                float déplacementAvantArrière = 0;              
                      déplacementAvantArrière = GérerTouche(Keys.S) - GérerTouche(Keys.W);
                 
              
                 déplacementGaucheDroite = GérerTouche(Keys.D) - GérerTouche(Keys.A);
 
                 Vector3 direction;
-
-
-             
                     direction = new Vector3(déplacementGaucheDroite*2, 0, déplacementAvantArrière);
                 
                 
@@ -235,13 +229,24 @@ namespace AtelierXNA
                 PosFlag = new Vector3(PosFlag.X, PosFlag.Y,  PosFlag.Z);
 
                 //Pour les tests
-                if (GestionInput.EstNouvelleTouche(Keys.R))
-                {
-                    PosFlag = PosFlagInitial;
-                    ToutDetruire();
-                    CréerPositionsSoldats();
-                    CréerSoldats();
-                }
+                //if (GestionInput.EstNouvelleTouche(Keys.R))
+                //{
+                //    PosFlag = PosFlagInitial;
+                //    ToutDetruire();
+                //    CréerPositionsSoldats();
+                //    CréerSoldats();
+                //}
+            if(GestionInput.EstEnfoncée(Keys.D1))
+            {
+                EstFormationStandard = true;
+                EstFormationLigne = false;
+                ReformerRang();
+            }
+            if (GestionInput.EstEnfoncée(Keys.D2))
+            {
+                EstFormationStandard = false;
+                EstFormationLigne = true;
+                ReformerRang();
             }
 
 
@@ -303,21 +308,30 @@ namespace AtelierXNA
         }
         void CalculerFormation()
         {
-            int a = 0;
-            if (NbVivants <= 9)
+            if (EstFormationStandard)
             {
-                Positions = new Vector3[3, (NbVivants / 3) + 1];
-            }
-            else
-            {
-                if (NbVivants <= 30)
-                {
-                    Positions = new Vector3[(NbVivants / 4) + 1, 4];
-                }
+                if (NbVivants <= 9)
+                    Positions = new Vector3[ (NbVivants / 3) + 1, 3];
                 else
                 {
-                    Positions = new Vector3[(NbVivants / 5) + 1, 5];
+                    if (NbVivants <= 30)
+                        Positions = new Vector3[ (NbVivants / 4) + 1, 4];
+                    else
+                        Positions = new Vector3[(NbVivants / 5) + 1,5];
                 }
+            }
+            if(EstFormationLigne)
+            {
+                if (NbVivants <= 9)
+                    Positions = new Vector3[(NbVivants / 1) + 1, 1];
+                else
+                {
+                    if (NbVivants <= 30)
+                        Positions = new Vector3[(NbVivants / 2) + 1, 2];
+                    else
+                        Positions = new Vector3[(NbVivants / 3) + 1, 3];
+                }
+
             }
 
        
@@ -358,7 +372,7 @@ namespace AtelierXNA
          
                 if(soldatDeArmée.VarPosition.Y < 25 && soldatDeArmée.VarPosition.Y > -7)
                 {
-                   if(Math.Abs(-soldatDeArmée.Position.X+PosFlag.X)<20)
+                   if(Math.Abs(-soldatDeArmée.Position.X)<10)
                     estDansLimite = true;
                 }
                 
@@ -430,10 +444,6 @@ namespace AtelierXNA
                 }
             }
   
-            if(temp.Center.Z<0)
-            {
-                int a = 1;
-            }
             Caméra.DonnerBoundingSphere(BoundingSphere.CreateMerged(temp,Flag.ViewFlag));
         }
 
