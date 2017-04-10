@@ -20,6 +20,7 @@ namespace AtelierXNA
         public const float INTERVALLE_STANDARD = 1f / 60;
         public const float INTERVALLE_CALCUL_FPS = 1f;
 
+        ImagesFond ImageFond { get; set; }
         CaméraSubjective CaméraJeu { get; set; }
         CaméraAutomate CaméraJeuAutomate{ get; set; }
         InputManager GestionInput;
@@ -93,8 +94,8 @@ namespace AtelierXNA
             Services.AddService(typeof(SpriteBatch), new SpriteBatch(GraphicsDevice));
             Components.Add(new AfficheurFPS(this, "Arial", Color.Red, INTERVALLE_CALCUL_FPS));
             Components.Add(new TuileTextureeAnime(this, 100, Vector3.Zero, Vector3.Zero, new Vector2(1, 1), "FeuFollet", new Vector2(1, 1), 1f / 60));
-
-          
+            
+           
             SectionRepos test = new SectionRepos(this, new Vector3(0, 0, 20020), 1);
             
             SectionRepos test3 = new SectionRepos(this, new Vector3(0, 0, 19980), 1);
