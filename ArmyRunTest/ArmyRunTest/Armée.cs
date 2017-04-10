@@ -45,7 +45,7 @@ namespace AtelierXNA
         List<SectionDeNiveau> ListeSections { get; set; }
         bool EstFormationStandard { get; set; }
         bool EstFormationLigne { get; set; }
-
+        AfficheurNbVivant AfficheurNbVivant { get; set; }
 
         public Armée(Game game, int nombreSoldats, Vector3 posFlag, float intervalleMAJ, List<PrimitiveDeBase>[] objetCollisionné, List<SectionDeNiveau> listeSections)
         : base(game)
@@ -79,6 +79,9 @@ namespace AtelierXNA
             CréerSoldats();
             CalculerMoyennePosition();
             AnciennePosition = MoyennePosition;
+            AfficheurNbVivant = new AfficheurNbVivant(Game, "185281", Color.Red, NbVivants, INTERVALLE_STANDARD);
+            Game.Components.Add(AfficheurNbVivant);
+
             GestionInput = Game.Services.GetService(typeof(InputManager)) as InputManager;
             base.Initialize();
             Caméra.SetPosCaméra(new Vector3(0, 9f,PosFlag.Z));
@@ -90,8 +93,8 @@ namespace AtelierXNA
             TempsÉcoulé2 += (float)gameTime.ElapsedGameTime.TotalSeconds;
             TempsEcouleVerification += (float)gameTime.ElapsedGameTime.TotalSeconds;
             //Vector3 Pos = new Vector3(Armés[0, 0].Position.X, Armés[0, 0].Position.Y, Armés[0, 0].Position.Z);
+            AfficheurNbVivant.ChangerNombreVivant(NbVivants);
 
-            
             if (TempsÉcoulé >= IntervalleMAJ)
             {
                 GererClavier();
