@@ -42,12 +42,13 @@ namespace AtelierXNA
         Flag Flag { get; set; }
         public int NbVivants { get; private set; }
         Vector3 MoyennePosition { get; set; }
+        List<SectionDeNiveau> ListeSections { get; set; }
 
 
-
-        public Armée(Game game, int nombreSoldats, Vector3 posFlag, float intervalleMAJ, List<PrimitiveDeBase>[] objetCollisionné)
+        public Armée(Game game, int nombreSoldats, Vector3 posFlag, float intervalleMAJ, List<PrimitiveDeBase>[] objetCollisionné, List<SectionDeNiveau> listeSections)
         : base(game)
         {
+            ListeSections = listeSections;
             IntervalleMAJ = intervalleMAJ;
             NombreSoldat = nombreSoldats;
             NbVivants = NombreSoldat;
@@ -75,7 +76,7 @@ namespace AtelierXNA
             AnciennePosition = MoyennePosition;
             GestionInput = Game.Services.GetService(typeof(InputManager)) as InputManager;
             base.Initialize();
-            Caméra.SetPosCaméra(new Vector3(0, 9f,PosFlag.Z+20));
+            Caméra.SetPosCaméra(new Vector3(0, 9f,PosFlag.Z));
         }
 
         public override void Update(GameTime gameTime)
@@ -194,8 +195,8 @@ namespace AtelierXNA
                 {
                     if (nbSoldatsCreés < NombreSoldat)
                     {
-                        //Armés[i, j] = new SoldatDeArmée(Game, 0.5F, Vector3.Zero, PosFlag + Positions[i, j], new Vector2(1, 2), "LoupGarou", string.Empty, new Vector2(4, 4), new Vector2(4, 4), 1f / 60, ObjetCollisionné);
-                        //Game.Components.Add(Armés[i, j]);
+                        Armés[i, j] = new SoldatDeArmée(Game, 0.5F, Vector3.Zero, PosFlag + Positions[i, j], new Vector2(1, 2), "LoupGarou", string.Empty, new Vector2(4, 4), new Vector2(4, 4), 1f / 60, ObjetCollisionné, ListeSections);
+                        Game.Components.Add(Armés[i, j]);
                         nbSoldatsCreés++;
                     }
                 }

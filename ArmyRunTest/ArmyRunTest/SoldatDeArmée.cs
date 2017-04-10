@@ -102,10 +102,10 @@ namespace AtelierXNA
             EstEnCollision = false; ;
             EstSurTerrain = false;
             Vector3 V = VecteurResultantForce;
-            int index = 0;
-            foreach(SectionDeNiveau a in ListeSections)
+            //int index = 0;
+            foreach (SectionDeNiveau a in ListeSections)
             {
-                if(HitBoxGénérale.Intersects(a.HitBoxSection))
+                if (HitBoxGénérale.Intersects(a.HitBoxSection))
                 {
                     foreach (ICollisionable g in ObjetCollisionné[a.IndexTableau])
                     {
@@ -118,8 +118,8 @@ namespace AtelierXNA
 
             //foreach (ICollisionable g in ObjetCollisionné[index])
             //{
-            //  VecteurResultantForce += ((g as ICollisionable).DonnerVectorCollision(this));  
-              
+            //    VecteurResultantForce += ((g as ICollisionable).DonnerVectorCollision(this));
+
             //}
             if (V != VecteurResultantForce)
             {
