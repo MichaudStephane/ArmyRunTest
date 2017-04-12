@@ -122,7 +122,7 @@ namespace AtelierXNA
                 
                     DéterminerVitesse();
               
-              //      Position = new Vector3(Position.X + IntervalleMAJ * Vitesse.X, Position.Y + IntervalleMAJ * Vitesse.Y, Position.Z + IntervalleMAJ * Vitesse.Z);
+                    Position = new Vector3(Position.X + IntervalleMAJ * Vitesse.X, Position.Y + IntervalleMAJ * Vitesse.Y, Position.Z + IntervalleMAJ * Vitesse.Z);
                 
                     CréerPointDeVue();
                 
@@ -195,47 +195,47 @@ namespace AtelierXNA
         }
         void DéterminerVitesse()
         {
-            Ancient = Avance;
-           // Vector3 direction = new Vector3(0, 0, -1);
-            Vector3 direction = Direction;
-            direction.Normalize();
-            direction = new Vector3(direction.X,  direction.Y, direction.Z);
+           // Ancient = Avance;
+           //// Vector3 direction = new Vector3(0, 0, -1);
+           // Vector3 direction = Direction;
+           // direction.Normalize();
+           // direction = new Vector3(direction.X,  direction.Y, direction.Z);
 
-            float h = HitBoxArmée.Radius * (float)Math.Sqrt((1f / Math.Pow(Math.Tan(AngleOuvertureObjectif / 2), 2)));
-            Vector3 PositionAAtteindre = HitBoxArmée.Center - direction* (h+HitBoxArmée.Radius);
-          //  if(HitBoxArmée.Center.Z<0)
-          //  {
-          //      int a = 1;
-          //  }
-          //if(Frustum.Contains(HitBoxArmée) ==ContainmentType.Contains)
-          //  {              
-          //              Force += 100 * IntervalleMAJ * (new Vector3(0, 0, -1));                   
-               
-          //  }
-          //else
-          //  {
-          //          Force -= 100 * IntervalleMAJ * (new Vector3(0, 0, -1));
-          //  }
-       
-
-          //  //if (Vitesse.Z != 0)
-          //  //{
-          //  //    Force -= new Vector3(0, 0, FROTTEMENT * (Vitesse.Z / Math.Abs(Vitesse.Z)));
-          //  //}
-
-
-          //  Force = Force - IntervalleMAJ*(1f / Force.Length()) * Force.LengthSquared()* Force;
-          //  Force = new Vector3(Force.X, Math.Max(Force.Y,0), Force.Z);
-
-          //  Vitesse = Force;
-            if(HitBoxArmée.Radius!=0)
+           // float h = HitBoxArmée.Radius * (float)Math.Sqrt((1f / Math.Pow(Math.Tan(AngleOuvertureObjectif / 2), 2)));
+           // Vector3 PositionAAtteindre = HitBoxArmée.Center - direction* (h+HitBoxArmée.Radius);
+            if (HitBoxArmée.Center.Z < 0)
             {
                 int a = 1;
             }
-           
+            if (Frustum.Contains(HitBoxArmée) == ContainmentType.Contains)
+            {
+                Force += 100 * IntervalleMAJ * (new Vector3(0, 0, -1));
 
-               // Position = new Vector3(Position.X, 7, PositionAAtteindre.Z);
-                Position = new Vector3(Position.X, 7, Math.Max((Position.Z + (-Direction * DISTANCE_PLAN_RAPPROCHÉ).Z) , PositionAAtteindre.Z));
+            }
+            else
+            {
+                Force -= 100 * IntervalleMAJ * (new Vector3(0, 0, -1));
+            }
+
+
+            //if (Vitesse.Z != 0)
+            //{
+            //    Force -= new Vector3(0, 0, FROTTEMENT * (Vitesse.Z / Math.Abs(Vitesse.Z)));
+            //}
+
+
+            Force = Force - IntervalleMAJ * (1f / Force.Length()) * Force.LengthSquared() * Force;
+            Force = new Vector3(Force.X, Math.Max(Force.Y, 0), Force.Z);
+
+            Vitesse = Force;
+            //if (HitBoxArmée.Radius!=0)
+            //{
+            //    int a = 1;
+            //}
+
+
+            //Position = new Vector3(Position.X, 7, PositionAAtteindre.Z);
+            //Position = new Vector3(Position.X, 7, Math.Max((Position.Z + (-Direction * DISTANCE_PLAN_RAPPROCHÉ).Z) , PositionAAtteindre.Z));
         }
     }
 }
