@@ -38,15 +38,15 @@ namespace AtelierXNA
 
         private void CréerSection()
         {
-            int nbrTerrainsMobiles = 3;
+            int nbrTerrainsMobilesSur2 = 6/2;
             float demiTerrain_X = (TAILLE_TERRAIN_X / 2f);
-            for(int i= 0; i < nbrTerrainsMobiles;++i)
+            for(int i= 0; i < nbrTerrainsMobilesSur2;++i)
             {
-                ListeTerrains.Add(new TerrainMobileSin(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X+demiTerrain_X*i, PositionInitiale.Y, PositionInitiale.Z + (TAILLE_TERRAIN_Z * HOMOTHÉTIE_INITIALE_TERRAIN* i)), 1 / 60f, "stefpath", "Droite", 1 / 60f, 3));
+                ListeTerrains.Add(new TerrainMobileSin(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X+demiTerrain_X*i, PositionInitiale.Y, PositionInitiale.Z - (TAILLE_TERRAIN_Z * HOMOTHÉTIE_INITIALE_TERRAIN* i)), 1 / 60f, "stefpath", "Droite", 1 / 60f, 2*i));
             }
-            for (int i = 0; i < nbrTerrainsMobiles; ++i)
+            for (int i = 0; i < nbrTerrainsMobilesSur2; ++i)
             {
-                ListeTerrains.Add(new TerrainMobileSin(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X - demiTerrain_X * i, PositionInitiale.Y, PositionInitiale.Z + (TAILLE_TERRAIN_Z * HOMOTHÉTIE_INITIALE_TERRAIN * i)+ 3* TAILLE_TERRAIN_Z * HOMOTHÉTIE_INITIALE_TERRAIN), 1 / 60f, "stefpath", "Droite", 1 / 60f, 3));
+                ListeTerrains.Add(new TerrainMobileSin(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X - demiTerrain_X * i, PositionInitiale.Y, PositionInitiale.Z - (TAILLE_TERRAIN_Z * HOMOTHÉTIE_INITIALE_TERRAIN * i)+ 3* TAILLE_TERRAIN_Z * HOMOTHÉTIE_INITIALE_TERRAIN), 1 / 60f, "stefpath", "Gauche", 1 / 60f, 2*i));
             }
         }
 
@@ -72,7 +72,7 @@ namespace AtelierXNA
         }
         protected override void CréerHitboxSection()
         {
-            HitBoxSection = new BoundingSphere(new Vector3(PositionInitiale.X + TAILLE_TERRAIN_X, PositionInitiale.Y, PositionInitiale.Z + LongueurNiveau / 4f), LongueurNiveau / 2f + 4);
+            HitBoxSection = new BoundingSphere(new Vector3(PositionInitiale.X + TAILLE_TERRAIN_X, PositionInitiale.Y, PositionInitiale.Z + LongueurNiveau / 4f), LongueurNiveau );
 
         }
     }
