@@ -88,8 +88,9 @@ namespace AtelierXNA
             Components.Add(new ArrièrePlan(this, "fond ecran"));
             Components.Add(new AfficheurFPS(this, "Arial", Color.Red, INTERVALLE_CALCUL_FPS));
             Components.Add(new Menu(this));
-               
-            
+
+    
+
 
             base.Initialize();
  
