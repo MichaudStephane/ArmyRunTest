@@ -179,7 +179,7 @@ namespace AtelierXNA
             float largeurArmé = Positions.GetLength(1) * DimensionCase.X;
             float longeurArmé = Positions.GetLength(0) * DimensionCase.Y;
 
-            Vector3 limGaucheHaut = new Vector3(-0.5F * largeurArmé + 0.5F * DimensionCase.X, 0, -0.5F * largeurArmé + 0.5F * DimensionCase.Y);
+            Vector3 limGaucheHaut = new Vector3(-0.5F * largeurArmé + 0.5F * DimensionCase.X, 0, -0.5F * longeurArmé + 0.5F * DimensionCase.Y);
 
             for (int j = 0; j < Positions.GetLength(1); j++)
             {
@@ -228,8 +228,8 @@ namespace AtelierXNA
                 PosFlag = PosFlag + 0.1f * direction;
 
                 
-               //  PosFlag = new Vector3(PosFlag.X, PosFlag.Y, Math.Max(MoyennePosition.Z - 10, PosFlag.Z));
-                PosFlag = new Vector3(PosFlag.X, PosFlag.Y,  PosFlag.Z);
+                 PosFlag = new Vector3(PosFlag.X, PosFlag.Y, Math.Max(MoyennePosition.Z - 10, PosFlag.Z));
+           //     PosFlag = new Vector3(PosFlag.X, PosFlag.Y,  PosFlag.Z);
 
                 //Pour les tests
                 //if (GestionInput.EstNouvelleTouche(Keys.R))
@@ -447,7 +447,9 @@ namespace AtelierXNA
                 }
             }
   
+      
             Caméra.DonnerBoundingSphere(BoundingSphere.CreateMerged(temp,Flag.ViewFlag));
+          
         }
 
     }

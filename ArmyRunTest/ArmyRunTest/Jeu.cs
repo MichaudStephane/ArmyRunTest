@@ -42,7 +42,7 @@ namespace AtelierXNA
 
 
             _Niveau = new Niveau(Game, NombreSectionsNiveau, PositionInitialeNiveau);
-            Armées = new Armée(Game, NombreSoldats, new Vector3(0, 2, 0), IntervalleMaj, _Niveau.GetTableauListObjetCollisionables(), _Niveau.GetListSectionNiveau());
+            Armées = new Armée(Game, NombreSoldats, PositionInitialeNiveau+ new  Vector3(0, 2, -30), IntervalleMaj, _Niveau.GetTableauListObjetCollisionables(), _Niveau.GetListSectionNiveau());
             Game.Components.Add(Armées);
             GestionnaireDeMusiques = Game.Services.GetService(typeof(RessourcesManager<Song>)) as RessourcesManager<Song>;
             ChansonJeu = GestionnaireDeMusiques.Find("Starboy");

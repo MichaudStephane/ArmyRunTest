@@ -58,7 +58,7 @@ namespace AtelierXNA
             Compteur = 0;
             const float DELTA_X = 3.3f;
             Vector3 positionDragon = new Vector3(0, 0, 5);
-            Vector3 positionCaméra = new Vector3(0, 1, -10);
+            Vector3 positionCaméra = new Vector3(0, 5, -10);
             Vector3 positionTuileDragon = positionDragon + Vector3.Right * (DELTA_X * 2);
 
             GestionnaireDeTextures = new RessourcesManager<Texture2D>(this, "Textures");

@@ -122,7 +122,7 @@ namespace AtelierXNA
                 
                     DéterminerVitesse();
               
-                    Position = new Vector3(Position.X + IntervalleMAJ * Vitesse.X, Position.Y + IntervalleMAJ * Vitesse.Y, Position.Z + IntervalleMAJ * Vitesse.Z);
+              //      Position = new Vector3(Position.X + IntervalleMAJ * Vitesse.X, Position.Y + IntervalleMAJ * Vitesse.Y, Position.Z + IntervalleMAJ * Vitesse.Z);
                 
                     CréerPointDeVue();
                 
@@ -180,58 +180,6 @@ namespace AtelierXNA
             Position = nouvellePosition;
         }
 
-        private void GérerRotation()
-        {
-            GérerLacet();
-            GérerTangage();
-            GérerRoulis();
-        }
-
-        private void GérerLacet()
-        {
-
-            float déplacementDirection = (GérerTouche(Keys.Left) - GérerTouche(Keys.Right)) * VitesseRotation;
-
-            if (déplacementDirection != 0)
-            {
-
-                Matrix MatriceTransformation = Matrix.CreateFromAxisAngle(OrientationVerticale, DELTA_LACET * déplacementDirection);
-                // Gestion du lacet
-
-                Direction = Vector3.Transform(Direction, MatriceTransformation);
-            }
-
-
-            // À compléter
-        }
-
-        private void GérerTangage()
-        {
-            float déplacementDirection = (GérerTouche(Keys.Down) - GérerTouche(Keys.Up)) * VitesseRotation;
-
-            if (déplacementDirection != 0)
-            {
-
-                Matrix MatriceTransformation = Matrix.CreateFromAxisAngle(Latéral, DELTA_TANGAGE * déplacementDirection);
-                // À compléter
-                Direction = Vector3.Transform(Direction, MatriceTransformation);
-                OrientationVerticale = Vector3.Transform(Vector3.Normalize(OrientationVerticale), MatriceTransformation);
-                OrientationVerticale = Vector3.Normalize(OrientationVerticale);
-            }
-        }
-
-        private void GérerRoulis()
-        {
-            float déplacementDirection = (GérerTouche(Keys.PageUp) - GérerTouche(Keys.PageDown)) * VitesseRotation;
-            if (déplacementDirection != 0)
-            {
-
-                Matrix MatriceTransformation = Matrix.CreateFromAxisAngle(Direction, DELTA_ROULIS * déplacementDirection);
-
-                OrientationVerticale = Vector3.Transform(OrientationVerticale, MatriceTransformation);
-                OrientationVerticale = Vector3.Normalize(OrientationVerticale);
-            }
-        }
 
         private void GestionClavier()
         {
@@ -248,34 +196,46 @@ namespace AtelierXNA
         void DéterminerVitesse()
         {
             Ancient = Avance;
-            Vector3 AnciennneVitesse = Force;     
-            if(HitBoxArmée.Center.Z<0)
+           // Vector3 direction = new Vector3(0, 0, -1);
+            Vector3 direction = Direction;
+            direction.Normalize();
+            direction = new Vector3(direction.X,  direction.Y, direction.Z);
+
+            float h = HitBoxArmée.Radius * (float)Math.Sqrt((1f / Math.Pow(Math.Tan(AngleOuvertureObjectif / 2), 2)));
+            Vector3 PositionAAtteindre = HitBoxArmée.Center - direction* (h+HitBoxArmée.Radius);
+          //  if(HitBoxArmée.Center.Z<0)
+          //  {
+          //      int a = 1;
+          //  }
+          //if(Frustum.Contains(HitBoxArmée) ==ContainmentType.Contains)
+          //  {              
+          //              Force += 100 * IntervalleMAJ * (new Vector3(0, 0, -1));                   
+               
+          //  }
+          //else
+          //  {
+          //          Force -= 100 * IntervalleMAJ * (new Vector3(0, 0, -1));
+          //  }
+       
+
+          //  //if (Vitesse.Z != 0)
+          //  //{
+          //  //    Force -= new Vector3(0, 0, FROTTEMENT * (Vitesse.Z / Math.Abs(Vitesse.Z)));
+          //  //}
+
+
+          //  Force = Force - IntervalleMAJ*(1f / Force.Length()) * Force.LengthSquared()* Force;
+          //  Force = new Vector3(Force.X, Math.Max(Force.Y,0), Force.Z);
+
+          //  Vitesse = Force;
+            if(HitBoxArmée.Radius!=0)
             {
                 int a = 1;
             }
-          if(Frustum.Contains(HitBoxArmée) ==ContainmentType.Contains)
-            {              
-                        Force += 100 * IntervalleMAJ * (new Vector3(0, 0, -1));                   
-               
-            }
-          else
-            {
-                    Force -= 100 * IntervalleMAJ * (new Vector3(0, 0, -1));
-            }
-       
+           
 
-            //if (Vitesse.Z != 0)
-            //{
-            //    Force -= new Vector3(0, 0, FROTTEMENT * (Vitesse.Z / Math.Abs(Vitesse.Z)));
-            //}
-
-
-            Force = Force - IntervalleMAJ*(1f / Force.Length()) * Force.LengthSquared()* Force;
-            Force = new Vector3(Force.X, Math.Max(Force.Y,0), Force.Z);
-
-            Vitesse = Force;
-          
-
+               // Position = new Vector3(Position.X, 7, PositionAAtteindre.Z);
+                Position = new Vector3(Position.X, 7, Math.Max((Position.Z + (-Direction * DISTANCE_PLAN_RAPPROCHÉ).Z) , PositionAAtteindre.Z));
         }
     }
 }
