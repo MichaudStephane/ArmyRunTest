@@ -23,7 +23,7 @@ namespace AtelierXNA
         Random GénérateurAléatoire { get; set; }
         int NbrSections { get; set; }
         Game Jeu { get; set; }
-        Vector3 Position { get; set; }
+        public Vector3 Position { get; private set; }
         public float LongueurNiveau
         {
             get
@@ -49,6 +49,31 @@ namespace AtelierXNA
             GénérateurAléatoire = new Random();
             Position = positionInitiale;
             CréerNiveau();
+            
+        }
+        public void DétruireNiveau()
+        {
+            
+            foreach (List<PrimitiveDeBase> p in TabListObjetCollisionables)
+            {
+                p.Clear();
+            }
+            ListSections.Clear();
+            
+            List<int> index = new List<int>();
+            for (int i = 0; i < Jeu.Components.Count(); i++)
+            {
+                if(Jeu.Components[i] is PrimitiveDeBase)
+                {
+                    index.Add(i);
+                }
+            }
+
+            index.OrderByDescending(x =>x);
+            for(int j = 0; j < index.Count(); j++)
+            {
+                index.Remove(j);
+            }
         }
 
         private void CréerNiveau()
@@ -64,8 +89,8 @@ namespace AtelierXNA
 
             for (int i = 1; i < NbrSections; ++i)
             {
-                int nombreAléatoire = GénérateurAléatoire.Next(0, NbrSectionsDisponibles + 1);
-                //int nombreAléatoire = 5;
+                //int nombreAléatoire = GénérateurAléatoire.Next(0, NbrSectionsDisponibles + 1);
+                int nombreAléatoire = 0;
                 if (nombreAléatoire == 0)
                 {
                     SectionRepos a = new SectionRepos(Jeu, Position, i);
@@ -122,17 +147,17 @@ namespace AtelierXNA
                     }
                     Position = new Vector3(Position.X, Position.Y, Position.Z - a.LongueurNiveau);
                 }
-                else if (nombreAléatoire == 5)
-                {
-                    SectionMobileMultiples a = new SectionMobileMultiples(Jeu, new Vector3(Position.X,Position.Y,(float)(Position.Z - 7)), i);
-                    ListSections.Add(a);
-                    Jeu.Components.Add(a);
-                    foreach (PrimitiveDeBase b in a.ObjetCollisionables)
-                    {
-                        TabListObjetCollisionables[i].Add(b);
-                    }
-                    Position = new Vector3(Position.X, Position.Y, Position.Z - a.LongueurNiveau);
-                }
+                //else if (nombreAléatoire == 5)
+                //{
+                //    SectionMobileMultiples a = new SectionMobileMultiples(Jeu, Position, i);
+                //    ListSections.Add(a);
+                //    Jeu.Components.Add(a);
+                //    foreach (PrimitiveDeBase b in a.ObjetCollisionables)
+                //    {
+                //        TabListObjetCollisionables[i].Add(b);
+                //    }
+                //    Position = new Vector3(Position.X, Position.Y, Position.Z - a.LongueurNiveau);
+                //}
 
             }
         }
