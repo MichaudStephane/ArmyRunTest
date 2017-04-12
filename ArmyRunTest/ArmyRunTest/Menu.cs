@@ -53,7 +53,7 @@ namespace AtelierXNA
                 {
                     if (GestionnaireManager.EstNouveauClicGauche())
                     {
-                        Jeu partie = new AtelierXNA.Jeu(Game, 10, new Vector3(0, 0, 0), 20, INTERVALLE_MOYEN);
+                        Jeu partie = new AtelierXNA.Jeu(Game, 10, new Vector3(0, 0, 0), 100, INTERVALLE_MOYEN);
                         Game.Components.Add(partie);
                         Game.Components.Remove(Start);
                         this.Enabled = false;

@@ -228,7 +228,7 @@ namespace AtelierXNA
                 PosFlag = PosFlag + 0.1f * direction;
 
                 
-                 PosFlag = new Vector3(PosFlag.X, PosFlag.Y, Math.Max(MoyennePosition.Z - 10, PosFlag.Z));
+                 PosFlag = new Vector3(PosFlag.X, PosFlag.Y,  PosFlag.Z);
            //     PosFlag = new Vector3(PosFlag.X, PosFlag.Y,  PosFlag.Z);
 
                 //Pour les tests
@@ -446,9 +446,14 @@ namespace AtelierXNA
                     }
                 }
             }
-  
-      
-            Caméra.DonnerBoundingSphere(BoundingSphere.CreateMerged(temp,Flag.ViewFlag));
+
+
+             Caméra.DonnerBoundingSphere(BoundingSphere.CreateMerged(temp,Flag.ViewFlag));
+
+         
+
+
+          //  Caméra.DonnerBoundingSphere(temp);
           
         }
 

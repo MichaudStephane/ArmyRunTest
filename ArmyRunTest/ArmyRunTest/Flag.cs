@@ -41,7 +41,7 @@ namespace AtelierXNA
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-            ViewFlag = new BoundingSphere(Position, 1);
+            ViewFlag = new BoundingSphere(new Vector3(0,Position.Y,Position.Z), 1);
 
             base.Update(gameTime);
         }
