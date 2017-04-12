@@ -70,12 +70,9 @@ namespace AtelierXNA
         }
         public override void Update(GameTime gameTime)
         {
-
-           
-            
             TempsÉcoulé += (float)gameTime.ElapsedGameTime.TotalSeconds;
             TempsEcouleVerification+=(float)gameTime.ElapsedGameTime.TotalSeconds;
-            Vector3 Pos = new Vector3(Armés[0, 0].Position.X, Armés[0, 0].Position.Y, Armés[0, 0].Position.Z);
+            Vector3 Pos = new Vector3(PosFlag.X, PosFlag.Y, PosFlag.Z);
             
             if (AnciennePosition != Pos)
             {
@@ -148,7 +145,6 @@ namespace AtelierXNA
         {
             int nbCases = NombreSoldat + Convert.ToInt32(NbSoldatPair());
 
-
             for (int i = 0; i < Positions.GetLength(0); i++)
             {
                 for (int j = 0; j < Positions.GetLength(1); j++)
@@ -171,8 +167,6 @@ namespace AtelierXNA
                     soldatscréees++;
                 }           
             }
-           
-
         }
 
         void GererClavier()
@@ -196,13 +190,13 @@ namespace AtelierXNA
                     CréerSoldats();
                 }
             }
-
-           
         }
+
         float GérerTouche(Keys k)
         {
             return GestionInput.EstEnfoncée(k) ? 1 : 0;
         }
+
         bool VerifierLesMorts()
         {
             NbVivants = 0;
@@ -266,12 +260,6 @@ namespace AtelierXNA
 
             NombreSoldat = NbVivants;
             CréerPositionsSoldats();
-
-
-
-
         }
-
-
     }
 }

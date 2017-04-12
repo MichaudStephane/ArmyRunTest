@@ -103,7 +103,7 @@ namespace AtelierXNA
             //     Components.Add(new Soldat(this, 0.7F, Vector3.Zero, new Vector3(0, 5, 5), new Vector2(1, 2), "LoupGarou", string.Empty, new Vector2(4, 4), new Vector2(4, 4), 1f / 30));
             //}
           
-           Components.Add(new Armée(this, 1000, new Vector3(0, 2, 12), INTERVALLE_STANDARD, ObjetCollisionné));
+           Components.Add(new Armée(this, 9, new Vector3(0, 2, 12), INTERVALLE_STANDARD, ObjetCollisionné));
 
 
             Components.Add(new Afficheur3D(this));
