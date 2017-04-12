@@ -15,7 +15,7 @@ namespace AtelierXNA
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class HachePendule : ObjetBase,ICollisionable
+    public class HachePendule : ObjetBase, ICollisionable
     {
         const int GRANDEUR_HACHE_STANDARD = 12;
         const int NB_HITBOX_PRÉCISES = 8;
@@ -79,7 +79,7 @@ namespace AtelierXNA
 
                 CalculerNouvellePositionHache();
                 BougerHitBox();
-                Angle = MathHelper.PiOver2 * (float)Math.Sin(AngleDépart+(float)gameTime.TotalGameTime.TotalSeconds) ;
+                Angle = MathHelper.PiOver2 * (float)Math.Sin(AngleDépart+(float)gameTime.TotalGameTime.TotalSeconds/3) ;
 
                 if( Angle>AnglePrécédent )
                 {

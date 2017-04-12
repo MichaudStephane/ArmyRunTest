@@ -10,9 +10,9 @@ namespace AtelierXNA
 
         protected RessourcesManager<Texture2D> gestionnaireDeTextures { get; set; }
         protected Texture2D textureTuile { get; private set; }
-        VertexPositionTexture[] Sommets { get; set; }
+        protected VertexPositionTexture[] Sommets { get; set; }
         protected Vector2[,] PtsTexture { get; set; }
-        string NomTextureTuile { get; set; }
+        protected string NomTextureTuile { get; set; }
         protected BlendState GestionAlpha { get; set; }
 
         public TuileTexturée(Game jeu, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, Vector2 étendue, string nomTextureTuile, float intervalleMAJ)
@@ -87,6 +87,7 @@ namespace AtelierXNA
         public virtual void ModifierPosition(Vector3 a)
         {
             Position=a;
+            CalculerMatriceMonde();
         }
     }
 }

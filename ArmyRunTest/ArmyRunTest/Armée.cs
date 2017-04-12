@@ -15,12 +15,15 @@ namespace AtelierXNA
 {
     class Armée : Microsoft.Xna.Framework.GameComponent
     {
+        const int MAX_DISTANCE_CAMÉRA = 20;
+        const int MIN_DISTANCE_CAMÉRA = 10;
         const int INTERVALLE_VERIFICATION = 2;
-        Vector2 DimensionCase = new Vector2(2, 2);
+        Vector2 DimensionCase = new Vector2(0.7F, 0.7F);
         List<Humanoide> Soldats { get; set; }
         Vector3[,] Positions { get; set; }
-        SoldatDeArmée[,] Armés { get; set; }
+        public SoldatDeArmée[,] Armés { get; set; }
         float TempsÉcoulé { get; set; }
+        float TempsÉcoulé2 { get; set; }
         float TempsEcouleVerification { get; set; }
         float IntervalleMAJ { get; set; }
         int NombreSoldat { get; set; }
@@ -33,71 +36,101 @@ namespace AtelierXNA
         Vector2 Espacement = new Vector2(1, 1);
         Vector3 AnciennePosition { get; set; }
         Vector3 IntervalPosition { get; set; }
+        Vector3 DifférencePositionCaméraAvecArmée { get; set; }
         protected InputManager GestionInput { get; private set; }
 
-        SoldatDeArmée Flag { get; set; }
+        Flag Flag { get; set; }
         public int NbVivants { get; private set; }
+        Vector3 MoyennePosition { get; set; }
+        List<SectionDeNiveau> ListeSections { get; set; }
+        bool EstFormationStandard { get; set; }
+        bool EstFormationLigne { get; set; }
+        AfficheurNbVivant AfficheurNbVivant { get; set; }
 
-
-
-        public Armée(Game game, int nombreSoldats, Vector3 posFlag, float intervalleMAJ, List<PrimitiveDeBase>[] objetCollisionné)
+        public Armée(Game game, int nombreSoldats, Vector3 posFlag, float intervalleMAJ, List<PrimitiveDeBase>[] objetCollisionné, List<SectionDeNiveau> listeSections)
         : base(game)
         {
-            AnciennePosition = posFlag;
+            EstFormationLigne = false;
+            EstFormationStandard = true;
+            ListeSections = listeSections;
             IntervalleMAJ = intervalleMAJ;
             NombreSoldat = nombreSoldats;
             NbVivants = NombreSoldat;
             PosFlag = posFlag;
             PosFlagInitial = PosFlag;
-            Positions = new Vector3[(int)Math.Ceiling(Math.Sqrt(NombreSoldat)), (int)Math.Ceiling(Math.Sqrt(NombreSoldat))]; // pour l'instant dépend du nbSoldats
-            Armés = new SoldatDeArmée[(int)Math.Ceiling(Math.Sqrt(NombreSoldat)), (int)Math.Ceiling(Math.Sqrt(NombreSoldat))];
+            CalculerFormation(); // pour l'instant dépend du nbSoldats
+            Armés = new SoldatDeArmée[Positions.GetLength(0), Positions.GetLength(1)];
             test = true;
             Caméra = Game.Services.GetService(typeof(Caméra)) as CaméraAutomate;
             ObjetCollisionné = objetCollisionné;
             TempsEcouleVerification = 0;
            
 
+
         }
+
         public override void Initialize()
         {
             CréerPositionsSoldats();
-         //   Game jeu, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, Vector2 étendue, string nomTextureTuile,Vector2 descriptionImage, float intervalleMAJ)
-            Flag = new SoldatDeArmée(Game, 0.7F, Vector3.Zero, PosFlag, new Vector2(1, 2), "FeuFollet", string.Empty, new Vector2(20, 1), new Vector2(20, 1), 1f / 30, ObjetCollisionné);
+            
+            //   Game jeu, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, Vector2 étendue, string nomTextureTuile,Vector2 descriptionImage, float intervalleMAJ)
+            Flag = new Flag(Game, 1F, Vector3.Zero, new Vector3(PosFlag.X,5,PosFlag.Z), new Vector2(1, 1), "FeuFollet",new Vector2(20,1),1f/60);
             Game.Components.Add(Flag);
             CréerSoldats();
+            CalculerMoyennePosition();
+            AnciennePosition = MoyennePosition;
+            AfficheurNbVivant = new AfficheurNbVivant(Game, "185281", Color.Red, NbVivants, INTERVALLE_STANDARD);
+            Game.Components.Add(AfficheurNbVivant);
+
             GestionInput = Game.Services.GetService(typeof(InputManager)) as InputManager;
             base.Initialize();
+            Caméra.SetPosCaméra(new Vector3(0, 9f,PosFlag.Z));
         }
+
         public override void Update(GameTime gameTime)
         {
             TempsÉcoulé += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            TempsEcouleVerification+=(float)gameTime.ElapsedGameTime.TotalSeconds;
-            Vector3 Pos = new Vector3(PosFlag.X, PosFlag.Y, PosFlag.Z);
-            
-            if (AnciennePosition != Pos)
-            {
-                IntervalPosition = Pos - AnciennePosition;
-                AnciennePosition = Pos;
-            }
-             if (TempsÉcoulé >= IntervalleMAJ)
+            TempsÉcoulé2 += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            TempsEcouleVerification += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            //Vector3 Pos = new Vector3(Armés[0, 0].Position.X, Armés[0, 0].Position.Y, Armés[0, 0].Position.Z);
+            AfficheurNbVivant.ChangerNombreVivant(NbVivants);
+
+            if (TempsÉcoulé >= IntervalleMAJ)
             {
                 GererClavier();
                 OptimiserPosition();
                 ReformerArmee();
+                if (TempsÉcoulé2 >= IntervalleMAJ)
+                {
+                    if (AnciennePosition != MoyennePosition)
+                    {
+                        //IntervalPosition = MoyennePosition - AnciennePosition;
+                        //AnciennePosition = MoyennePosition;
+                        DifférencePositionCaméraAvecArmée = new Vector3(0, 0, -Caméra.Position.Z +MoyennePosition.Z) /10 ;
+                        AnciennePosition = MoyennePosition;
+                        DéplacerCaméra();
+                    }
+                    
+                    TempsÉcoulé2 = 0;
+                }
+                
                 TempsÉcoulé = 0;
             }
-            if(TempsEcouleVerification>=INTERVALLE_VERIFICATION)
+            if (TempsEcouleVerification >= INTERVALLE_VERIFICATION)
             {
-                if(VerifierLesMorts())
+                
+                if (VerifierLesMorts())
                 {
                     ReformerRang();
                 }
             }
-             Flag.ModifierPosition(new Vector3(PosFlag.X,7,PosFlag.Z));
-            //ModifierPositionCaméra();
-            GameWindow a =Game.Window;
            
-             
+            Flag.ModifierPosition(new Vector3(PosFlag.X, 7, PosFlag.Z));
+
+
+            CalculerMoyennePosition();
+
+
         }
 
         void OptimiserPosition()
@@ -143,89 +176,124 @@ namespace AtelierXNA
 
         void CréerPositionsSoldats()
         {
-            int nbCases = NombreSoldat + Convert.ToInt32(NbSoldatPair());
+            float largeurArmé = Positions.GetLength(1) * DimensionCase.X;
+            float longeurArmé = Positions.GetLength(0) * DimensionCase.Y;
 
-            for (int i = 0; i < Positions.GetLength(0); i++)
+            Vector3 limGaucheHaut = new Vector3(-0.5F * largeurArmé + 0.5F * DimensionCase.X, 0, -0.5F * longeurArmé + 0.5F * DimensionCase.Y);
+
+            for (int j = 0; j < Positions.GetLength(1); j++)
             {
-                for (int j = 0; j < Positions.GetLength(1); j++)
+                for (int i = 0; i < Positions.GetLength(0); i++)
                 {
-                    Positions[i, j] = new Vector3((- DimensionCase.X / 2 * (Positions.GetLength(0)/2 ) + DimensionCase.X / 2 * i), 5, - DimensionCase.Y / 2 * (Positions.GetLength(1)/2 ) + DimensionCase.Y / 2 * j);
+
+                    Positions[i, j] = new Vector3(limGaucheHaut.X + j * DimensionCase.X, 3, limGaucheHaut.Y + i * DimensionCase.Y);
                 }
             }
+            int A = 1;
+
+
         }
 
         void CréerSoldats()
         {
-            int soldatscréees = 0;
-           
-            for (int i = 0; i < Positions.GetLength(0) ; i++)
+            int nbSoldatsCreés = 0;
+            for (int i = 0; i < Positions.GetLength(0); i++)
             {
-                for (int j = 0; j < Positions.GetLength(1) && soldatscréees < NombreSoldat; j++)
+                for (int j = 0; j < Positions.GetLength(1); j++)
                 {
-                    Armés[i, j] = new SoldatDeArmée(Game, 0.7F, Vector3.Zero, Positions[i, j] + new Vector3(PosFlag.X, 0, PosFlag.Z), new Vector2(1, 2), "LoupGarou", string.Empty, new Vector2(4, 4), new Vector2(4, 4), 1f / 30, ObjetCollisionné);
-                    Game.Components.Add(Armés[i, j]);
-                    soldatscréees++;
-                }           
+                    if (nbSoldatsCreés < NombreSoldat)
+                    {
+                        Armés[i, j] = new SoldatDeArmée(Game, 0.5F, Vector3.Zero, PosFlag + Positions[i, j], new Vector2(1, 2), "LoupGarou", string.Empty, new Vector2(4, 4), new Vector2(4, 4), 1f / 60, ObjetCollisionné, ListeSections);
+                        Game.Components.Add(Armés[i, j]);
+                        nbSoldatsCreés++;
+                    }
+                }
             }
+
         }
 
         void GererClavier()
         {
-            if (!GestionInput.EstEnfoncée(Keys.LeftShift))
-            {
-                float déplacementGaucheDroite = GérerTouche(Keys.D) - GérerTouche(Keys.A); //à inverser au besoin
-                float déplacementAvantArrière = GérerTouche(Keys.S) - GérerTouche(Keys.W);
+                float déplacementGaucheDroite = 0;
+                float déplacementAvantArrière = 0;              
+                     déplacementAvantArrière = GérerTouche(Keys.S) - GérerTouche(Keys.W);
+                
+             
+                déplacementGaucheDroite = GérerTouche(Keys.D) - GérerTouche(Keys.A);
 
-                Vector3 direction = new Vector3(déplacementGaucheDroite, 0, déplacementAvantArrière);
-
+                Vector3 direction;
+                    direction = new Vector3(déplacementGaucheDroite*2, 0, déplacementAvantArrière);
+                
+                
                 PosFlag = PosFlag + 0.1f * direction;
 
+                
+                 PosFlag = new Vector3(PosFlag.X, PosFlag.Y, Math.Max(MoyennePosition.Z - 10, PosFlag.Z));
+           //     PosFlag = new Vector3(PosFlag.X, PosFlag.Y,  PosFlag.Z);
 
                 //Pour les tests
-                if (GestionInput.EstNouvelleTouche(Keys.R))
-                {
-                    PosFlag = PosFlagInitial;
-                    ToutDetruire();
-                    CréerPositionsSoldats();
-                    CréerSoldats();
-                }
+                //if (GestionInput.EstNouvelleTouche(Keys.R))
+                //{
+                //    PosFlag = PosFlagInitial;
+                //    ToutDetruire();
+                //    CréerPositionsSoldats();
+                //    CréerSoldats();
+                //}
+            if(GestionInput.EstEnfoncée(Keys.D1))
+            {
+                EstFormationStandard = true;
+                EstFormationLigne = false;
+                ReformerRang();
             }
-        }
+            if (GestionInput.EstEnfoncée(Keys.D2))
+            {
+                EstFormationStandard = false;
+                EstFormationLigne = true;
+                ReformerRang();
+            }
 
+
+        }
         float GérerTouche(Keys k)
         {
             return GestionInput.EstEnfoncée(k) ? 1 : 0;
         }
-
         bool VerifierLesMorts()
         {
-            NbVivants = 0;
-            bool doitReformer = false;
+            bool aReformer = false;
+            int soldatCompte = 0;
+            int tempNbVivants = 0;
             for (int i = 0; i < Armés.GetLength(0); i++)
             {
                 for (int j = 0; j < Armés.GetLength(1); j++)
                 {
-                   if(Armés[i,j]!=null &&!Armés[i,j].EstVivant)
-                   {
-                     //  Game.Components.Remove(Armés[i, j]);
-                       doitReformer = true;
-                   }
-                   else
-                   {
-                       NbVivants++;
-                   }
+                    if (soldatCompte < NbVivants)
+                    {
+                        if (Armés[i, j] == null || !Armés[i, j].EstVivant)
+                        {
+                            aReformer = true;
+
+                        }
+                        else
+                        {
+                            tempNbVivants++;
+                        }
+                    }
+                    soldatCompte++;
+
                 }
             }
-            return doitReformer;
+            NbVivants = tempNbVivants;
+            return aReformer;
         }
         void ToutDetruire()
         {
             for (int i = 0; i < Armés.GetLength(0); i++)
             {
                 for (int j = 0; j < Armés.GetLength(1); j++)
-                {                   
-                     Game.Components.Remove(Armés[i, j]); 
-                                    
+                {
+                    Game.Components.Remove(Armés[i, j]);
+
                 }
             }
             Armés = new SoldatDeArmée[(int)Math.Ceiling(Math.Sqrt(NombreSoldat)), (int)Math.Ceiling(Math.Sqrt(NombreSoldat))];
@@ -233,33 +301,156 @@ namespace AtelierXNA
         }
         void ReformerRang()
         {
-            SoldatDeArmée[,] temp =new SoldatDeArmée[(int)Math.Ceiling(Math.Sqrt(NbVivants)), (int)Math.Ceiling(Math.Sqrt(NbVivants))];
+            CalculerFormation();
+            RecrerArme();
 
-            int tempA=0;
-            int tempB=0;
+            CréerPositionsSoldats();
 
+
+
+        }
+        void CalculerFormation()
+        {
+            if (EstFormationStandard)
+            {
+                if (NbVivants <= 9)
+                    Positions = new Vector3[ (NbVivants / 3) + 1, 3];
+                else
+                {
+                    if (NbVivants <= 30)
+                        Positions = new Vector3[ (NbVivants / 4) + 1, 4];
+                    else
+                        Positions = new Vector3[(NbVivants / 5) + 1,5];
+                }
+            }
+            if(EstFormationLigne)
+            {
+                if (NbVivants <= 9)
+                    Positions = new Vector3[(NbVivants / 1) + 1, 1];
+                else
+                {
+                    if (NbVivants <= 30)
+                        Positions = new Vector3[(NbVivants / 2) + 1, 2];
+                    else
+                        Positions = new Vector3[(NbVivants / 3) + 1, 3];
+                }
+
+            }
+
+       
+        }
+        public void DéplacerCaméra()
+        {
+            CréerHitboxCaméra();
+
+
+        }
+        void CalculerMoyennePosition()
+        {
+            Vector3 moyenne = Vector3.Zero;
+            int soldatsCompte = 0;
+            int temp = NbVivants;
+            for (int i = 0; i < Positions.GetLength(0); i++)
+            {
+                for (int j = 0; j < Positions.GetLength(1); j++)
+                {
+                    if (soldatsCompte < NbVivants && Armés[i,j] != null)
+                    {
+                        if (EstDansLimiteTerrain(Armés[i, j])) // fonctionne pas ???
+                        {
+                            moyenne = new Vector3(moyenne.X + Armés[i, j].VarPosition.X, moyenne.Y + Armés[i, j].VarPosition.Y, moyenne.Z + Armés[i, j].Position.Z);
+                            soldatsCompte++;
+                        }
+                    }
+                }
+            }
+
+            MoyennePosition = new Vector3(moyenne.X / temp, moyenne.Y / temp, (moyenne.Z / temp));
+        }
+
+        private bool EstDansLimiteTerrain(SoldatDeArmée soldatDeArmée)
+        {
+            bool estDansLimite = false;
+            Vector3 limite = TerrainDeBase.TAILLE_HITBOX_STANDARD * 10;
+         
+                if(soldatDeArmée.VarPosition.Y < 25 && soldatDeArmée.VarPosition.Y > -7)
+                {
+                   if(Math.Abs(-soldatDeArmée.Position.X)<10)
+                    estDansLimite = true;
+                }
+                
+            
+            return estDansLimite;
+        }
+
+        void RecrerArme()
+        {
+
+            SoldatDeArmée[,] temp = new SoldatDeArmée[Positions.GetLength(0), Positions.GetLength(1)];
+            int soldatsAjoute = 0;
+            int tempI = 0;
+            int tempJ = 0;
             for (int i = 0; i < Armés.GetLength(0); i++)
             {
                 for (int j = 0; j < Armés.GetLength(1); j++)
                 {
-                    if(Armés[i,j]!=null&&Armés[i,j].EstVivant)
-                    {
-                        temp[tempA, tempB] = Armés[i, j];
-                        tempA++;
 
-                        if(tempA==temp.GetLength(0))
+                    if (soldatsAjoute < NbVivants)
+                    {
+                        if (Armés[i, j] != null && Armés[i, j].EstVivant)
                         {
-                            tempA = 0;
-                            tempB++;
+
+                            temp[tempI, tempJ] = Armés[i, j];
+                            tempJ++;
+                            if (tempJ == Positions.GetLength(1))
+                            {
+                                tempJ = 0;
+                                tempI++;
+                            }
+                            soldatsAjoute++;
                         }
                     }
 
                 }
             }
             Armés = temp;
-
-            NombreSoldat = NbVivants;
-            CréerPositionsSoldats();
         }
+        void CréerHitboxCaméra()
+        {
+            BoundingSphere temp = new BoundingSphere();
+            bool firstTime = true;
+            int soldatsComptées = 0; ;
+            for (int i = 0; i < Armés.GetLength(0); i++)
+            {
+                for (int j = 0; j < Armés.GetLength(1); j++)
+                {
+                    if (soldatsComptées <= NbVivants)
+                    {
+                        if (Armés[i, j] != null)
+                        {
+                            if (Armés[i, j].EstVivant)
+                            {
+                                if (EstDansLimiteTerrain(Armés[i, j]))
+                                {
+                                    if(firstTime)
+                                     {
+                                        temp = BoundingSphere.CreateFromBoundingBox(Armés[i, j].HitBoxGénérale);
+                                        firstTime = false;
+                                        soldatsComptées++;
+                                    }
+                                    temp = BoundingSphere.CreateMerged(temp, BoundingSphere.CreateFromBoundingBox(Armés[i, j].HitBoxGénérale));
+                                    soldatsComptées++;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+  
+      
+            Caméra.DonnerBoundingSphere(BoundingSphere.CreateMerged(temp,Flag.ViewFlag));
+          
+        }
+
     }
 }

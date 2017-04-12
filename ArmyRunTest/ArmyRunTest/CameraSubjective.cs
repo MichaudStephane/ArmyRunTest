@@ -65,13 +65,8 @@ namespace AtelierXNA
             // Méthode appelée s'il est nécessaire de recalculer la matrice de vue.
             // Calcul et normalisation de certains vecteurs
             // (à compléter)
-
-
-
             // a checker
             Direction = Vector3.Normalize(Direction);
-
-
             Vue = Matrix.CreateLookAt(Position, Position + Direction, OrientationVerticale);
             GénérerFrustum();
         }

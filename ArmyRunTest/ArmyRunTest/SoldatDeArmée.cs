@@ -27,15 +27,16 @@ namespace AtelierXNA
         Vector3 PositionCible { get; set; }
         Vector2 Déplacement { get; set; }
         float TempsVerification { get; set; }
-      public  bool EstVivant{get;protected set;}
+        public bool EstVivant{get; set;}
 
-
+        List<SectionDeNiveau> ListeSections { get; set; }
 
         public SoldatDeArmée(Game jeu, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, 
                             Vector2 étendue, string nomImageDos, string nomImageFace, Vector2 descriptionImageDos,
-                            Vector2 DescriptionImageFace, float intervalleMAJ, List<PrimitiveDeBase>[] objetCollisionné)
+                            Vector2 DescriptionImageFace, float intervalleMAJ, List<PrimitiveDeBase>[] objetCollisionné, List<SectionDeNiveau> listeSections)
             : base(jeu, homothétieInitiale, rotationInitiale, positionInitiale, étendue, nomImageDos, nomImageFace, descriptionImageDos, DescriptionImageFace, intervalleMAJ)
         {
+            ListeSections = listeSections;
             ObjetCollisionné = objetCollisionné;
         }
         public override void Initialize()
@@ -70,17 +71,22 @@ namespace AtelierXNA
         }
         void TenterDAtteindrePositionCible()
         {
-           Vector3 difference = new Vector3(PositionCible.X - VarPosition.X, 0, PositionCible.Z - VarPosition.Z);
-           float intensiteDifference = difference.Length();
+           Vector3 difference = new Vector3(PositionCible.X - VarPosition.X, 0,2* (PositionCible.Z - VarPosition.Z));
+            float intensiteDifference = difference.Length();
 
            if (difference != Vector3.Zero)
            {
                difference.Normalize();
            }
-           intensiteDifference = Math.Min(Math.Max(intensiteDifference, 20), 200);
+           intensiteDifference = Math.Min(Math.Max(intensiteDifference, 30), 200);
             if(EstSurTerrain)
             {
                 Commande = intensiteDifference * difference;
+                Commande = new Vector3(1.5F * Commande.X, Commande.Y, Commande.Z);
+            }
+            if( Commande.X<0 && PositionCible.X-Position.X >0)
+            {
+                Commande = new Vector3(1.5F * Commande.X, Commande.Y, Commande.Z);
             }
         }
         public void ModifierCompteur(int nouveauCompteur)
@@ -96,12 +102,25 @@ namespace AtelierXNA
             EstEnCollision = false; ;
             EstSurTerrain = false;
             Vector3 V = VecteurResultantForce;
-
-            foreach (ICollisionable g in ObjetCollisionné[Compteur])
+            //int index = 0;
+            foreach (SectionDeNiveau a in ListeSections)
             {
-              VecteurResultantForce += ((g as ICollisionable).DonnerVectorCollision(this));  
-              
+                if (HitBoxGénérale.Intersects(a.HitBoxSection))
+                {
+                    foreach (ICollisionable g in ObjetCollisionné[a.IndexTableau])
+                    {
+                        VecteurResultantForce += ((g as ICollisionable).DonnerVectorCollision(this));
+
+                    }
+
+                }
             }
+
+            //foreach (ICollisionable g in ObjetCollisionné[index])
+            //{
+            //    VecteurResultantForce += ((g as ICollisionable).DonnerVectorCollision(this));
+
+            //}
             if (V != VecteurResultantForce)
             {
                 EstEnCollision = true;
