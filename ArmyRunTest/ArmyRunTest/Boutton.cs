@@ -13,8 +13,12 @@ namespace AtelierXNA
 {
     class Boutton : DrawableGameComponent
     {
+        const int LARGEUR_RECTANGLE = 120;
+        const int HAUTEUR_RECTANGLE = 70;
+
         Vector2 Dimension { get; set; }
         string Texte { get; set; }
+        Rectangle RectangleAffichage { get; set; }
         Vector2 Position { get; set; }
         RessourcesManager<SpriteFont> GestionnaireFont { get; set; }
         SpriteFont Font { get; set; }
@@ -26,14 +30,13 @@ namespace AtelierXNA
         String NomImageAprès { get; set; }
         RessourcesManager<Texture2D> GestionnaireDeTextures { get; set; }
         bool ChangerDeCouleur { get; set; }
-        Rectangle DimensionRectangle { get; set; }
 
-        public Boutton(Game jeu, string texte, Vector2 position, Color couleur, string nomImageAvant, string nomImgaeAprès)
+        public Boutton(Game jeu, string texte, Rectangle rectangleAffichage, Color couleur, string nomImageAvant, string nomImgaeAprès)
             : base(jeu)
         {
             Texte = texte;
-            Position = position;
             Couleur = couleur;
+            RectangleAffichage = rectangleAffichage;
             NomImageAvant = nomImageAvant;
             NomImageAprès = nomImgaeAprès;
         }
@@ -43,7 +46,7 @@ namespace AtelierXNA
             base.Initialize();
             ChangerDeCouleur = false;
             Dimension = Font.MeasureString(Texte);
-            DimensionRectangle = new Rectangle((int)Position.X - 20, (int)Position.Y - 20, (int)Dimension.X + 40, (int)Dimension.Y + 40);
+            Position = new Vector2(RectangleAffichage.X + (RectangleAffichage.Width / 2) - Dimension.X / 2, RectangleAffichage.Y + (RectangleAffichage.Height / 2) - Dimension.Y/2);
         }
 
         protected override void LoadContent()
@@ -59,7 +62,7 @@ namespace AtelierXNA
 
         public Rectangle GetDimensionBoutton()
         {
-            return DimensionRectangle;
+            return RectangleAffichage;
         }
 
         public override void Draw(GameTime gameTime)
@@ -67,11 +70,11 @@ namespace AtelierXNA
             GestionSprite.Begin();
             if (ChangerDeCouleur)
             {
-                GestionSprite.Draw(ArrièreBouttonAvecSouris, DimensionRectangle, Color.White);
+                GestionSprite.Draw(ArrièreBouttonAvecSouris, RectangleAffichage, Color.White);
             }
             else
             {
-                GestionSprite.Draw(ArrièreBouttonSansSouris, DimensionRectangle, Color.Gray);
+                GestionSprite.Draw(ArrièreBouttonSansSouris, RectangleAffichage, Color.Gray);
             }
             GestionSprite.DrawString(Font, Texte, Position, Couleur);
 
@@ -79,17 +82,11 @@ namespace AtelierXNA
             base.Draw(gameTime);
         }
 
-        public bool ChangerDeCouleurTexture
+        public void ChangerDeCouleurTexture()
         {
-            get
-            {
-                return ChangerDeCouleur;
-            }
-            set
-            {
-                ChangerDeCouleur = value;
-            }
+            ChangerDeCouleur = !ChangerDeCouleur;
         }
+
         public Color ChangerCouleurTexte
         {
             get

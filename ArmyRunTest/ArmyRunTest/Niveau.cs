@@ -12,9 +12,6 @@ using Microsoft.Xna.Framework.Media;
 
 namespace AtelierXNA
 {
-    /// <summary>
-    /// This is a game component that implements IUpdateable.
-    /// </summary>
     public class Niveau
     {
         List<PrimitiveDeBase>[] TabListObjetCollisionables { get; set; }
@@ -76,7 +73,7 @@ namespace AtelierXNA
             }
         }
 
-        private void CréerNiveau()
+        void CréerNiveau()
         {
             SectionRepos c = new SectionRepos(Jeu, Position, 0);
             ListSections.Add(c);
@@ -89,8 +86,8 @@ namespace AtelierXNA
 
             for (int i = 1; i < NbrSections; ++i)
             {
-                //int nombreAléatoire = GénérateurAléatoire.Next(0, NbrSectionsDisponibles + 1);
-                int nombreAléatoire = 0;
+                int nombreAléatoire = GénérateurAléatoire.Next(0, NbrSectionsDisponibles + 1);
+                //int nombreAléatoire = 0;
                 if (nombreAléatoire == 0)
                 {
                     SectionRepos a = new SectionRepos(Jeu, Position, i);
@@ -182,12 +179,11 @@ namespace AtelierXNA
          public List<SectionDeNiveau> GetListSectionNiveau()
         {
             List<SectionDeNiveau> Copie = new List<SectionDeNiveau>(NbrSections);
-            foreach(SectionDeNiveau a in ListSections)
+            foreach (SectionDeNiveau a in ListSections)
             {
                 Copie.Add(a);
             }
             return Copie;
         }
-        }
     }
-
+}

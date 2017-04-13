@@ -13,6 +13,9 @@ namespace AtelierXNA
 {
     class Jeu : Microsoft.Xna.Framework.GameComponent
     {
+        const int SECTION_NIVEAU_TUTORIEL = 15;
+        const int NOMBRE_SOLDATS_TUTORIEL = 25;
+        const float INTERVAL_MAJ_MOYEN = 1 / 60f;
         Armée Armées { get; set; }
         Niveau _Niveau { get; set; }
         CaméraAutomate CaméraJeu { get; set; }
@@ -23,6 +26,7 @@ namespace AtelierXNA
         Song ChansonJeu { get; set; }
         RessourcesManager<Song> GestionnaireDeMusiques { get; set; }
         int NombreSoldatsVivant { get; set; }
+        bool JouerMusique { get; set; }
 
 
         public Jeu(Game jeu, int nombreSectionsNiveau, Vector3 positionInitialeNiveau, int nombreSoldats, float intervalleMaj)
@@ -33,12 +37,22 @@ namespace AtelierXNA
             NombreSoldats = nombreSoldats;
             IntervalleMaj = intervalleMaj;
         }
+        public Jeu(Game jeu)
+            : base(jeu)
+        {
+            NombreSectionsNiveau = SECTION_NIVEAU_TUTORIEL;
+            PositionInitialeNiveau = new Vector3(0, 0, 0);
+            NombreSoldats = NOMBRE_SOLDATS_TUTORIEL;
+            IntervalleMaj = INTERVAL_MAJ_MOYEN;
+        }
+        
         public override void Initialize()
         {
             base.Initialize();
 
             CaméraJeu = Game.Services.GetService(typeof(Caméra)) as CaméraAutomate;
             Game.Components.Add(CaméraJeu);
+            JouerMusique = true;
 
 
             _Niveau = new Niveau(Game, NombreSectionsNiveau, PositionInitialeNiveau);
@@ -46,7 +60,8 @@ namespace AtelierXNA
             Game.Components.Add(Armées);
             GestionnaireDeMusiques = Game.Services.GetService(typeof(RessourcesManager<Song>)) as RessourcesManager<Song>;
             ChansonJeu = GestionnaireDeMusiques.Find("Starboy");
-            //MediaPlayer.Play(ChansonJeu);
+
+            MediaPlayer.Play(ChansonJeu);
         }
 
         public void ChangerDeNiveau()
@@ -72,10 +87,24 @@ namespace AtelierXNA
             }
             _Niveau.DétruireNiveau();
         }
+
         public override void Update(GameTime gameTime)
         {
             ChangerDeNiveau();
             base.Update(gameTime);
+        }
+
+        public void FaireJouerMusique()
+        {
+            JouerMusique = !JouerMusique;
+            if (JouerMusique)
+            {
+                MediaPlayer.Resume();
+            }
+            else
+            {
+                MediaPlayer.Pause();
+            }
         }
     }
 }
