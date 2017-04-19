@@ -17,7 +17,7 @@ namespace AtelierXNA
     /// </summary>
     public class HachePendule : ObjetBase, ICollisionable
     {
-        const int GRANDEUR_HACHE_STANDARD = 12;
+        const int GRANDEUR_HACHE_STANDARD = 15;
         const int NB_HITBOX_PRÉCISES = 8;
         Matrix MondeInitial { get; set; }
         BoundingSphere[] TableauxHitBoxPrécises { get; set; }

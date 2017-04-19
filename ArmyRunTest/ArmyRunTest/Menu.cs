@@ -17,13 +17,14 @@ namespace AtelierXNA
         const int MARGE_DROITE = 10;
         const int MARGE_BAS = 90;
         const int MARGE_GAUCHE = 150;
-        
+        const int MAXIMUM_NOMBRE_SOLDAT = 30;
+        const int MINIMUM_NOMBRE_SECTION = 15;
+
         const float INTERVALLE_MOYEN = 1 / 60f;
         Vector2 PosSouris { get; set; }
         Vector2 AnciennePosSouris { get; set; }
         InputManager GestionnaireManager { get; set; }
         CaméraAutomate CaméraJeuAutomate { get; set; }
-        Boutton Start { get; set; }
         Boutton DifficultéFacile { get; set; }
         Boutton DifficultéMoyenne { get; set; }
         Boutton DifficultéDifficile { get; set; }
@@ -35,6 +36,7 @@ namespace AtelierXNA
         Jeu PartieEnCours { get; set; }
         Rectangle RectangleAffichageMute { get; set; }
         Rectangle RectangleAffichageBoutonsDifficulté { get; set; }
+        bool SourrisEstDansBoutton { get;set;}
 
         public Menu(Game jeu)
             : base(jeu)
@@ -46,15 +48,16 @@ namespace AtelierXNA
             string nomImageAprès = "FondEcranGris";
             string son = "icone son";
             string mute = "mute button";
+
             Rectangle temp = Game.Window.ClientBounds;
             RectangleAffichageMute = new Rectangle(0, temp.Y - MARGE_BAS, 60, 60);
 
             Bouttons = new List<Boutton>();
-            DifficultéFacile = new Boutton(Game, "Facile", new Rectangle(temp.X-MARGE_DROITE, temp.Y - MARGE_BAS * 2 , 120, 70), Color.Blue, nomImageAvant, nomImageAprès);
-            DifficultéMoyenne = new Boutton(Game, "Moyen", new Rectangle(temp.X - MARGE_DROITE, temp.Y - MARGE_BAS, 120, 70), Color.Blue, nomImageAvant, nomImageAprès);
-            DifficultéDifficile = new Boutton(Game, "Difficile", new Rectangle(temp.X - MARGE_DROITE, temp.Y, 120, 70), Color.Blue, nomImageAvant, nomImageAprès);
-            Tutoriel = new Boutton(Game, "Tutorial", new Rectangle(MARGE_GAUCHE, temp.Y - MARGE_BAS * 2, 120,70), Color.Blue, nomImageAvant, nomImageAprès);
-            Mute = new Boutton(Game, " ", RectangleAffichageMute, Color.White, son, mute);
+            DifficultéFacile = new Boutton(Game, "Facile", new Rectangle(temp.X-MARGE_DROITE, temp.Y - MARGE_BAS * 2 , 120, 70), Color.Blue, nomImageAvant, nomImageAprès, MAXIMUM_NOMBRE_SOLDAT,MINIMUM_NOMBRE_SECTION, INTERVALLE_MOYEN);
+            DifficultéMoyenne = new Boutton(Game, "Moyen", new Rectangle(temp.X - MARGE_DROITE, temp.Y - MARGE_BAS, 120, 70), Color.Blue, nomImageAvant, nomImageAprès, MAXIMUM_NOMBRE_SOLDAT-5,MINIMUM_NOMBRE_SECTION+10, INTERVALLE_MOYEN);
+            DifficultéDifficile = new Boutton(Game, "Difficile", new Rectangle(temp.X - MARGE_DROITE, temp.Y, 120, 70), Color.Blue, nomImageAvant, nomImageAprès, MAXIMUM_NOMBRE_SOLDAT-10,MINIMUM_NOMBRE_SECTION+20, INTERVALLE_MOYEN);
+            Tutoriel = new Boutton(Game, "Tutorial", new Rectangle(MARGE_GAUCHE, temp.Y - MARGE_BAS * 2, 120,70), Color.Blue, nomImageAvant, nomImageAprès, MAXIMUM_NOMBRE_SOLDAT, MINIMUM_NOMBRE_SECTION, INTERVALLE_MOYEN);
+            Mute = new Boutton(Game, " ", RectangleAffichageMute, Color.White, son, mute, 0,0, INTERVALLE_MOYEN);
 
             Bouttons.Add(DifficultéFacile);
             Bouttons.Add(DifficultéMoyenne);
@@ -70,6 +73,7 @@ namespace AtelierXNA
             PosInitialeNiveau = new Vector3(0, 0, 0);
 
             AnciennePosSouris = PosSouris;
+            PartieEnCours = new Jeu(Game, 0, new Vector3(0, 0,0), 0, INTERVALLE_MOYEN);
             base.Initialize();
         }
 
@@ -93,70 +97,35 @@ namespace AtelierXNA
                     Boutton b = Bouttons[i];
                     if (EstDansBoutton(b))
                     {
-                        b.ChangerDeCouleurTexture();
-                        b.ChangerCouleurTexte = Color.Red;
+                        b.ChangerDeCouleur(true);
                         if (GestionnaireManager.EstNouveauClicGauche())
                         {
-                            CréerJeu(i);
+                            b.CréerJeu();
+
+                            foreach (Boutton boutton in Bouttons)
+                            {
+                                Game.Components.Remove(boutton);
+                                boutton.Enabled = false;
+                            }
                         }
                     }
                     else
                     {
-                        b.ChangerCouleurTexte = Color.Blue;
+                        b.ChangerDeCouleur(false);
                     }
                 }
 
                 if (EstDansBoutton(Mute))
                 {
-                    if(GestionnaireManager.EstNouveauClicGauche())
+                    if (GestionnaireManager.EstNouveauClicGauche())
                     {
-                        Mute.ChangerDeCouleurTexture();
-
-                        if (PartieEnCours != null)
-                        {
-                            PartieEnCours.FaireJouerMusique();
-                        }
+                        Mute.ChangerDeCouleur();
+                        
+                        PartieEnCours.FaireJouerMusique();
                     }
                 }
             }
             base.Update(gameTime);
-        }
-
-        void CréerJeu(int index)
-        {
-            if(Bouttons[index] == DifficultéFacile)
-            {
-                PartieEnCours = new Jeu(Game, 5, PosInitialeNiveau, 30, INTERVALLE_MOYEN);
-                Game.Components.Add(PartieEnCours);
-            }
-            
-            if(Bouttons[index] == DifficultéMoyenne)
-            {
-                PartieEnCours = new Jeu(Game, 25, PosInitialeNiveau, 25, INTERVALLE_MOYEN);
-                Game.Components.Add(PartieEnCours);
-            }
-
-            if (Bouttons[index] == DifficultéDifficile)
-            {
-                PartieEnCours = new Jeu(Game, 35, PosInitialeNiveau, 20, INTERVALLE_MOYEN);
-                Game.Components.Add(PartieEnCours);
-            }
-
-            if (Bouttons[index] == Tutoriel)
-            {
-                //Jeu partie = new Jeu(Game); // créer tutoriel
-            }
-            
-            foreach (Boutton b in Bouttons)
-            {
-                Game.Components.Remove(b);
-                b.Enabled = false;
-            }
-
-            for(int i = Bouttons.Count-1; i>=0;i--)
-            {
-                Bouttons.RemoveAt(i);
-            }
         }
 
         bool EstDansBoutton(Boutton b)
@@ -172,6 +141,7 @@ namespace AtelierXNA
                     estDansBoutton = true;
                 }
             }
+            SourrisEstDansBoutton = estDansBoutton;
             return estDansBoutton;
         }
     }
