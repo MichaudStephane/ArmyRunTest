@@ -26,7 +26,9 @@ namespace AtelierXNA
         Song ChansonJeu { get; set; }
         RessourcesManager<Song> GestionnaireDeMusiques { get; set; }
         int NombreSoldatsVivant { get; set; }
-        bool JouerMusique { get; set; }
+        Rectangle RectangleAffichageMute { get; set; }
+        public bool JouerMusique { get; private set; }
+        Boutton Mute { get; set; }
 
 
         public Jeu(Game jeu, int nombreSectionsNiveau, Vector3 positionInitialeNiveau, int nombreSoldats, float intervalleMaj)
@@ -45,14 +47,17 @@ namespace AtelierXNA
             NombreSoldats = NOMBRE_SOLDATS_TUTORIEL;
             IntervalleMaj = INTERVAL_MAJ_MOYEN;
         }
-        
+
         public override void Initialize()
         {
             base.Initialize();
-
+            //string son = "icone son";
+            //string mute = "mute button";
+            //Rectangle temp = Game.Window.ClientBounds;
+            //RectangleAffichageMute = new Rectangle(0, temp.Y - 90, 60, 60);
             CaméraJeu = Game.Services.GetService(typeof(Caméra)) as CaméraAutomate;
             Game.Components.Add(CaméraJeu);
-            JouerMusique = true;
+
 
 
             _Niveau = new Niveau(Game, NombreSectionsNiveau, PositionInitialeNiveau);
@@ -62,6 +67,10 @@ namespace AtelierXNA
             ChansonJeu = GestionnaireDeMusiques.Find("Starboy");
 
             MediaPlayer.Play(ChansonJeu);
+            JouerMusique = true;
+            //Mute = new Boutton(Game, " ", RectangleAffichageMute, Color.White, son, mute, 0, 0, INTERVAL_MAJ_MOYEN);
+            //Game.Components.Add(Mute);
+            
         }
 
         public void ChangerDeNiveau()
@@ -91,19 +100,21 @@ namespace AtelierXNA
         public override void Update(GameTime gameTime)
         {
             ChangerDeNiveau();
+            
             base.Update(gameTime);
         }
 
         public void FaireJouerMusique()
         {
-            JouerMusique = !JouerMusique;
             if (JouerMusique)
             {
                 MediaPlayer.Resume();
+                JouerMusique = !JouerMusique;
             }
             else
             {
                 MediaPlayer.Pause();
+                JouerMusique = !JouerMusique;
             }
         }
     }
