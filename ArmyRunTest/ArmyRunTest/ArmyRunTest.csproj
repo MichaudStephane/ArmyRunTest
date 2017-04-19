@@ -85,6 +85,7 @@
   <ItemGroup>
     <Compile Include="Afficheur3D.cs" />
     <Compile Include="AfficheurFPS.cs" />
+    <Compile Include="AfficheurNbVivant.cs" />
     <Compile Include="Armée.cs" />
     <Compile Include="ArrièrePlan.cs" />
     <Compile Include="Boutton.cs" />
@@ -117,6 +118,7 @@
     <Compile Include="SectionHache.cs" />
     <Compile Include="SectionHachesMultiples.cs" />
     <Compile Include="SectionMobileHorizontale.cs" />
+    <Compile Include="SectionMobileMultiples.cs" />
     <Compile Include="SectionRepos.cs" />
     <Compile Include="SectionVentilateur.cs" />
     <Compile Include="Soldat.cs" />

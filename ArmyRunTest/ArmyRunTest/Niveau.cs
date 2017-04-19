@@ -12,9 +12,6 @@ using Microsoft.Xna.Framework.Media;
 
 namespace AtelierXNA
 {
-    /// <summary>
-    /// This is a game component that implements IUpdateable.
-    /// </summary>
     public class Niveau
     {
         List<PrimitiveDeBase>[] TabListObjetCollisionables { get; set; }
@@ -23,7 +20,7 @@ namespace AtelierXNA
         Random GénérateurAléatoire { get; set; }
         int NbrSections { get; set; }
         Game Jeu { get; set; }
-        Vector3 Position { get; set; }
+        public Vector3 Position { get; private set; }
         public float LongueurNiveau
         {
             get
@@ -49,9 +46,34 @@ namespace AtelierXNA
             GénérateurAléatoire = new Random();
             Position = positionInitiale;
             CréerNiveau();
+            
+        }
+        public void DétruireNiveau()
+        {
+            
+            foreach (List<PrimitiveDeBase> p in TabListObjetCollisionables)
+            {
+                p.Clear();
+            }
+            ListSections.Clear();
+            
+            List<int> index = new List<int>();
+            for (int i = 0; i < Jeu.Components.Count(); i++)
+            {
+                if(Jeu.Components[i] is PrimitiveDeBase)
+                {
+                    index.Add(i);
+                }
+            }
+
+            index.OrderByDescending(x =>x);
+            for(int j = 0; j < index.Count(); j++)
+            {
+                index.Remove(j);
+            }
         }
 
-        private void CréerNiveau()
+        void CréerNiveau()
         {
             SectionRepos c = new SectionRepos(Jeu, Position, 0);
             ListSections.Add(c);
@@ -65,6 +87,7 @@ namespace AtelierXNA
             for (int i = 1; i < NbrSections; ++i)
             {
                 int nombreAléatoire = GénérateurAléatoire.Next(0, NbrSectionsDisponibles + 1);
+                //int nombreAléatoire = 0;
                 if (nombreAléatoire == 0)
                 {
                     SectionRepos a = new SectionRepos(Jeu, Position, i);
@@ -121,12 +144,28 @@ namespace AtelierXNA
                     }
                     Position = new Vector3(Position.X, Position.Y, Position.Z - a.LongueurNiveau);
                 }
+                //else if (nombreAléatoire == 5)
+                //{
+                //    SectionMobileMultiples a = new SectionMobileMultiples(Jeu, Position, i);
+                //    ListSections.Add(a);
+                //    Jeu.Components.Add(a);
+                //    foreach (PrimitiveDeBase b in a.ObjetCollisionables)
+                //    {
+                //        TabListObjetCollisionables[i].Add(b);
+                //    }
+                //    Position = new Vector3(Position.X, Position.Y, Position.Z - a.LongueurNiveau);
+                //}
 
             }
         }
         public List<PrimitiveDeBase>[] GetTableauListObjetCollisionables()
         {
             List<PrimitiveDeBase>[] Copie = new List<PrimitiveDeBase>[TabListObjetCollisionables.Count()];
+            for(int cpt=0; cpt < Copie.Count(); ++ cpt)
+            {
+                Copie[cpt] = new List<PrimitiveDeBase>();
+            }
+
 
             for(int i=0; i < TabListObjetCollisionables.Count();++i )
             {
@@ -140,12 +179,11 @@ namespace AtelierXNA
          public List<SectionDeNiveau> GetListSectionNiveau()
         {
             List<SectionDeNiveau> Copie = new List<SectionDeNiveau>(NbrSections);
-            foreach(SectionDeNiveau a in ListSections)
+            foreach (SectionDeNiveau a in ListSections)
             {
                 Copie.Add(a);
             }
             return Copie;
         }
-        }
     }
-
+}

@@ -45,7 +45,7 @@ namespace AtelierXNA
         List<SectionDeNiveau> ListeSections { get; set; }
         bool EstFormationStandard { get; set; }
         bool EstFormationLigne { get; set; }
-
+        AfficheurNbVivant AfficheurNbVivant { get; set; }
 
         public Armée(Game game, int nombreSoldats, Vector3 posFlag, float intervalleMAJ, List<PrimitiveDeBase>[] objetCollisionné, List<SectionDeNiveau> listeSections)
         : base(game)
@@ -79,6 +79,9 @@ namespace AtelierXNA
             CréerSoldats();
             CalculerMoyennePosition();
             AnciennePosition = MoyennePosition;
+            AfficheurNbVivant = new AfficheurNbVivant(Game, "185281", Color.Red, NbVivants, INTERVALLE_STANDARD);
+            Game.Components.Add(AfficheurNbVivant);
+
             GestionInput = Game.Services.GetService(typeof(InputManager)) as InputManager;
             base.Initialize();
             Caméra.SetPosCaméra(new Vector3(0, 9f,PosFlag.Z));
@@ -90,8 +93,8 @@ namespace AtelierXNA
             TempsÉcoulé2 += (float)gameTime.ElapsedGameTime.TotalSeconds;
             TempsEcouleVerification += (float)gameTime.ElapsedGameTime.TotalSeconds;
             //Vector3 Pos = new Vector3(Armés[0, 0].Position.X, Armés[0, 0].Position.Y, Armés[0, 0].Position.Z);
+            AfficheurNbVivant.ChangerNombreVivant(NbVivants);
 
-            
             if (TempsÉcoulé >= IntervalleMAJ)
             {
                 GererClavier();
@@ -176,7 +179,7 @@ namespace AtelierXNA
             float largeurArmé = Positions.GetLength(1) * DimensionCase.X;
             float longeurArmé = Positions.GetLength(0) * DimensionCase.Y;
 
-            Vector3 limGaucheHaut = new Vector3(-0.5F * largeurArmé + 0.5F * DimensionCase.X, 0, -0.5F * largeurArmé + 0.5F * DimensionCase.Y);
+            Vector3 limGaucheHaut = new Vector3(-0.5F * largeurArmé + 0.5F * DimensionCase.X, 0, -0.5F * longeurArmé + 0.5F * DimensionCase.Y);
 
             for (int j = 0; j < Positions.GetLength(1); j++)
             {
@@ -225,8 +228,8 @@ namespace AtelierXNA
                 PosFlag = PosFlag + 0.1f * direction;
 
                 
-               //  PosFlag = new Vector3(PosFlag.X, PosFlag.Y, Math.Max(MoyennePosition.Z - 10, PosFlag.Z));
-                PosFlag = new Vector3(PosFlag.X, PosFlag.Y,  PosFlag.Z);
+                 PosFlag = new Vector3(PosFlag.X, PosFlag.Y,  PosFlag.Z);
+           //     PosFlag = new Vector3(PosFlag.X, PosFlag.Y,  PosFlag.Z);
 
                 //Pour les tests
                 //if (GestionInput.EstNouvelleTouche(Keys.R))
@@ -443,8 +446,15 @@ namespace AtelierXNA
                     }
                 }
             }
-  
-            Caméra.DonnerBoundingSphere(BoundingSphere.CreateMerged(temp,Flag.ViewFlag));
+
+
+             Caméra.DonnerBoundingSphere(BoundingSphere.CreateMerged(temp,Flag.ViewFlag));
+
+         
+
+
+          //  Caméra.DonnerBoundingSphere(temp);
+          
         }
 
     }

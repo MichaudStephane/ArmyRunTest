@@ -25,6 +25,7 @@ namespace AtelierXNA
         const float DELTA_TANGAGE = MathHelper.Pi / 180; // 1 degré à la fois
         const float DELTA_ROULIS = MathHelper.Pi / 180; // 1 degré à la fois
         const float RAYON_COLLISION = 1f;
+        float AncienneIntensité { get; set; }
         bool Avance { get; set; }
         bool Present { get; set; }
         bool Ancient { get; set; }
@@ -122,7 +123,7 @@ namespace AtelierXNA
                 
                     DéterminerVitesse();
               
-                    Position = new Vector3(Position.X + IntervalleMAJ * Vitesse.X, Position.Y + IntervalleMAJ * Vitesse.Y, Position.Z + IntervalleMAJ * Vitesse.Z);
+              //      Position = new Vector3(Position.X + IntervalleMAJ * Vitesse.X, Position.Y + IntervalleMAJ * Vitesse.Y, Position.Z + IntervalleMAJ * Vitesse.Z);
                 
                     CréerPointDeVue();
                 
@@ -180,58 +181,6 @@ namespace AtelierXNA
             Position = nouvellePosition;
         }
 
-        private void GérerRotation()
-        {
-            GérerLacet();
-            GérerTangage();
-            GérerRoulis();
-        }
-
-        private void GérerLacet()
-        {
-
-            float déplacementDirection = (GérerTouche(Keys.Left) - GérerTouche(Keys.Right)) * VitesseRotation;
-
-            if (déplacementDirection != 0)
-            {
-
-                Matrix MatriceTransformation = Matrix.CreateFromAxisAngle(OrientationVerticale, DELTA_LACET * déplacementDirection);
-                // Gestion du lacet
-
-                Direction = Vector3.Transform(Direction, MatriceTransformation);
-            }
-
-
-            // À compléter
-        }
-
-        private void GérerTangage()
-        {
-            float déplacementDirection = (GérerTouche(Keys.Down) - GérerTouche(Keys.Up)) * VitesseRotation;
-
-            if (déplacementDirection != 0)
-            {
-
-                Matrix MatriceTransformation = Matrix.CreateFromAxisAngle(Latéral, DELTA_TANGAGE * déplacementDirection);
-                // À compléter
-                Direction = Vector3.Transform(Direction, MatriceTransformation);
-                OrientationVerticale = Vector3.Transform(Vector3.Normalize(OrientationVerticale), MatriceTransformation);
-                OrientationVerticale = Vector3.Normalize(OrientationVerticale);
-            }
-        }
-
-        private void GérerRoulis()
-        {
-            float déplacementDirection = (GérerTouche(Keys.PageUp) - GérerTouche(Keys.PageDown)) * VitesseRotation;
-            if (déplacementDirection != 0)
-            {
-
-                Matrix MatriceTransformation = Matrix.CreateFromAxisAngle(Direction, DELTA_ROULIS * déplacementDirection);
-
-                OrientationVerticale = Vector3.Transform(OrientationVerticale, MatriceTransformation);
-                OrientationVerticale = Vector3.Normalize(OrientationVerticale);
-            }
-        }
 
         private void GestionClavier()
         {
@@ -248,34 +197,81 @@ namespace AtelierXNA
         void DéterminerVitesse()
         {
             Ancient = Avance;
-            Vector3 AnciennneVitesse = Force;     
-            if(HitBoxArmée.Center.Z<0)
-            {
-                int a = 1;
-            }
-          if(Frustum.Contains(HitBoxArmée) ==ContainmentType.Contains)
-            {              
-                        Force += 100 * IntervalleMAJ * (new Vector3(0, 0, -1));                   
-               
-            }
-          else
-            {
-                    Force -= 100 * IntervalleMAJ * (new Vector3(0, 0, -1));
-            }
-       
+           // Vector3 direction = new Vector3(0, 0, -1);
+            Vector3 direction = Direction;
+            direction.Normalize();
+            direction = new Vector3(direction.X,  direction.Y, direction.Z);
 
-            //if (Vitesse.Z != 0)
-            //{
-            //    Force -= new Vector3(0, 0, FROTTEMENT * (Vitesse.Z / Math.Abs(Vitesse.Z)));
-            //}
+            //float h = HitBoxArmée.Radius * (float)Math.Sqrt((1f / Math.Pow(Math.Tan(AngleOuvertureObjectif / 2), 2)));
+            float h = HitBoxArmée.Radius / (float)Math.Tan(AngleOuvertureObjectif / 2);
+            //  float PositionAAtteindre = HitBoxArmée.Center.Z - direction.Z* (h+HitBoxArmée.Radius+DISTANCE_PLAN_RAPPROCHÉ);
+            //  if(HitBoxArmée.Center.Z<0)
+            //  {
+            //      int a = 1;
+            //  }
+            //if(Frustum.Contains(HitBoxArmée) ==ContainmentType.Contains)
+            //  {              
+            //              Force += 100 * IntervalleMAJ * (new Vector3(0, 0, -1));                   
+
+            //  }
+            //else
+            //  {
+            //          Force -= 100 * IntervalleMAJ * (new Vector3(0, 0, -1));
+            //  }
 
 
-            Force = Force - IntervalleMAJ*(1f / Force.Length()) * Force.LengthSquared()* Force;
-            Force = new Vector3(Force.X, Math.Max(Force.Y,0), Force.Z);
+            //  //if (Vitesse.Z != 0)
+            //  //{
+            //  //    Force -= new Vector3(0, 0, FROTTEMENT * (Vitesse.Z / Math.Abs(Vitesse.Z)));
+            //  //}
 
-            Vitesse = Force;
+
+            //  Force = Force - IntervalleMAJ*(1f / Force.Length()) * Force.LengthSquared()* Force;
+            //  Force = new Vector3(Force.X, Math.Max(Force.Y,0), Force.Z);
+
+            //  Vitesse = Force;
+            //float xMax = HitBoxArmée.Center.X + HitBoxArmée.Radius;
+            //float xMin = HitBoxArmée.Center.X - HitBoxArmée.Radius;
+
+            //float zMax = HitBoxArmée.Center.X + HitBoxArmée.Radius;
+            //float zMin = HitBoxArmée.Center.X - HitBoxArmée.Radius;
+
+
+            //float xCenter = xMin + (Math.Abs(xMax - xMin) / 2F);
+            //float zCenter = zMin + (Math.Abs(zMax - zMin) / 2F);
+
+            //float height = 90F / fieldOfView * zMax - zCenter * 1.2F;
+
+
+            //Vector3 unSmoothCameraPosition = new Vector3(xCenter, height, zCenter);
+            //cameraTransform.position = Vector3.Lerp(cameraTransform.position, unSmoothCameraPosition, Time.deltaTime * gm.cameraSmoothFactor);
+
+            TenterDatteindrePosition(new Vector3(Position.X, 7, HitBoxArmée.Center.Z + h + HitBoxArmée.Radius+DISTANCE_PLAN_RAPPROCHÉ));
           
-
+        
         }
+        void TenterDatteindrePosition(Vector3 newPos)
+        {
+            Vector3 dir = newPos - Position;
+
+            float intensiteDifference = dir.LengthSquared();
+            
+
+            intensiteDifference = Math.Min(10, intensiteDifference);
+            intensiteDifference = Math.Max(0.5f, intensiteDifference);
+
+
+
+            if (dir != Vector3.Zero)
+            {
+                dir.Normalize();
+            }
+
+            Position = new Vector3(Position.X, Position.Y, Position.Z + dir.Z * intensiteDifference*INTERVALLE_MAJ_STANDARD);
+
+            AncienneIntensité = intensiteDifference;
+        }
+
+    
     }
 }
