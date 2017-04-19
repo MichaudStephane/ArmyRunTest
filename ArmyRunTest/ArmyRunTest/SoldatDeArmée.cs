@@ -78,7 +78,7 @@ namespace AtelierXNA
            {
                difference.Normalize();
            }
-           intensiteDifference = Math.Min(Math.Max(intensiteDifference, 30), 200);
+           intensiteDifference = 1.5f*Math.Min(Math.Max(intensiteDifference, 30), 200);
             if(EstSurTerrain)
             {
                 Commande = intensiteDifference * difference;

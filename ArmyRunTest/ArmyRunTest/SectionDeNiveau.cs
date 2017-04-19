@@ -21,7 +21,7 @@ namespace AtelierXNA
         protected const float TAILLE_TERRAIN_Z = 0.724F;
         protected const float TAILLE_TERRAIN_X = 1F;
 
-        protected const int HOMOTHÉTIE_INITIALE_TERRAIN = 10;
+        protected const int HOMOTHÉTIE_INITIALE_TERRAIN = 15;
         protected const int HOMOTHÉTIE_INITIALE = 1;
         protected const float INTERVAL_MAJ = 1 / 60F;
         protected Vector3 ROTATION_INITIALE = new Vector3(0, 0, 0);

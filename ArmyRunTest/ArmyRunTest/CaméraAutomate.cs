@@ -204,6 +204,7 @@ namespace AtelierXNA
 
             //float h = HitBoxArmée.Radius * (float)Math.Sqrt((1f / Math.Pow(Math.Tan(AngleOuvertureObjectif / 2), 2)));
             float h = HitBoxArmée.Radius / (float)Math.Tan(AngleOuvertureObjectif / 2);
+            h = Math.Max(h, 10);
             //  float PositionAAtteindre = HitBoxArmée.Center.Z - direction.Z* (h+HitBoxArmée.Radius+DISTANCE_PLAN_RAPPROCHÉ);
             //  if(HitBoxArmée.Center.Z<0)
             //  {
