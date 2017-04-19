@@ -31,7 +31,7 @@ namespace AtelierXNA
 
         public float LongueurNiveau
         {
-            get { return (GetListeCollisions().Where(x => x is TerrainDeBase).Count())*TAILLE_TERRAIN_Z*10; }
+            get { return (GetListeCollisions().Where(x => x is TerrainDeBase).Count())*TAILLE_TERRAIN_Z* HOMOTHÉTIE_INITIALE_TERRAIN; }
         }
         public BoundingSphere HitBoxSection { get;protected set; }
         protected float TailleSectionNiveau { get; set; }
@@ -66,7 +66,7 @@ namespace AtelierXNA
 
         protected virtual void CréerHitboxSection()
         {
-            HitBoxSection = new BoundingSphere(new Vector3(PositionInitiale.X , PositionInitiale.Y, PositionInitiale.Z + LongueurNiveau/4f),LongueurNiveau /2f +3);
+            HitBoxSection = new BoundingSphere(new Vector3(PositionInitiale.X , PositionInitiale.Y, PositionInitiale.Z - LongueurNiveau/4f),LongueurNiveau /2f +3);
         }
         
 
