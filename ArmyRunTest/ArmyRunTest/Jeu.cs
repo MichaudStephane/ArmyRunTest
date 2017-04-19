@@ -57,7 +57,7 @@ namespace AtelierXNA
                 {
                     if (Armées.Armés[i, j] != null)
                     {
-                        if(Armées.Armés[i,j].EstVivant)
+                        //if(Armées.Armés[i,j].EstVivant)
                         //{
                         //    if(Armées.Armés[i,j].Position.Z >= _Niveau)
                         //    {
