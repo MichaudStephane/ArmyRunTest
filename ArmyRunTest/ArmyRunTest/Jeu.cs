@@ -76,16 +76,23 @@ namespace AtelierXNA
                     {
                         if (Armées.Armés[i, j].EstVivant)
                         {
-                            if (Armées.Armés[i, j].Position.Z <= _Niveau.Position.Z)
+                            if (Armées.Armés[i, j].Position.Z - 23 <= _Niveau.Position.Z)
                             {
                                 ++NombreSoldatsVivant;
                                 Armées.Armés[i, j].EstVivant = false;
+                                Armées.VerifierLesMorts();
+                                Armées.ReformerRang();
+                                 
+                                if (Armées.NbVivants == 0)
+                                {
+                                    _Niveau.DétruireNiveau();
+                                }
                             }
                         }
                     }
                 }
             }
-            _Niveau.DétruireNiveau();
+            
         }
 
         public override void Update(GameTime gameTime)

@@ -258,7 +258,7 @@ namespace AtelierXNA
         {
             return GestionInput.EstEnfoncée(k) ? 1 : 0;
         }
-        bool VerifierLesMorts()
+       public bool VerifierLesMorts()
         {
             bool aReformer = false;
             int soldatCompte = 0;
@@ -299,7 +299,7 @@ namespace AtelierXNA
             Armés = new SoldatDeArmée[(int)Math.Ceiling(Math.Sqrt(NombreSoldat)), (int)Math.Ceiling(Math.Sqrt(NombreSoldat))];
             NbVivants = NombreSoldat;
         }
-        void ReformerRang()
+       public void ReformerRang()
         {
             CalculerFormation();
             RecrerArme();

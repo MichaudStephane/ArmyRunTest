@@ -126,7 +126,7 @@ namespace AtelierXNA
         {
             if(Bouttons[index] == DifficultéFacile)
             {
-                PartieEnCours = new Jeu(Game, 15, PosInitialeNiveau, 30, INTERVALLE_MOYEN);
+                PartieEnCours = new Jeu(Game, 5, PosInitialeNiveau, 30, INTERVALLE_MOYEN);
                 Game.Components.Add(PartieEnCours);
             }
             

@@ -197,6 +197,8 @@ namespace AtelierXNA
         {
             return Vector3.Zero;
         }
+        
+
 
         
         private void GererFrottement()

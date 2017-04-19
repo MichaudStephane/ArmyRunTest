@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace AtelierXNA
 {
-    public class Niveau
+    public class Niveau : IDestructible
     {
         List<PrimitiveDeBase>[] TabListObjetCollisionables { get; set; }
         const int NbrSectionsDisponibles = 5;
@@ -21,6 +21,7 @@ namespace AtelierXNA
         int NbrSections { get; set; }
         Game Jeu { get; set; }
         public Vector3 Position { get; private set; }
+        public virtual bool ADétruire { get; set; }
         public float LongueurNiveau
         {
             get
@@ -35,6 +36,7 @@ namespace AtelierXNA
         }
         public Niveau(Game jeu, int nbrSections, Vector3 positionInitiale)
         {
+            ADétruire = false;
             Jeu = jeu;
             NbrSections = nbrSections;
             TabListObjetCollisionables = new List<PrimitiveDeBase>[NbrSections];
@@ -50,27 +52,31 @@ namespace AtelierXNA
         }
         public void DétruireNiveau()
         {
-            
+            ADétruire = true;
             foreach (List<PrimitiveDeBase> p in TabListObjetCollisionables)
             {
                 p.Clear();
             }
             ListSections.Clear();
-            
+            //GameComponent[] tab = (GameComponent[])Jeu.Components.ToArray();
             List<int> index = new List<int>();
             for (int i = 0; i < Jeu.Components.Count(); i++)
             {
                 if(Jeu.Components[i] is PrimitiveDeBase)
                 {
                     index.Add(i);
+                    
+
                 }
             }
 
             index.OrderByDescending(x =>x);
-            for(int j = 0; j < index.Count(); j++)
-            {
-                index.Remove(j);
-            }
+            //for(int j = 0; j < index.Count(); j++)
+            //{
+                
+             
+            //    tab.(index[j]);
+            //}
         }
 
         void CréerNiveau()
@@ -86,8 +92,8 @@ namespace AtelierXNA
 
             for (int i = 1; i < NbrSections; ++i)
             {
-                int nombreAléatoire = GénérateurAléatoire.Next(0, NbrSectionsDisponibles + 1);
-                //int nombreAléatoire = 0;
+                //int nombreAléatoire = GénérateurAléatoire.Next(0, NbrSectionsDisponibles + 1);
+                int nombreAléatoire = 0;
                 if (nombreAléatoire == 0)
                 {
                     SectionRepos a = new SectionRepos(Jeu, Position, i);
