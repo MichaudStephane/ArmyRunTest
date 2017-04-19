@@ -15,7 +15,7 @@ namespace AtelierXNA
     public class Niveau
     {
         List<PrimitiveDeBase>[] TabListObjetCollisionables { get; set; }
-        const int NbrSectionsDisponibles = 5;
+        const int NbrSectionsDisponibles = 6;
         List<SectionDeNiveau> ListSections { get; set; }
         Random GénérateurAléatoire { get; set; }
         int NbrSections { get; set; }
@@ -87,7 +87,7 @@ namespace AtelierXNA
             for (int i = 1; i < NbrSections; ++i)
             {
                 int nombreAléatoire = GénérateurAléatoire.Next(0, NbrSectionsDisponibles + 1);
-                //int nombreAléatoire = 0;
+               // int nombreAléatoire = 0;
                 if (nombreAléatoire == 0)
                 {
                     SectionRepos a = new SectionRepos(Jeu, Position, i);
@@ -144,17 +144,17 @@ namespace AtelierXNA
                     }
                     Position = new Vector3(Position.X, Position.Y, Position.Z - a.LongueurNiveau);
                 }
-                //else if (nombreAléatoire == 5)
-                //{
-                //    SectionMobileMultiples a = new SectionMobileMultiples(Jeu, Position, i);
-                //    ListSections.Add(a);
-                //    Jeu.Components.Add(a);
-                //    foreach (PrimitiveDeBase b in a.ObjetCollisionables)
-                //    {
-                //        TabListObjetCollisionables[i].Add(b);
-                //    }
-                //    Position = new Vector3(Position.X, Position.Y, Position.Z - a.LongueurNiveau);
-                //}
+                else if (nombreAléatoire == 5)
+                {
+                    SectionMobileMultiples a = new SectionMobileMultiples(Jeu, Position, i);
+                    ListSections.Add(a);
+                    Jeu.Components.Add(a);
+                    foreach (PrimitiveDeBase b in a.ObjetCollisionables)
+                    {
+                        TabListObjetCollisionables[i].Add(b);
+                    }
+                    Position = new Vector3(Position.X, Position.Y, Position.Z - a.LongueurNiveau);
+                }
 
             }
         }

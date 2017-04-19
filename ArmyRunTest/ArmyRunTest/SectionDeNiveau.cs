@@ -21,7 +21,7 @@ namespace AtelierXNA
         protected const float TAILLE_TERRAIN_Z = 0.724F;
         protected const float TAILLE_TERRAIN_X = 1F;
 
-        protected const int HOMOTHÉTIE_INITIALE_TERRAIN = 10;
+        protected const int HOMOTHÉTIE_INITIALE_TERRAIN = 15;
         protected const int HOMOTHÉTIE_INITIALE = 1;
         protected const float INTERVAL_MAJ = 1 / 60F;
         protected Vector3 ROTATION_INITIALE = new Vector3(0, 0, 0);
@@ -31,7 +31,7 @@ namespace AtelierXNA
 
         public float LongueurNiveau
         {
-            get { return (GetListeCollisions().Where(x => x is TerrainDeBase).Count())*TAILLE_TERRAIN_Z*10; }
+            get { return (GetListeCollisions().Where(x => x is TerrainDeBase).Count())*TAILLE_TERRAIN_Z* HOMOTHÉTIE_INITIALE_TERRAIN; }
         }
         public BoundingSphere HitBoxSection { get;protected set; }
         protected float TailleSectionNiveau { get; set; }
@@ -66,7 +66,7 @@ namespace AtelierXNA
 
         protected virtual void CréerHitboxSection()
         {
-            HitBoxSection = new BoundingSphere(new Vector3(PositionInitiale.X , PositionInitiale.Y, PositionInitiale.Z + LongueurNiveau/4f),LongueurNiveau /2f +3);
+            HitBoxSection = new BoundingSphere(new Vector3(PositionInitiale.X , PositionInitiale.Y, PositionInitiale.Z - LongueurNiveau/4f),LongueurNiveau /2f +3);
         }
         
 
