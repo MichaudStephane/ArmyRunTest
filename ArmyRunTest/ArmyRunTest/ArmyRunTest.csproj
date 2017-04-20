@@ -100,6 +100,7 @@
     <Compile Include="HéliceVentilateur.cs" />
     <Compile Include="IBougeable.cs" />
     <Compile Include="ICollisionable.cs" />
+    <Compile Include="IDestructible.cs" />
     <Compile Include="ImagesFond.cs" />
     <Compile Include="InputManager.cs" />
     <Compile Include="Jeu.cs" />

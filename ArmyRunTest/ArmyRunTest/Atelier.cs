@@ -96,6 +96,17 @@ namespace AtelierXNA
  
         }
 
+        void NettoyerListeComponents()
+        {
+            for (int i = Components.Count - 1; i >= 0; --i)
+            {
+                if (Components[i] is IDestructible && ((IDestructible)Components[i]).ADétruire)
+                {
+                    Components.RemoveAt(i);
+                }
+            }
+        }
+
         private void GérerClavier()
         {
             if (GestionInput.EstEnfoncée(Keys.Escape))

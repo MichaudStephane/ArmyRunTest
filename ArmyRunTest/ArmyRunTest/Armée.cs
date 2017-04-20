@@ -94,12 +94,12 @@ namespace AtelierXNA
             TempsEcouleVerification += (float)gameTime.ElapsedGameTime.TotalSeconds;
             //Vector3 Pos = new Vector3(Armés[0, 0].Position.X, Armés[0, 0].Position.Y, Armés[0, 0].Position.Z);
             AfficheurNbVivant.ChangerNombreVivant(NbVivants);
-
+            ReformerArmee();
             if (TempsÉcoulé >= IntervalleMAJ)
             {
                 GererClavier();
                 OptimiserPosition();
-                ReformerArmee();
+              //  ReformerArmee();
                 if (TempsÉcoulé2 >= IntervalleMAJ)
                 {
                     if (AnciennePosition != MoyennePosition)
@@ -225,7 +225,7 @@ namespace AtelierXNA
                     direction = new Vector3(déplacementGaucheDroite*2, 0, déplacementAvantArrière);
                 
                 
-                PosFlag = PosFlag + 0.1f * direction;
+                PosFlag = PosFlag + 0.12f * direction;
 
                 
                  PosFlag = new Vector3(PosFlag.X, PosFlag.Y,  PosFlag.Z);
@@ -258,7 +258,7 @@ namespace AtelierXNA
         {
             return GestionInput.EstEnfoncée(k) ? 1 : 0;
         }
-        bool VerifierLesMorts()
+       public bool VerifierLesMorts()
         {
             bool aReformer = false;
             int soldatCompte = 0;
@@ -299,7 +299,7 @@ namespace AtelierXNA
             Armés = new SoldatDeArmée[(int)Math.Ceiling(Math.Sqrt(NombreSoldat)), (int)Math.Ceiling(Math.Sqrt(NombreSoldat))];
             NbVivants = NombreSoldat;
         }
-        void ReformerRang()
+       public void ReformerRang()
         {
             CalculerFormation();
             RecrerArme();
@@ -334,6 +334,12 @@ namespace AtelierXNA
                     else
                         Positions = new Vector3[(NbVivants / 3) + 1, 3];
                 }
+
+            }
+            if(false)
+            {
+
+
 
             }
 
