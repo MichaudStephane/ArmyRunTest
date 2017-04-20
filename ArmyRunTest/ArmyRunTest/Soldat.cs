@@ -324,7 +324,7 @@ namespace AtelierXNA
        }
 
 
-       void ModifierIntervalle()
+       void ModifierIntervalle() 
        {
 
        }
