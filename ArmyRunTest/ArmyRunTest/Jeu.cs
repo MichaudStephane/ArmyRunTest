@@ -25,9 +25,11 @@ namespace AtelierXNA
         float IntervalleMaj { get; set; }
         Song ChansonJeu { get; set; }
         RessourcesManager<Song> GestionnaireDeMusiques { get; set; }
-        int NombreSoldatsVivant { get; set; }
+        int NombreSoldatArrivé { get; set; }
         Rectangle RectangleAffichageMute { get; set; }
         public bool JouerMusique { get; private set; }
+        public bool EstRéussi { get;  set; }
+        public bool EstÉchec { get;  set; }
         Boutton Mute { get; set; }
 
 
@@ -55,11 +57,14 @@ namespace AtelierXNA
             //string mute = "mute button";
             //Rectangle temp = Game.Window.ClientBounds;
             //RectangleAffichageMute = new Rectangle(0, temp.Y - 90, 60, 60);
-            CaméraJeu = Game.Services.GetService(typeof(Caméra)) as CaméraAutomate;
-            Game.Components.Add(CaméraJeu);
+            if (Game.Components.Where(x => x is CaméraAutomate).ToList().Count <1)
+            {
+                CaméraJeu = Game.Services.GetService(typeof(Caméra)) as CaméraAutomate;
+                Game.Components.Add(CaméraJeu);
+            }
 
-
-
+            EstRéussi = false;
+            EstÉchec = false;
             _Niveau = new Niveau(Game, NombreSectionsNiveau, PositionInitialeNiveau);
             Armées = new Armée(Game, NombreSoldats, PositionInitialeNiveau + new Vector3(0, 2, -30), IntervalleMaj, _Niveau.GetTableauListObjetCollisionables(), _Niveau.GetListSectionNiveau());
             Game.Components.Add(Armées);
@@ -85,9 +90,11 @@ namespace AtelierXNA
                     {
                         if (Armées.Armés[i, j].EstVivant)
                         {
-                            if (Armées.Armés[i, j].Position.Z - 23 <= _Niveau.Position.Z)
+                            Vector3 temp = _Niveau.GetListSectionNiveau().Last().PositionInitiale ;
+                            BoundingSphere temp2 = _Niveau.GetListSectionNiveau().Last().HitBoxSection;
+                            if (Armées.Armés[i, j].Position.Z  <= (temp.Z - temp2.Radius))
                             {
-                                ++NombreSoldatsVivant;
+                                ++NombreSoldatArrivé;
                                 Armées.Armés[i, j].EstVivant = false;
                                 Armées.VerifierLesMorts();
                                 Armées.ReformerRang();
@@ -95,15 +102,22 @@ namespace AtelierXNA
                                 if (Armées.NbVivants == 0)
                                 {
                                     _Niveau.DétruireNiveau();
+                                    if(NombreSoldatArrivé >= 1)
+                                    {
+                                        EstRéussi = true;
+
+                                    }
+                                    else
+                                    {
+                                        EstÉchec = true;
+                                    }
                                 }
                             }
                         }
                     }
                 }
             }
-            
         }
-
         public override void Update(GameTime gameTime)
         {
             ChangerDeNiveau();
@@ -123,6 +137,13 @@ namespace AtelierXNA
                 MediaPlayer.Pause();
                 JouerMusique = !JouerMusique;
             }
+        }
+        public int GetNbSoldat()
+        {
+            int nb = NombreSoldatsVivant;
+            NombreSoldatsVivant = 0;
+            return nb;
+            
         }
     }
 }
