@@ -197,6 +197,8 @@ namespace AtelierXNA
         {
             return Vector3.Zero;
         }
+        
+
 
         
         private void GererFrottement()
@@ -324,7 +326,7 @@ namespace AtelierXNA
        }
 
 
-       void ModifierIntervalle()
+       void ModifierIntervalle() 
        {
 
        }

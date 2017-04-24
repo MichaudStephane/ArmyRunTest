@@ -28,9 +28,9 @@ namespace AtelierXNA
         int NombreSoldatsVivant { get; set; }
         Rectangle RectangleAffichageMute { get; set; }
         public bool JouerMusique { get; private set; }
-        InputManager GestionInput;
-        public bool EstEnPause { get; private set; }
-
+        public bool EstRéussi { get; private set; }
+        public bool EstÉchec { get; private set; }
+        Boutton Mute { get; set; }
 
 
         public Jeu(Game jeu, int nombreSectionsNiveau, Vector3 positionInitialeNiveau, int nombreSoldats, float intervalleMaj)
@@ -53,22 +53,19 @@ namespace AtelierXNA
         public override void Initialize()
         {
             base.Initialize();
-            GestionInput = new InputManager(Game);
-            Game.Components.Add(GestionInput);
             //string son = "icone son";
             //string mute = "mute button";
             //Rectangle temp = Game.Window.ClientBounds;
             //RectangleAffichageMute = new Rectangle(0, temp.Y - 90, 60, 60);
             CaméraJeu = Game.Services.GetService(typeof(Caméra)) as CaméraAutomate;
             Game.Components.Add(CaméraJeu);
-            Game.Components.Add(new ArrièrePlan(Game, "fond ecran"));
 
 
-
+            EstRéussi = false;
+            EstÉchec = false;
             _Niveau = new Niveau(Game, NombreSectionsNiveau, PositionInitialeNiveau);
             Armées = new Armée(Game, NombreSoldats, PositionInitialeNiveau + new Vector3(0, 2, -30), IntervalleMaj, _Niveau.GetTableauListObjetCollisionables(), _Niveau.GetListSectionNiveau());
             Game.Components.Add(Armées);
-            
             GestionnaireDeMusiques = Game.Services.GetService(typeof(RessourcesManager<Song>)) as RessourcesManager<Song>;
             ChansonJeu = GestionnaireDeMusiques.Find("Starboy");
 
@@ -91,22 +88,39 @@ namespace AtelierXNA
                     {
                         if (Armées.Armés[i, j].EstVivant)
                         {
-                            if (Armées.Armés[i, j].Position.Z <= _Niveau.Position.Z)
+                            Vector3 temp = _Niveau.GetListSectionNiveau().Last().PositionInitiale ;
+                            BoundingSphere temp2 = _Niveau.GetListSectionNiveau().Last().HitBoxSection;
+                            if (Armées.Armés[i, j].Position.Z  <= (temp.Z - temp2.Radius))
                             {
                                 ++NombreSoldatsVivant;
                                 Armées.Armés[i, j].EstVivant = false;
+                                Armées.VerifierLesMorts();
+                                Armées.ReformerRang();
+                                 
+                                if (Armées.NbVivants == 0)
+                                {
+                                    _Niveau.DétruireNiveau();
+                                    if(NombreSoldatsVivant >= 1)
+                                    {
+                                        EstRéussi = true;
+                                    }
+                                    else
+                                    {
+                                        EstÉchec = true;
+                                    }
+                                }
                             }
                         }
                     }
                 }
             }
-            _Niveau.DétruireNiveau();
+            
         }
 
         public override void Update(GameTime gameTime)
         {
             ChangerDeNiveau();
-            GérerClavier();
+            
             base.Update(gameTime);
         }
 
@@ -123,12 +137,9 @@ namespace AtelierXNA
                 JouerMusique = !JouerMusique;
             }
         }
-        private void GérerClavier()
+        public int GetNbSoldat()
         {
-            if (GestionInput.EstNouvelleTouche(Keys.Escape))
-            {
-                EstEnPause = true;
-            }
+            return NombreSoldatsVivant;
         }
     }
 }

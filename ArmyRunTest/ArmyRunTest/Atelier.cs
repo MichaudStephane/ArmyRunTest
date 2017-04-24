@@ -29,7 +29,6 @@ namespace AtelierXNA
         RessourcesManager<SoundEffect> GestionnaireDeSons { get; set; }
         Soldat[,] Soldats { get; set; }
 
-
         GraphicsDeviceManager graphics;
         ContentManager content;
 
@@ -86,13 +85,35 @@ namespace AtelierXNA
             Services.AddService(typeof(Caméra), CaméraJeuAutomate);
             Services.AddService(typeof(SpriteBatch), new SpriteBatch(GraphicsDevice));
            
-            Components.Add(new ArrièrePlan(this, "DrapeauQuébec"));
+            Components.Add(new ArrièrePlan(this, "fond ecran"));
             Components.Add(new AfficheurFPS(this, "Arial", Color.Red, INTERVALLE_CALCUL_FPS));
             Components.Add(new Menu(this));
 
+    
+
+
             base.Initialize();
+ 
         }
 
+        void NettoyerListeComponents()
+        {
+            for (int i = Components.Count - 1; i >= 0; --i)
+            {
+                if (Components[i] is IDestructible && ((IDestructible)Components[i]).ADétruire)
+                {
+                    Components.RemoveAt(i);
+                }
+            }
+        }
+
+        private void GérerClavier()
+        {
+            if (GestionInput.EstEnfoncée(Keys.Escape))
+            {
+                Exit();
+            }
+        }
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
@@ -104,10 +125,18 @@ namespace AtelierXNA
    
 
      
-        //protected override void Update(GameTime gameTime)
-        //{
-        //    base.Update(gameTime);
-        //}
+        protected override void Update(GameTime gameTime)
+        {
+            // Allows the game to exit
+            GérerClavier();
+
+            // TODO: Add your update logic here
+
+            base.Update(gameTime);
+ 
+
+           
+        }
 
   
         protected override void Draw(GameTime gameTime)
