@@ -53,12 +53,10 @@ namespace AtelierXNA
             RectangleAffichageMute = new Rectangle(0, temp.Y - MARGE_BAS, 60, 60);
 
             Bouttons = new List<Boutton>();
-            DifficultéFacile = new Boutton(Game, "Facile", new Rectangle(temp.X-MARGE_DROITE, temp.Y - MARGE_BAS * 2 , 120, 70), Color.Blue, nomImageAvant, nomImageAprès, 
-                                            MAXIMUM_NOMBRE_SOLDAT,MINIMUM_NOMBRE_SECTION, INTERVALLE_MOYEN);
-            DifficultéMoyenne = new Boutton(Game, "Moyen", new Rectangle(temp.X - MARGE_DROITE, temp.Y - MARGE_BAS, 120, 70), Color.Blue, nomImageAvant, nomImageAprès, 
-                                            MAXIMUM_NOMBRE_SOLDAT-5,MINIMUM_NOMBRE_SECTION+10, INTERVALLE_MOYEN);
-            DifficultéDifficile = new Boutton(Game, "Difficile", new Rectangle(temp.X - MARGE_DROITE, temp.Y, 120, 70), Color.Blue, nomImageAvant, nomImageAprès, 
-                                            MAXIMUM_NOMBRE_SOLDAT-10,MINIMUM_NOMBRE_SECTION+20, INTERVALLE_MOYEN);
+            DifficultéFacile = new Boutton(Game, "Facile", new Rectangle(temp.X-MARGE_DROITE, temp.Y - MARGE_BAS * 2 , 120, 70), Color.Blue, nomImageAvant, nomImageAprès, MAXIMUM_NOMBRE_SOLDAT,MINIMUM_NOMBRE_SECTION, INTERVALLE_MOYEN);
+            DifficultéMoyenne = new Boutton(Game, "Moyen", new Rectangle(temp.X - MARGE_DROITE, temp.Y - MARGE_BAS, 120, 70), Color.Blue, nomImageAvant, nomImageAprès, MAXIMUM_NOMBRE_SOLDAT-5,MINIMUM_NOMBRE_SECTION+10, INTERVALLE_MOYEN);
+            DifficultéDifficile = new Boutton(Game, "Difficile", new Rectangle(temp.X - MARGE_DROITE, temp.Y, 120, 70), Color.Blue, nomImageAvant, nomImageAprès, MAXIMUM_NOMBRE_SOLDAT-10,MINIMUM_NOMBRE_SECTION+20, INTERVALLE_MOYEN);
+            Tutoriel = new Boutton(Game, "Tutorial", new Rectangle(MARGE_GAUCHE, temp.Y - MARGE_BAS * 2, 120,70), Color.Blue, nomImageAvant, nomImageAprès, MAXIMUM_NOMBRE_SOLDAT, MINIMUM_NOMBRE_SECTION, INTERVALLE_MOYEN);
             Mute = new Boutton(Game, " ", RectangleAffichageMute, Color.White, son, mute, 0,0, INTERVALLE_MOYEN);
 
             Bouttons.Add(DifficultéFacile);
