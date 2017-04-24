@@ -28,7 +28,9 @@ namespace AtelierXNA
         int NombreSoldatsVivant { get; set; }
         Rectangle RectangleAffichageMute { get; set; }
         public bool JouerMusique { get; private set; }
-        Boutton Mute { get; set; }
+        InputManager GestionInput;
+        public bool EstEnPause { get; private set; }
+
 
 
         public Jeu(Game jeu, int nombreSectionsNiveau, Vector3 positionInitialeNiveau, int nombreSoldats, float intervalleMaj)
@@ -51,18 +53,22 @@ namespace AtelierXNA
         public override void Initialize()
         {
             base.Initialize();
+            GestionInput = new InputManager(Game);
+            Game.Components.Add(GestionInput);
             //string son = "icone son";
             //string mute = "mute button";
             //Rectangle temp = Game.Window.ClientBounds;
             //RectangleAffichageMute = new Rectangle(0, temp.Y - 90, 60, 60);
             CaméraJeu = Game.Services.GetService(typeof(Caméra)) as CaméraAutomate;
             Game.Components.Add(CaméraJeu);
+            Game.Components.Add(new ArrièrePlan(Game, "fond ecran"));
 
 
 
             _Niveau = new Niveau(Game, NombreSectionsNiveau, PositionInitialeNiveau);
             Armées = new Armée(Game, NombreSoldats, PositionInitialeNiveau + new Vector3(0, 2, -30), IntervalleMaj, _Niveau.GetTableauListObjetCollisionables(), _Niveau.GetListSectionNiveau());
             Game.Components.Add(Armées);
+            
             GestionnaireDeMusiques = Game.Services.GetService(typeof(RessourcesManager<Song>)) as RessourcesManager<Song>;
             ChansonJeu = GestionnaireDeMusiques.Find("Starboy");
 
@@ -100,7 +106,7 @@ namespace AtelierXNA
         public override void Update(GameTime gameTime)
         {
             ChangerDeNiveau();
-            
+            GérerClavier();
             base.Update(gameTime);
         }
 
@@ -115,6 +121,13 @@ namespace AtelierXNA
             {
                 MediaPlayer.Pause();
                 JouerMusique = !JouerMusique;
+            }
+        }
+        private void GérerClavier()
+        {
+            if (GestionInput.EstNouvelleTouche(Keys.Escape))
+            {
+                EstEnPause = true;
             }
         }
     }
