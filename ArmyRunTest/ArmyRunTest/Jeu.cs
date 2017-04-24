@@ -28,7 +28,7 @@ namespace AtelierXNA
         int NombreSoldatsVivant { get; set; }
         Rectangle RectangleAffichageMute { get; set; }
         public bool JouerMusique { get; private set; }
-        public bool EstRéussi { get; private set; }
+        public bool EstRéussi { get; set; }
         public bool EstÉchec { get; private set; }
         Boutton Mute { get; set; }
 
@@ -57,9 +57,11 @@ namespace AtelierXNA
             //string mute = "mute button";
             //Rectangle temp = Game.Window.ClientBounds;
             //RectangleAffichageMute = new Rectangle(0, temp.Y - 90, 60, 60);
-            CaméraJeu = Game.Services.GetService(typeof(Caméra)) as CaméraAutomate;
-            Game.Components.Add(CaméraJeu);
-
+            if (Game.Components.Where(x => x is CaméraAutomate).ToList().Count <1)
+            {
+                CaméraJeu = Game.Services.GetService(typeof(Caméra)) as CaméraAutomate;
+                Game.Components.Add(CaméraJeu);
+            }
 
             EstRéussi = false;
             EstÉchec = false;
@@ -139,7 +141,10 @@ namespace AtelierXNA
         }
         public int GetNbSoldat()
         {
-            return NombreSoldatsVivant;
+            int nb = NombreSoldatsVivant;
+            NombreSoldatsVivant = 0;
+            return nb;
+            
         }
     }
 }

@@ -53,7 +53,7 @@ namespace AtelierXNA
             RectangleAffichageMute = new Rectangle(0, temp.Y - MARGE_BAS, 60, 60);
 
             Bouttons = new List<Boutton>();
-            DifficultéFacile = new Boutton(Game, "Facile", new Rectangle(temp.X-MARGE_DROITE, temp.Y - MARGE_BAS * 2 , 120, 70), Color.Blue, nomImageAvant, nomImageAprès, MAXIMUM_NOMBRE_SOLDAT,MINIMUM_NOMBRE_SECTION, INTERVALLE_MOYEN);
+            DifficultéFacile = new Boutton(Game, "Facile", new Rectangle(temp.X-MARGE_DROITE, temp.Y - MARGE_BAS * 2 , 120, 70), Color.Blue, nomImageAvant, nomImageAprès, MAXIMUM_NOMBRE_SOLDAT,2, INTERVALLE_MOYEN);
             DifficultéMoyenne = new Boutton(Game, "Moyen", new Rectangle(temp.X - MARGE_DROITE, temp.Y - MARGE_BAS, 120, 70), Color.Blue, nomImageAvant, nomImageAprès, MAXIMUM_NOMBRE_SOLDAT-5,MINIMUM_NOMBRE_SECTION+10, INTERVALLE_MOYEN);
             DifficultéDifficile = new Boutton(Game, "Difficile", new Rectangle(temp.X - MARGE_DROITE, temp.Y, 120, 70), Color.Blue, nomImageAvant, nomImageAprès, MAXIMUM_NOMBRE_SOLDAT-10,MINIMUM_NOMBRE_SECTION+20, INTERVALLE_MOYEN);
             Tutoriel = new Boutton(Game, "Tutorial", new Rectangle(MARGE_GAUCHE, temp.Y - MARGE_BAS * 2, 120,70), Color.Blue, nomImageAvant, nomImageAprès, MAXIMUM_NOMBRE_SOLDAT, MINIMUM_NOMBRE_SECTION, INTERVALLE_MOYEN);
@@ -88,21 +88,25 @@ namespace AtelierXNA
             float tempsÉcoulé = (float)gameTime.ElapsedGameTime.TotalSeconds;
             Point point = GestionnaireManager.GetPositionSouris();
             PosSouris = new Vector2(point.X, point.Y);
-            //if(PartieEnCours.EstRéussit)
-            //{
+            if (PartieEnCours.EstRéussi)
+            {
+                Boutton Continuer = new Boutton(Game, "Continuer", new Rectangle(Game.Window.ClientBounds.X / 2 - 40, Game.Window.ClientBounds.Y / 2 - 10, 120, 70), Color.Blue, "fond écran blanc", "FondEcranGris", PartieEnCours.GetNbSoldat(), CalculerNbSection(), INTERVALLE_MOYEN);
+                Bouttons.Add(Continuer);
+                Game.Components.Add(Continuer);
+                PartieEnCours.EstRéussi = false;
+            }
 
-            //}
-            //if(PartieEnCours.EstÉchec)
-            //{
+            if (PartieEnCours.EstÉchec)
+            {
 
-            //}
+            }
             //if (PartieEnCours.EstEnPause)
             //{
             //    foreach (GameComponent p in Game.Components)
             //    {
             //        p.Enabled = true;
             //    }
-                
+
             //}
 
             if (GestionnaireManager.EstSourisActive)
@@ -115,7 +119,13 @@ namespace AtelierXNA
                         b.ChangerDeCouleur(true);
                         if (GestionnaireManager.EstNouveauClicGauche())
                         {
+                            if (Game.Components.Where(x => x is Jeu).ToList().Count != 0)
+                            {
+                                Game.Components.Remove(Game.Components.Where(x => x is Jeu).ToList().First());
+                                Game.Services.RemoveService(typeof(Jeu));
+                            }
                             b.CréerJeu();
+                            PartieEnCours = Game.Services.GetService(typeof(Jeu)) as Jeu;
 
                             foreach (Boutton boutton in Bouttons)
                             {
@@ -141,6 +151,11 @@ namespace AtelierXNA
                 }
             }
             base.Update(gameTime);
+        }
+
+        int CalculerNbSection()
+        {
+            return 3;
         }
 
         bool EstDansBoutton(Boutton b)
