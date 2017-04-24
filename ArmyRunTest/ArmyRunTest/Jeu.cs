@@ -28,6 +28,8 @@ namespace AtelierXNA
         int NombreSoldatsVivant { get; set; }
         Rectangle RectangleAffichageMute { get; set; }
         public bool JouerMusique { get; private set; }
+        public bool EstRéussi { get; private set; }
+        public bool EstÉchec { get; private set; }
         Boutton Mute { get; set; }
 
 
@@ -59,7 +61,8 @@ namespace AtelierXNA
             Game.Components.Add(CaméraJeu);
 
 
-
+            EstRéussi = false;
+            EstÉchec = false;
             _Niveau = new Niveau(Game, NombreSectionsNiveau, PositionInitialeNiveau);
             Armées = new Armée(Game, NombreSoldats, PositionInitialeNiveau + new Vector3(0, 2, -30), IntervalleMaj, _Niveau.GetTableauListObjetCollisionables(), _Niveau.GetListSectionNiveau());
             Game.Components.Add(Armées);
@@ -85,7 +88,9 @@ namespace AtelierXNA
                     {
                         if (Armées.Armés[i, j].EstVivant)
                         {
-                            if (Armées.Armés[i, j].Position.Z - 23 <= _Niveau.Position.Z)
+                            Vector3 temp = _Niveau.GetListSectionNiveau().Last().PositionInitiale ;
+                            BoundingSphere temp2 = _Niveau.GetListSectionNiveau().Last().HitBoxSection;
+                            if (Armées.Armés[i, j].Position.Z  <= (temp.Z - temp2.Radius))
                             {
                                 ++NombreSoldatsVivant;
                                 Armées.Armés[i, j].EstVivant = false;
@@ -95,6 +100,14 @@ namespace AtelierXNA
                                 if (Armées.NbVivants == 0)
                                 {
                                     _Niveau.DétruireNiveau();
+                                    if(NombreSoldatsVivant >= 1)
+                                    {
+                                        EstRéussi = true;
+                                    }
+                                    else
+                                    {
+                                        EstÉchec = true;
+                                    }
                                 }
                             }
                         }
@@ -123,6 +136,10 @@ namespace AtelierXNA
                 MediaPlayer.Pause();
                 JouerMusique = !JouerMusique;
             }
+        }
+        public int GetNbSoldat()
+        {
+            return NombreSoldatsVivant;
         }
     }
 }
