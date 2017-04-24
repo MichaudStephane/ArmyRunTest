@@ -87,74 +87,46 @@ namespace AtelierXNA
 
             for (int i = 1; i < NbrSections; ++i)
             {
-                //int nombreAléatoire = GénérateurAléatoire.Next(0, NbrSectionsDisponibles + 1);
-                int nombreAléatoire = 0;
+                  int nombreAléatoire = GénérateurAléatoire.Next(0, NbrSectionsDisponibles);
+                //  int nombreAléatoire = 0;
+                SectionDeNiveau a = null;
                 if (nombreAléatoire == 0)
                 {
-                    SectionRepos a = new SectionRepos(Jeu, Position, i);
-                    ListSections.Add(a);
-                    Jeu.Components.Add(a);
-                    foreach (PrimitiveDeBase b in a.ObjetCollisionables)
-                    {
-                        TabListObjetCollisionables[i].Add(b);
-                    }
+                     a = new SectionRepos(Jeu, Position, i);     
                     Position = new Vector3(Position.X, Position.Y, Position.Z - a.LongueurNiveau);
                 }
                 else if (nombreAléatoire == 1)
                 {
-                    SectionHache a = new SectionHache(Jeu, Position, i);
-                    ListSections.Add(a);
-                    Jeu.Components.Add(a);
-                    foreach (PrimitiveDeBase b in a.ObjetCollisionables)
-                    {
-                        TabListObjetCollisionables[i].Add(b);
-                    }
+                     a = new SectionHache(Jeu, Position, i);
                     Position = new Vector3(Position.X, Position.Y, Position.Z - a.LongueurNiveau);
                 }
                 else if (nombreAléatoire == 2)
                 {
-                    SectionHachesMultiples a = new SectionHachesMultiples(Jeu, Position, 4, i);
-                    ListSections.Add(a);
-                    Jeu.Components.Add(a);
-                    foreach (PrimitiveDeBase b in a.ObjetCollisionables)
-                    {
-                        TabListObjetCollisionables[i].Add(b);
-                    }
+                     a = new SectionHachesMultiples(Jeu, Position, 4, i);
                     Position = new Vector3(Position.X, Position.Y, Position.Z - a.LongueurNiveau);
                 }
                 else if (nombreAléatoire == 3)
                 {
-                    SectionVentilateur a = new SectionVentilateur(Jeu, Position, i);
-                    ListSections.Add(a);
-                    Jeu.Components.Add(a);
-                    foreach (PrimitiveDeBase b in a.ObjetCollisionables)
-                    {
-                        TabListObjetCollisionables[i].Add(b);
-                    }
+                     a = new SectionVentilateur(Jeu, Position, i);
                     Position = new Vector3(Position.X, Position.Y, Position.Z - a.LongueurNiveau);
 
                 }
                 else if (nombreAléatoire == 4)
                 {
-                    SectionMobileHorizontale a = new SectionMobileHorizontale(Jeu, Position, i);
-                    ListSections.Add(a);
-                    Jeu.Components.Add(a);
-                    foreach (PrimitiveDeBase b in a.ObjetCollisionables)
-                    {
-                        TabListObjetCollisionables[i].Add(b);
-                    }
+                     a = new SectionMobileHorizontale(Jeu, Position, i);
                     Position = new Vector3(Position.X, Position.Y, Position.Z - a.LongueurNiveau);
                 }
                 else if (nombreAléatoire == 5)
                 {
-                    SectionMobileMultiples a = new SectionMobileMultiples(Jeu, Position, i);
-                    ListSections.Add(a);
-                    Jeu.Components.Add(a);
-                    foreach (PrimitiveDeBase b in a.ObjetCollisionables)
-                    {
-                        TabListObjetCollisionables[i].Add(b);
-                    }
+                     a = new SectionMobileMultiples(Jeu, Position, i);
                     Position = new Vector3(Position.X, Position.Y, Position.Z - a.LongueurNiveau);
+                }
+
+                ListSections.Add(a);
+                Jeu.Components.Add(a);
+                foreach (PrimitiveDeBase b in a.ObjetCollisionables)
+                {
+                    TabListObjetCollisionables[i].Add(b);
                 }
 
             }
