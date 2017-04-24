@@ -27,7 +27,7 @@ namespace AtelierXNA
         protected Vector3 ROTATION_INITIALE = new Vector3(0, 0, 0);
         public List<PrimitiveDeBase> ObjetCollisionables { get; set; }
         protected Game Jeu { get; set;}
-        protected Vector3 PositionInitiale { get; set; }
+        public Vector3 PositionInitiale { get; private set; }
 
         public float LongueurNiveau
         {

@@ -35,7 +35,7 @@ namespace AtelierXNA
         public override void Initialize()
         {
             base.Initialize();
-            Tangage = !Tangage;
+            Tangage = true;
             MondeInitial = GetMonde();
             
         }
@@ -50,7 +50,22 @@ namespace AtelierXNA
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
+            //TempsÉcouléDepuisMaj += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            //if (TempsÉcouléDepuisMaj >= INTERVALLE_MAJ)
+            //{ 
+            //    BougerHélice();
+            //    Angle += MathHelper.TwoPi/60f;
+            //    TempsÉcouléDepuisMaj = 0;
+            //}
+
+
             base.Update(gameTime);
+        }
+
+        private void BougerHélice()
+        {
+            //Monde = MondeInitial * Matrix.CreateRotationX(Angle);
         }
     }
 }

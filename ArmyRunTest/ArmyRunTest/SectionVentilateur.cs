@@ -17,8 +17,10 @@ namespace AtelierXNA
     /// </summary>
     public class SectionVentilateur : SectionDeNiveau
     {
+        static public Vector3 TAILLE_HITBOX_STANDARD = new Vector3(1, 0.555f, 0.724f);
 
         Ventilateur Ventilateur1 { get; set; }
+        Vector3 HitBoxTerrain = TAILLE_HITBOX_STANDARD * HOMOTHÉTIE_INITIALE_TERRAIN;
         HéliceVentilateur Hélice { get; set; }
         List<TerrainDeBase> ListeTerrains { get; set; }
 
@@ -45,12 +47,18 @@ namespace AtelierXNA
 
         private void CréerSection()
         {
-            Ventilateur1 = new Ventilateur(Jeu, HOMOTHÉTIE_INITIALE, Vector3.Zero, new Vector3(PositionInitiale.X - 7, PositionInitiale.Y + 2, PositionInitiale.Z - TAILLE_TERRAIN_Z* HOMOTHÉTIE_INITIALE_TERRAIN), INTERVAL_MAJ, "stefpath");
-            Hélice = new HéliceVentilateur(Jeu, HOMOTHÉTIE_INITIALE, Vector3.Zero, new Vector3(PositionInitiale.X - 7, PositionInitiale.Y + 2.5f, PositionInitiale.Z - TAILLE_TERRAIN_Z * HOMOTHÉTIE_INITIALE_TERRAIN), INTERVAL_MAJ, "stefpath");
-
             ListeTerrains.Add(new TerrainDeBase(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X, PositionInitiale.Y, PositionInitiale.Z), INTERVAL_MAJ, "stefpath"));
             ListeTerrains.Add(new TerrainDeBase(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X, PositionInitiale.Y, PositionInitiale.Z - TAILLE_TERRAIN_Z * HOMOTHÉTIE_INITIALE_TERRAIN), INTERVAL_MAJ, "stefpath"));
             ListeTerrains.Add(new TerrainDeBase(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X, PositionInitiale.Y, PositionInitiale.Z - TAILLE_TERRAIN_Z * HOMOTHÉTIE_INITIALE_TERRAIN * 2), INTERVAL_MAJ, "stefpath"));
+
+            Vector3 p = ListeTerrains[1].PositionInitiale;
+
+            Vector3 min = new Vector3(PositionInitiale.X - HitBoxTerrain.X,PositionInitiale.Y - HitBoxTerrain.Y,PositionInitiale.Z - 1.25f*HitBoxTerrain.Z);
+            Vector3 max = new Vector3(PositionInitiale.X + HitBoxTerrain.X,PositionInitiale.Y + 2*HitBoxTerrain.Y, PositionInitiale.Z - 0.25f*HitBoxTerrain.Z);
+
+            Ventilateur1 = new Ventilateur(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X - TAILLE_TERRAIN_X*HOMOTHÉTIE_INITIALE_TERRAIN, PositionInitiale.Y + 4, PositionInitiale.Z - TAILLE_TERRAIN_Z* HOMOTHÉTIE_INITIALE_TERRAIN), INTERVAL_MAJ, "stefpath",min,max);
+            Hélice = new HéliceVentilateur(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X - TAILLE_TERRAIN_X * HOMOTHÉTIE_INITIALE_TERRAIN, PositionInitiale.Y + 4.5f, PositionInitiale.Z - TAILLE_TERRAIN_Z * HOMOTHÉTIE_INITIALE_TERRAIN), INTERVAL_MAJ, "stefpath");
+
         }
    
 

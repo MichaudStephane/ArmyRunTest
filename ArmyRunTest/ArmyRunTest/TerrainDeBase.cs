@@ -28,7 +28,7 @@ namespace AtelierXNA
         public TerrainDeBase(Game jeu, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, float intervalleMAJ, string nomModel) 
             : base(jeu, homothétieInitiale, rotationInitiale, positionInitiale, intervalleMAJ, nomModel)
         {
-            
+            CréerHitboxGénérale();
         }
 
         public BoundingBox HitBoxGénérale { get; protected set; }

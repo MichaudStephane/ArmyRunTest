@@ -18,7 +18,7 @@ namespace AtelierXNA
         const int NbrSectionsDisponibles = 6;
         List<SectionDeNiveau> ListSections { get; set; }
         Random GénérateurAléatoire { get; set; }
-        int NbrSections { get; set; }
+        public int NbrSections { get; private set; }
         Game Jeu { get; set; }
         public Vector3 Position { get; private set; }
         public float LongueurNiveau
@@ -66,11 +66,12 @@ namespace AtelierXNA
                 }
             }
 
-            index.OrderByDescending(x =>x);
+            index = index.OrderByDescending(x =>x).ToList();
             for(int j = 0; j < index.Count(); j++)
             {
-                index.Remove(j);
+                Jeu.Components.RemoveAt(index[j]);
             }
+            Jeu.Components.Remove(Jeu.Components.Where(x => x is Armée).ToList().First());
         }
 
         void CréerNiveau()
@@ -86,8 +87,8 @@ namespace AtelierXNA
 
             for (int i = 1; i < NbrSections; ++i)
             {
-                int nombreAléatoire = GénérateurAléatoire.Next(0, NbrSectionsDisponibles + 1);
-             //   int nombreAléatoire = 3;
+                //int nombreAléatoire = GénérateurAléatoire.Next(0, NbrSectionsDisponibles + 1);
+                int nombreAléatoire = 0;
                 if (nombreAléatoire == 0)
                 {
                     SectionRepos a = new SectionRepos(Jeu, Position, i);
