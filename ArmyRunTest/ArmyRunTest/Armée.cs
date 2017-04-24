@@ -459,7 +459,7 @@ namespace AtelierXNA
          
 
 
-          //  Caméra.DonnerBoundingSphere(temp);
+         //   Caméra.DonnerBoundingSphere(temp);
           
         }
 
