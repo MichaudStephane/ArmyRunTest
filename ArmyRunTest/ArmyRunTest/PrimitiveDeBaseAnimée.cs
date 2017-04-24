@@ -12,9 +12,9 @@ namespace AtelierXNA
       protected InputManager GestionInput { get; private set; }
       float Temps…coulÈDepuisMAJ { get; set; }
       float IncrÈmentAngleRotation { get; set; }
-      bool Lacet { get; set; }
-      bool Tangage { get; set; }
-      bool Roulis { get; set; }
+        protected bool Lacet { get; set; }
+        protected bool Tangage { get; set; }
+        protected bool Roulis { get; set; }
       protected bool Monde¿Recalculer { get; set; }
 
       float angleLacet;
@@ -132,8 +132,8 @@ namespace AtelierXNA
             }
             if (GestionInput.EstNouvelleTouche(Keys.D2) || GestionInput.EstNouvelleTouche(Keys.NumPad2))
             {
-               Tangage = !Tangage;
-            }
+                    Tangage = !Tangage;
+                }
             if (GestionInput.EstNouvelleTouche(Keys.D3) || GestionInput.EstNouvelleTouche(Keys.NumPad3))
             {
                Roulis = !Roulis;

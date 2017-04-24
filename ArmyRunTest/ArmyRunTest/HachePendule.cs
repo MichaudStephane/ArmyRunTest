@@ -125,7 +125,7 @@ namespace AtelierXNA
 
         void CréerHitBoxGénérale()
         {
-            HitBoxGénérale = new BoundingSphere(new Vector3(Position.X, Position.Y+3, Position.Z), 5);
+            HitBoxGénérale = new BoundingSphere(new Vector3(Position.X, Position.Y+3, Position.Z), 7.5f);
             PositionInitialeHbGénérale = new Vector3(HitBoxGénérale.Center.X, HitBoxGénérale.Center.Y, HitBoxGénérale.Center.Z);
         }
         public Vector3 DonnerVectorCollision(PrimitiveDeBaseAnimée a)
@@ -152,14 +152,14 @@ namespace AtelierXNA
 
         void CréerHitBoxesPrécises()
         {
-            TableauxHitBoxPrécises[0] = new BoundingSphere(new Vector3(Position.X, Position.Y, Position.Z),1f);
-            TableauxHitBoxPrécises[1] = new BoundingSphere(new Vector3(Position.X+0.5F, Position.Y, Position.Z), 1f);
-            TableauxHitBoxPrécises[2] = new BoundingSphere(new Vector3(Position.X-0.5F, Position.Y, Position.Z), 1f);
-            TableauxHitBoxPrécises[3] = new BoundingSphere(new Vector3(Position.X + 1, Position.Y, Position.Z), 1f);
-            TableauxHitBoxPrécises[4] = new BoundingSphere(new Vector3(Position.X - 1, Position.Y, Position.Z), 1f);
-            TableauxHitBoxPrécises[5] = new BoundingSphere(new Vector3(Position.X + 1.5f, Position.Y, Position.Z), 1f);
-            TableauxHitBoxPrécises[6] = new BoundingSphere(new Vector3(Position.X - 1.5f, Position.Y, Position.Z), 1f);
-            TableauxHitBoxPrécises[7] = new BoundingSphere(new Vector3(Position.X , Position.Y +1.5f, Position.Z), 1f);
+            TableauxHitBoxPrécises[0] = new BoundingSphere(new Vector3(Position.X, Position.Y, Position.Z),1.5f);
+            TableauxHitBoxPrécises[1] = new BoundingSphere(new Vector3(Position.X+0.5F, Position.Y, Position.Z), 1.5f);
+            TableauxHitBoxPrécises[2] = new BoundingSphere(new Vector3(Position.X-0.5F, Position.Y, Position.Z), 1.5f);
+            TableauxHitBoxPrécises[3] = new BoundingSphere(new Vector3(Position.X + 1, Position.Y, Position.Z), 1.5f);
+            TableauxHitBoxPrécises[4] = new BoundingSphere(new Vector3(Position.X - 1, Position.Y, Position.Z), 1.5f);
+            TableauxHitBoxPrécises[5] = new BoundingSphere(new Vector3(Position.X + 1.5f, Position.Y, Position.Z), 1.5f);
+            TableauxHitBoxPrécises[6] = new BoundingSphere(new Vector3(Position.X - 1.5f, Position.Y, Position.Z), 1.5f);
+            TableauxHitBoxPrécises[7] = new BoundingSphere(new Vector3(Position.X , Position.Y +1.5f, Position.Z), 1.5f);
 
             TableauPositionInitiales = new Vector3[TableauxHitBoxPrécises.Length];
 

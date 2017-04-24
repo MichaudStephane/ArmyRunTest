@@ -87,7 +87,7 @@ namespace AtelierXNA
             for (int i = 1; i < NbrSections; ++i)
             {
                 int nombreAléatoire = GénérateurAléatoire.Next(0, NbrSectionsDisponibles + 1);
-               // int nombreAléatoire = 0;
+             //   int nombreAléatoire = 3;
                 if (nombreAléatoire == 0)
                 {
                     SectionRepos a = new SectionRepos(Jeu, Position, i);

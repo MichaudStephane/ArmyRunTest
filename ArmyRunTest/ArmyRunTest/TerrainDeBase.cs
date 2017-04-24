@@ -34,7 +34,7 @@ namespace AtelierXNA
         public BoundingBox HitBoxGénérale { get; protected set; }
         
      
-        public Vector3 DonnerVectorCollision(PrimitiveDeBaseAnimée a)
+        public virtual Vector3 DonnerVectorCollision(PrimitiveDeBaseAnimée a)
         {
             Vector3 vitesseTemp = (a as Soldat).Vitesse;
 
