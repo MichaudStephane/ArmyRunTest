@@ -55,7 +55,7 @@ namespace AtelierXNA
             float angle = 0;
             for(int i =0;i< NbHaches;++i)
             {
-                ListeHaches.Add(new HachePendule(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X, PositionInitiale.Y + 3.5f, PositionInitiale.Z +12 -distance*i), INTERVAL_MAJ, "StefAxe", angle));
+                ListeHaches.Add(new HachePendule(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X, PositionInitiale.Y + 3.5f, PositionInitiale.Z - 2*TAILLE_TERRAIN_Z * HOMOTHÉTIE_INITIALE_TERRAIN -distance*i), INTERVAL_MAJ, "StefAxe", angle));
                 angle += MathHelper.PiOver2;
             }
                        
