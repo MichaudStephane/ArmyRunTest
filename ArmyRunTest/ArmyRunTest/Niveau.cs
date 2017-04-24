@@ -18,7 +18,7 @@ namespace AtelierXNA
         const int NbrSectionsDisponibles = 6;
         List<SectionDeNiveau> ListSections { get; set; }
         Random GénérateurAléatoire { get; set; }
-        int NbrSections { get; set; }
+        public int NbrSections { get;private set; }
         Game Jeu { get; set; }
         public Vector3 Position { get; private set; }
         public float LongueurNiveau
