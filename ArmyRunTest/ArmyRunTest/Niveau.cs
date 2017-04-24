@@ -71,6 +71,7 @@ namespace AtelierXNA
             {
                 Jeu.Components.RemoveAt(index[j]);
             }
+            Jeu.Components.Remove(Jeu.Components.Where(x => x is Armée).ToList().First());
         }
 
         void CréerNiveau()

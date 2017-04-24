@@ -25,11 +25,11 @@ namespace AtelierXNA
         float IntervalleMaj { get; set; }
         Song ChansonJeu { get; set; }
         RessourcesManager<Song> GestionnaireDeMusiques { get; set; }
-        int NombreSoldatsVivant { get; set; }
+        int NombreSoldatArrivé { get; set; }
         Rectangle RectangleAffichageMute { get; set; }
         public bool JouerMusique { get; private set; }
-        public bool EstRéussi { get; private set; }
-        public bool EstÉchec { get; private set; }
+        public bool EstRéussi { get;  set; }
+        public bool EstÉchec { get;  set; }
         Boutton Mute { get; set; }
 
 
@@ -92,7 +92,7 @@ namespace AtelierXNA
                             BoundingSphere temp2 = _Niveau.GetListSectionNiveau().Last().HitBoxSection;
                             if (Armées.Armés[i, j].Position.Z  <= (temp.Z - temp2.Radius))
                             {
-                                ++NombreSoldatsVivant;
+                                ++NombreSoldatArrivé;
                                 Armées.Armés[i, j].EstVivant = false;
                                 Armées.VerifierLesMorts();
                                 Armées.ReformerRang();
@@ -100,9 +100,10 @@ namespace AtelierXNA
                                 if (Armées.NbVivants == 0)
                                 {
                                     _Niveau.DétruireNiveau();
-                                    if(NombreSoldatsVivant >= 1)
+                                    if(NombreSoldatArrivé >= 1)
                                     {
                                         EstRéussi = true;
+
                                     }
                                     else
                                     {
@@ -114,9 +115,7 @@ namespace AtelierXNA
                     }
                 }
             }
-            
         }
-
         public override void Update(GameTime gameTime)
         {
             ChangerDeNiveau();
@@ -139,7 +138,7 @@ namespace AtelierXNA
         }
         public int GetNbSoldat()
         {
-            return NombreSoldatsVivant;
+            return NombreSoldatArrivé;
         }
     }
 }
