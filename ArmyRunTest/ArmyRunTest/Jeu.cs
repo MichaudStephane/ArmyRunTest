@@ -46,7 +46,7 @@ namespace AtelierXNA
         {
             NombreSectionsNiveau = SECTION_NIVEAU_TUTORIEL;
             PositionInitialeNiveau = new Vector3(0, 0, 0);
-            NombreSoldats = NOMBRE_SOLDATS_TUTORIEL;
+           
             IntervalleMaj = INTERVAL_MAJ_MOYEN;
         }
 
@@ -140,8 +140,8 @@ namespace AtelierXNA
         }
         public int GetNbSoldat()
         {
-            int nb = NombreSoldatsVivant;
-            NombreSoldatsVivant = 0;
+            int nb = NombreSoldatArrivé;
+            NombreSoldatArrivé = 0;
             return nb;
             
         }

@@ -22,14 +22,16 @@ namespace AtelierXNA
         RessourcesManager<Texture2D> GestionnaireDeTextures { get; set; }
         Texture2D Texture { get; set; }
         int NbVivant { get; set; }
+        Vector2 Position { get; set; }
 
-        public AfficheurNbVivant(Game game, string nomImage, Color couleurTexte, int nbVivant, float intervalleMAJ)
+        public AfficheurNbVivant(Game game, string nomImage, Color couleurTexte, int nbVivant,Vector2 position, float intervalleMAJ)
          : base(game)
         {
             NomImage = nomImage;
             CouleurTexte = couleurTexte;
             IntervalleMAJ = intervalleMAJ;
             NbVivant = nbVivant;
+            Position = position;
         }
 
         public override void Initialize()
@@ -44,7 +46,7 @@ namespace AtelierXNA
             GestionSprites = new SpriteBatch(Game.GraphicsDevice);
             GestionnaireDeTextures = Game.Services.GetService(typeof(RessourcesManager<Texture2D>)) as RessourcesManager<Texture2D>;
             Texture = GestionnaireDeTextures.Find(NomImage);
-            RectanglePosition = new Rectangle(0 + MARGE_GAUCHE, Game.Window.ClientBounds.Height - MARGE_BAS, Texture.Width/25, Texture.Height/25);
+            RectanglePosition = new Rectangle((int)Position.X,(int)Position.Y, Texture.Width/25, Texture.Height/25);
             GestionnaireDeFonts = Game.Services.GetService(typeof(RessourcesManager<SpriteFont>)) as RessourcesManager<SpriteFont>;
             Font = GestionnaireDeFonts.Find("Arial");
         }
