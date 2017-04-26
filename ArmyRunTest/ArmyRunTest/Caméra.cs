@@ -4,10 +4,11 @@ namespace AtelierXNA
 {
    public abstract class Caméra : Microsoft.Xna.Framework.GameComponent
    {
-      protected const float OUVERTURE_OBJECTIF = MathHelper.PiOver4; //45 degrés
+      protected const float OUVERTURE_OBJECTIF = MathHelper.PiOver2; //45 degrés
       protected const float DISTANCE_PLAN_RAPPROCHÉ = 0.001f;
       protected const float DISTANCE_PLAN_ÉLOIGNÉ = 500;
-
+    
+    
       public Matrix Vue { get; protected set; }
       public Matrix Projection { get; protected set; }
       public BoundingFrustum Frustum { get; protected set; }
@@ -18,7 +19,7 @@ namespace AtelierXNA
 		public Vector3 OrientationVerticale { get; protected set; }
  
       // Propriétés relatives au "Volume de visualisation"
-      protected float AngleOuvertureObjectif { get; set; }
+      public float AngleOuvertureObjectif { get;protected set; }
       protected float AspectRatio { get; set; }
       protected float DistancePlanRapproché { get; set; }
       protected float DistancePlanÉloigné { get; set; }

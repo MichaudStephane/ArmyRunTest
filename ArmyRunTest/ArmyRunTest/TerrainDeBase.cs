@@ -14,8 +14,8 @@ namespace AtelierXNA
 {
     public class TerrainDeBase : ObjetBase, ICollisionable
     {
-        const int HOMOTHETHIE_STANDARD = 10;
-       protected Vector3 TAILLE_HITBOX_STANDARD = new Vector3(1,0.555f,0.785F);
+       const int HOMOTHETHIE_STANDARD = 10;
+       static public Vector3 TAILLE_HITBOX_STANDARD = new Vector3(1,0.555f,0.724f);
        protected Vector3 VECTOR_HAUT = new Vector3(0, 1, 0);
        protected Vector3 VECTOR_BAS = new Vector3(0, -1, 0);
        protected Vector3 VECTOR_GAUCHE = new Vector3(-1, 0, 0);
@@ -28,13 +28,13 @@ namespace AtelierXNA
         public TerrainDeBase(Game jeu, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, float intervalleMAJ, string nomModel) 
             : base(jeu, homothétieInitiale, rotationInitiale, positionInitiale, intervalleMAJ, nomModel)
         {
-            
+            CréerHitboxGénérale();
         }
 
         public BoundingBox HitBoxGénérale { get; protected set; }
         
      
-        public Vector3 DonnerVectorCollision(PrimitiveDeBaseAnimée a)
+        public virtual Vector3 DonnerVectorCollision(PrimitiveDeBaseAnimée a)
         {
             Vector3 vitesseTemp = (a as Soldat).Vitesse;
 
@@ -46,7 +46,7 @@ namespace AtelierXNA
                 // c mon
 
                 v = a.Position - Position;
-                v = new Vector3(v.X / (HOMOTHETHIE_STANDARD * TAILLE_HITBOX_STANDARD.X), v.Y / (HOMOTHETHIE_STANDARD * TAILLE_HITBOX_STANDARD.Y * 0.95f), (v.Z / HOMOTHETHIE_STANDARD * TAILLE_HITBOX_STANDARD.Z));
+                v = new Vector3(v.X / (HOMOTHETHIE_STANDARD * TAILLE_HITBOX_STANDARD.X), v.Y / (HOMOTHETHIE_STANDARD * TAILLE_HITBOX_STANDARD.Y ), (v.Z / HOMOTHETHIE_STANDARD * TAILLE_HITBOX_STANDARD.Z));
 
                 v = Convert.ToInt32((v.Y >= v.X) && (v.Y >= v.Z) && (vitesseTemp.Y < -0.0001f) && v.Y >= 0.0001f) * VECTOR_HAUT
 
@@ -75,14 +75,38 @@ namespace AtelierXNA
             }
             return -v;
         }
-        private void GarderHorsBornes(Soldat a,Vector3 v)
+        private void GarderHorsBornes(Soldat a, Vector3 v)
         {
             //faire le reste
-            if(v.Y>0 && a.HitBoxGénérale.Min.Y<HitBoxGénérale.Max.Y)
+            if (v.X > 0 && a.HitBoxGénérale.Min.X < HitBoxGénérale.Max.X)
             {
-                a.ModifierPosition(new Vector3(a.Position.X, a.Position.Y + HitBoxGénérale.Max.Y - a.HitBoxGénérale.Min.Y, a.Position.Z));
+                a.ModifierPosition(new Vector3(a.VarPosition.X + HitBoxGénérale.Max.X - a.HitBoxGénérale.Min.X,a.VarPosition.Y, a.VarPosition.Z));
             }
-            
+            if ( v.X < 0 && a.HitBoxGénérale.Max.X > HitBoxGénérale.Min.X)
+            {
+                a.ModifierPosition(new Vector3(a.VarPosition.X + HitBoxGénérale.Min.X - a.HitBoxGénérale.Max.X, a.VarPosition.Y, a.VarPosition.Z));
+            }
+            if ( v.Z > 0 && a.HitBoxGénérale.Max.Z < HitBoxGénérale.Min.Z)
+            {
+                a.ModifierPosition(new Vector3(a.VarPosition.X, a.VarPosition.Y, a.VarPosition.Z + HitBoxGénérale.Min.Z - a.HitBoxGénérale.Min.Z));
+            }
+            if ( v.Z < 0 && a.HitBoxGénérale.Min.Y > HitBoxGénérale.Max.Y)
+            {
+                a.ModifierPosition(new Vector3(a.VarPosition.X, a.VarPosition.Y, a.VarPosition.Z + HitBoxGénérale.Max.Z - a.HitBoxGénérale.Min.Z));
+            }
+            if ( v.Y < 0 && a.HitBoxGénérale.Max.Y > HitBoxGénérale.Min.Y)
+            {
+                a.ModifierPosition(new Vector3(a.VarPosition.X, a.VarPosition.Y + HitBoxGénérale.Min.Y - a.HitBoxGénérale.Max.Y, a.VarPosition.Z));
+            }
+            if ( v.Y>0 && a.HitBoxGénérale.Min.Y<HitBoxGénérale.Max.Y)
+            {
+                a.ModifierPosition(new Vector3(a.VarPosition.X, a.VarPosition.Y + HitBoxGénérale.Max.Y - a.HitBoxGénérale.Min.Y, a.VarPosition.Z));
+            }
+
+
+
+
+       
 
 
         }

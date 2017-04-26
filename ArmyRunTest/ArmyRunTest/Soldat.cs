@@ -16,11 +16,11 @@ namespace AtelierXNA
     {
         public const float CONSTANTE_SAUT = 6000f;
         const float CONSTANTE_GRAVITE = 9.81F;
-        protected const float NB_PIXEL_DÉPLACEMENT = 10f;
+        protected const float NB_PIXEL_DÉPLACEMENT = 80f;
         const float INTERVALLE_DE_DEPART_STANDARD = 1f/30;
         const float MASSE_SOLDAT_KG = 10;
         const float DENSITER_AIR =1.225F;  //KG/M CUBE
-        const float DRAG_COEFFICIENT = 1.05F;
+        const float DRAG_COEFFICIENT = 40.05F;
         const float NORMALE = (MASSE_SOLDAT_KG * 9.8f) ;
         const float FROTTEMENT = 0.75F * NORMALE * INTERVALLE_CALCUL_PHYSIQUE*5 ;
         const float INTERVALLE_CALCUL_PHYSIQUE = 1f / 60;
@@ -33,20 +33,21 @@ namespace AtelierXNA
         float TempsEcoulerDepuisMAJCalcul { get; set; }
         public bool EstEnCollision { get; set; }
         public Vector3 VecteurResultantForce { get; protected set; }
-        Vector3 Acceleration { get; set; }
+       protected Vector3 Acceleration { get; set; }
         public Vector3 Vitesse { get; set; }
+      //  public Vector3 VitesseDutATerrain { get; set; }
         protected Vector3 Commande { get; set; }
         public bool EstSurTerrain { get; set; }
         SoundEffect SonSaut { get; set; }
         RessourcesManager<SoundEffect> GestionnaireDeSons { get; set; }
-
+        CaméraAutomate Caméra { get; set; }
 
 
 
         public Soldat(Game jeu, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, Vector2 étendue, string nomImageDos,string nomImageFace ,Vector2 descriptionImageDos,Vector2 DescriptionImageFace, float intervalleMAJ)
             : base(jeu, homothétieInitiale, rotationInitiale, positionInitiale, étendue, nomImageDos,nomImageFace, descriptionImageDos,DescriptionImageFace, intervalleMAJ) 
         {
-           
+            Caméra = Game.Services.GetService(typeof(Caméra)) as CaméraAutomate;
         }
         public override void Initialize()
         {
@@ -63,6 +64,8 @@ namespace AtelierXNA
           
             Intervalle_MAJ_Mouvement = INTERVALLE_DE_DEPART_STANDARD;
             TempsEcouleDepuisMajMouvement = 0;
+
+            
 
             GestionnaireDeSons = Game.Services.GetService(typeof(RessourcesManager<SoundEffect>)) as RessourcesManager<SoundEffect>;
             SonSaut = GestionnaireDeSons.Find("Saut");
@@ -92,17 +95,18 @@ namespace AtelierXNA
                 CalculerMatriceMonde();
                 TempsEcouleDepuisMajMouvement = 0;            
             }
-            GameWindow a =Game.Window;
-            a.Title = "Vitesse:[ " + Math.Round(Vitesse.X, 2) + "   " + Math.Round(Vitesse.Y, 2) + "   " + Math.Round(Vitesse.Z, 2) + 
-                "] Position: [" + Math.Round(Position.X, 2) + "   " + Math.Round(Position.Y, 2) + "   " + Math.Round(Position.Z, 2) + "]"
-                + "  Acceleration:[ " + Math.Round(Acceleration.X, 2) + "   " + Math.Round(Acceleration.Y, 2) + "   " + Math.Round(Acceleration.Z, 2) + "]"
-                + "  VecteurForce:[ " + Math.Round(VecteurResultantForce.X, 2) + "   " + Math.Round(VecteurResultantForce.Y, 2) + "   " + Math.Round(VecteurResultantForce.Z, 2) + "]";
+            //GameWindow a =Game.Window;
+            //a.Title = "Vitesse:[ " + Math.Round(Vitesse.X, 2) + "   " + Math.Round(Vitesse.Y, 2) + "   " + Math.Round(Vitesse.Z, 2) + 
+            //    "] Position: [" + Math.Round(Position.X, 2) + "   " + Math.Round(Position.Y, 2) + "   " + Math.Round(Position.Z, 2) + "]"
+            //    + "  Acceleration:[ " + Math.Round(Acceleration.X, 2) + "   " + Math.Round(Acceleration.Y, 2) + "   " + Math.Round(Acceleration.Z, 2) + "]"
+            //    + "  VecteurForce:[ " + Math.Round(VecteurResultantForce.X, 2) + "   " + Math.Round(VecteurResultantForce.Y, 2) + "   " + Math.Round(VecteurResultantForce.Z, 2) + "]";
            
         }
 
        //TEMPORAIRE
         protected override void GérerClavier()
         {
+            
             /// POUR TESTER HITBOX SEULEUMENT SOLDAT DE LARMER NE SE CONTROLE PAS DIRECTEMENT
             float déplacementGaucheDroite = GérerTouche(Keys.D) - GérerTouche(Keys.A); //à inverser au besoin
             float déplacementAvantArrière = GérerTouche(Keys.S) - GérerTouche(Keys.W);
@@ -127,6 +131,8 @@ namespace AtelierXNA
                        // VarPosition = new Vector3(VarPosition.X, VarPosition.Y + 1, VarPosition.Z);
                      //   Position = new Vector3(Position.X, Position.Y + 1, Position.Z);
                         BougerHitbox();
+                        
+                        
                         AjouterVecteur(CONSTANTE_SAUT);
                         SonSaut.Play(1f,0f,0f);
                     }
@@ -134,13 +140,16 @@ namespace AtelierXNA
                 if (déplacementGaucheDroite != 0 || déplacementAvantArrière != 0)
                 {
                     AjouterVecteur(déplacementAvantArrière, déplacementGaucheDroite);
+                   
                 }
+                
             }
 
 
             //--------------------------------------------------------------------
             
         }
+   
 
         void AjouterVecteur(float déplacementAvantArrière, float déplacementGaucheDroite)
         {     
@@ -155,9 +164,9 @@ namespace AtelierXNA
          {
             return GestionInput.EstEnfoncée(k) ? NB_PIXEL_DÉPLACEMENT : 0;
         }
-       public void ModifierPosition(Vector3 NouvellePosition)
+       public override void ModifierPosition(Vector3 NouvellePosition)
         {
-            Position = NouvellePosition;
+            VarPosition = NouvellePosition;
         }
      /*  protected override void AnimerImage()
         {
@@ -188,6 +197,8 @@ namespace AtelierXNA
         {
             return Vector3.Zero;
         }
+        
+
 
         
         private void GererFrottement()
@@ -207,34 +218,34 @@ namespace AtelierXNA
                 }
             }
 
-            //frottement air
+        
             Vector3 vitesseCal = Vitesse;
-            Vector3 fAir = Vector3.Multiply(Vector3.Multiply(vitesseCal, vitesseCal), 0.010f*2*0.5f * DENSITER_AIR * DRAG_COEFFICIENT);
+            Vector3 fAir = Vector3.Multiply(Vector3.Multiply(vitesseCal, vitesseCal), 0.010f * 2 * 0.5f * DENSITER_AIR * DRAG_COEFFICIENT);
 
-            VecteurResultantForce += fAir;
+
+            VecteurResultantForce += new Vector3(Convert.ToInt32(Vitesse.X>0)*-fAir.X + Convert.ToInt32(Vitesse.X < 0) * fAir.X, Convert.ToInt32(Vitesse.X > 0) * -fAir.Y + Convert.ToInt32(Vitesse.Y < 0) * fAir.Y, Convert.ToInt32(Vitesse.Z > 0) * -fAir.Z + Convert.ToInt32(Vitesse.Z < 0) * fAir.Z);
         }
 
         //----A MODIFIER----
-        protected  void GererCollision()
+        protected override void GererCollision()
         {
 
             EstEnCollision = false; ;
             EstSurTerrain = false;
             Vector3 V = VecteurResultantForce;
             // FAIRE EN SORTE QUELLE NE VEFIE QUE LES ELEMENTS PROCHES
-            foreach(GameComponent G in Game.Components.Where(x=>x is ICollisionable).ToList())
+            foreach (GameComponent G in Game.Components.Where(x => x is ICollisionable).ToList())
             {
-                VecteurResultantForce+=((G as ICollisionable).DonnerVectorCollision(this));         
+                VecteurResultantForce += ((G as ICollisionable).DonnerVectorCollision(this));
             }
-            if(V!=VecteurResultantForce)
+            if (V != VecteurResultantForce)
             {
                 EstEnCollision = true;
-              //  EstSurTerrain = true;
+                //  EstSurTerrain = true;
             }
-            int a = 1;
         }
 
-       void CreerHitbox()
+      protected void CreerHitbox()
         {
             Vector3 minHB = new Vector3(-0.5f * Delta.X, -0.4f * Delta.Y, -0.1f);
             Vector3 maxHB = new Vector3(0.5f * Delta.X, 0.5f * Delta.Y, 0.1f);
@@ -315,7 +326,7 @@ namespace AtelierXNA
        }
 
 
-       void ModifierIntervalle()
+       void ModifierIntervalle() 
        {
 
        }

@@ -15,13 +15,11 @@ namespace AtelierXNA
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class SectionHache : SectionDeNiveau
+    public class SectionMobileMultiples : SectionDeNiveau
     {
-        HachePendule Hache { get; set; }
-
         List<TerrainDeBase> ListeTerrains { get; set; }
 
-        public SectionHache(Game jeu, Vector3 positionInitiale,int indexTableau)
+        public SectionMobileMultiples(Game jeu, Vector3 positionInitiale, int indexTableau)
             : base(jeu, positionInitiale, indexTableau)
         {
             ListeTerrains = new List<TerrainDeBase>();
@@ -31,8 +29,6 @@ namespace AtelierXNA
 
         private void AjouterAuComponents()
         {
-            Jeu.Components.Add(Hache);
-            ObjetCollisionables.Add(Hache);
             foreach (TerrainDeBase a in ListeTerrains)
             {
                 Jeu.Components.Add(a);
@@ -42,11 +38,22 @@ namespace AtelierXNA
 
         private void CréerSection()
         {
-            Hache = new HachePendule(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN,Vector3.Zero, new Vector3(PositionInitiale.X, PositionInitiale.Y + 3.5f, PositionInitiale.Z + 7),INTERVAL_MAJ,"StefAxe",0);
-            ListeTerrains.Add(new TerrainDeBase(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X, PositionInitiale.Y , PositionInitiale.Z), INTERVAL_MAJ, "stefpath"));
-            ListeTerrains.Add(new TerrainDeBase(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X, PositionInitiale.Y, PositionInitiale.Z - TAILLE_TERRAIN_Z*HOMOTHÉTIE_INITIALE_TERRAIN), INTERVAL_MAJ, "stefpath"));
-            ListeTerrains.Add(new TerrainDeBase(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X, PositionInitiale.Y, PositionInitiale.Z - TAILLE_TERRAIN_Z * HOMOTHÉTIE_INITIALE_TERRAIN*2), INTERVAL_MAJ, "stefpath"));
-       
+            bool gauche = true;
+            float demiTerrain_X = (TAILLE_TERRAIN_X / 2f);
+            for (int i = 0; i < 6; ++i)
+            {
+                if (gauche)
+                {
+                    ListeTerrains.Add(new TerrainMobileSin(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X + demiTerrain_X * i, PositionInitiale.Y, PositionInitiale.Z - (TAILLE_TERRAIN_Z * HOMOTHÉTIE_INITIALE_TERRAIN * i)), 1 / 60f, "stefpath", "Gauche", 1 / 60f, i));
+                    gauche = false;
+                }
+                else
+                {
+                    ListeTerrains.Add(new TerrainMobileSin(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X + demiTerrain_X * i, PositionInitiale.Y, PositionInitiale.Z - (TAILLE_TERRAIN_Z * HOMOTHÉTIE_INITIALE_TERRAIN * i)), 1 / 60f, "stefpath", "Droite", 1 / 60f,  i));
+                    gauche = true;
+                }
+            }
+          
         }
 
         /// <summary>
@@ -69,6 +76,10 @@ namespace AtelierXNA
 
             base.Update(gameTime);
         }
-      
+        protected override void CréerHitboxSection()
+        {
+            HitBoxSection = new BoundingSphere(new Vector3(PositionInitiale.X + TAILLE_TERRAIN_X, PositionInitiale.Y, PositionInitiale.Z - LongueurNiveau / 4f), LongueurNiveau );
+
+        }
     }
 }

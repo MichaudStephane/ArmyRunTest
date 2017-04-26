@@ -14,7 +14,7 @@
     </TargetFrameworkProfile>
     <XnaFrameworkVersion>v4.0</XnaFrameworkVersion>
     <XnaPlatform>Windows</XnaPlatform>
-    <XnaProfile>Reach</XnaProfile>
+    <XnaProfile>HiDef</XnaProfile>
     <XnaCrossPlatformGroupID>ec8b2074-0451-4117-8cf1-3a4e54bdb8d9</XnaCrossPlatformGroupID>
     <XnaOutputType>Game</XnaOutputType>
     <ApplicationIcon>
@@ -74,6 +74,9 @@
     <Reference Include="Microsoft.Xna.Framework.GamerServices, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="mscorlib" />
     <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -82,19 +85,29 @@
   <ItemGroup>
     <Compile Include="Afficheur3D.cs" />
     <Compile Include="AfficheurFPS.cs" />
+    <Compile Include="AfficheurNbVivant.cs" />
     <Compile Include="Armée.cs" />
     <Compile Include="ArrièrePlan.cs" />
+    <Compile Include="Boutton.cs" />
     <Compile Include="CameraSubjective.cs" />
     <Compile Include="Caméra.cs" />
+    <Compile Include="CaméraAutomate.cs" />
     <Compile Include="CaméraFixe.cs" />
+    <Compile Include="Flag.cs" />
     <Compile Include="HachePendule.cs" />
     <Compile Include="HitBoxAngulaire.cs" />
     <Compile Include="Humanoide.cs" />
     <Compile Include="HéliceVentilateur.cs" />
     <Compile Include="IBougeable.cs" />
     <Compile Include="ICollisionable.cs" />
+    <Compile Include="IDestructible.cs" />
+    <Compile Include="ImagesFond.cs" />
     <Compile Include="InputManager.cs" />
+    <Compile Include="Jeu.cs" />
+    <Compile Include="Menu.cs" />
+    <Compile Include="Niveau.cs" />
     <Compile Include="ObjetBase.cs" />
+    <Compile Include="OmbreSoldat.cs" />
     <Compile Include="PrimitiveDeBase.cs" />
     <Compile Include="PrimitiveDeBaseAnimée.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -104,12 +117,17 @@
     <Compile Include="RessourcesManager.cs" />
     <Compile Include="SectionDeNiveau.cs" />
     <Compile Include="SectionHache.cs" />
+    <Compile Include="SectionHachesMultiples.cs" />
+    <Compile Include="SectionMobileHorizontale.cs" />
+    <Compile Include="SectionMobileMultiples.cs" />
+    <Compile Include="SectionRepos.cs" />
     <Compile Include="SectionVentilateur.cs" />
     <Compile Include="Soldat.cs" />
     <Compile Include="SoldatDeArmée.cs" />
     <Compile Include="TerrainBasePlanIncline.cs" />
     <Compile Include="TerrainDeBase.cs" />
     <Compile Include="TerrainDeBaseMobile.cs" />
+    <Compile Include="TerrainFlame.cs" />
     <Compile Include="TerrainMobileSin.cs" />
     <Compile Include="Tuile.cs" />
     <Compile Include="TuileTextureeAnime.cs" />
