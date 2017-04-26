@@ -46,7 +46,7 @@ namespace AtelierXNA
         {
             NombreSectionsNiveau = SECTION_NIVEAU_TUTORIEL;
             PositionInitialeNiveau = new Vector3(0, 0, 0);
-            NombreSoldats = NOMBRE_SOLDATS_TUTORIEL;
+           
             IntervalleMaj = INTERVAL_MAJ_MOYEN;
         }
 
