@@ -14,8 +14,9 @@ namespace AtelierXNA
 {
     public class Niveau
     {
+       
         List<PrimitiveDeBase>[] TabListObjetCollisionables { get; set; }
-        const int NbrSectionsDisponibles = 6;
+        const int NbrSectionsDisponibles = 8;
         List<SectionDeNiveau> ListSections { get; set; }
         Random GénérateurAléatoire { get; set; }
         public int NbrSections { get; private set; }
@@ -88,7 +89,7 @@ namespace AtelierXNA
             for (int i = 1; i < NbrSections; ++i)
             {
                   int nombreAléatoire = GénérateurAléatoire.Next(0, NbrSectionsDisponibles);
-                //  int nombreAléatoire = 0;
+                  //int nombreAléatoire = 6;
                 SectionDeNiveau a = null;
                 if (nombreAléatoire == 0)
                 {
@@ -121,6 +122,17 @@ namespace AtelierXNA
                      a = new SectionMobileMultiples(Jeu, Position, i);
                     Position = new Vector3(Position.X, Position.Y, Position.Z - a.LongueurNiveau);
                 }
+                else if(nombreAléatoire == 6)
+                {
+                    a = new SectionMoitiéMur(Jeu, Position, i);
+                    Position = new Vector3(Position.X, Position.Y, Position.Z - a.LongueurNiveau);
+                }
+                else if (nombreAléatoire == 7)
+                {
+                    a = new SectionVentilateurDroite(Jeu, Position, i);
+                    Position = new Vector3(Position.X, Position.Y, Position.Z - a.LongueurNiveau);
+                }
+
 
                 ListSections.Add(a);
                 Jeu.Components.Add(a);

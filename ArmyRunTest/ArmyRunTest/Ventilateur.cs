@@ -24,9 +24,11 @@ namespace AtelierXNA
         BoundingBox HitBoxGénérale { get; set; }
         Vector3 Min { get; set; }
         Vector3 Max { get; set; }
-        public Ventilateur(Game jeu, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, float intervalleMAJ, string nomModelHélice,Vector3 min,Vector3 max)
+        string CôtéVentilateur { get; set; }
+        public Ventilateur(Game jeu, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, float intervalleMAJ, string nomModelHélice,Vector3 min,Vector3 max,string côtéVentilateur)
             : base(jeu,homothétieInitiale,rotationInitiale,positionInitiale,intervalleMAJ,nomModelHélice)
         {
+            CôtéVentilateur = côtéVentilateur;
             Max = max;
             Min = min;
             PlacerVentilateur();
@@ -51,9 +53,6 @@ namespace AtelierXNA
         
         void CréerHitboxGénérale()
         {
-            
-            //Vector3 min = new Vector3(PositionInitiale.X + Distance_Avec_Terrain_X -1, PositionInitiale.Y - Distance_Avec_Terrain_Y*5, PositionInitiale.Z - Distance_Avec_min_Z);
-            //Vector3 max = new Vector3(PositionInitiale.X + Distance_Avec_Terrain_X +10 , PositionInitiale.Y + Distance_Avec_Terrain_Y *5, PositionInitiale.Z + Distance_Avec_min_Z);
             HitBoxGénérale = new BoundingBox(Min, Max);
         }
         public Vector3 DonnerVectorCollision(PrimitiveDeBaseAnimée a)
@@ -63,10 +62,13 @@ namespace AtelierXNA
 
       if((a as Soldat).HitBoxGénérale.Intersects(HitBoxGénérale))
             {
-                v = new Vector3(30, 0, 0);
+                v = new Vector3(42, 0, 0);
 
+         if(CôtéVentilateur == "Droite")
+            {
+                    v = -v;
             }
-         
+            }
             return v;
         }
 

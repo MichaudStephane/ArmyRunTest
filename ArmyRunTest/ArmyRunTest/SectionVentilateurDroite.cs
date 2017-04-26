@@ -15,11 +15,14 @@ namespace AtelierXNA
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class SectionRepos : SectionDeNiveau
+    public class SectionVentilateurDroite : SectionDeNiveau
     {
+        const int NB_REPOS = 3;
+        Ventilateur Ventilateur1 { get; set; }
+        HéliceVentilateur Hélice { get; set; }
         List<TerrainDeBase> ListeTerrains { get; set; }
 
-        public SectionRepos(Game jeu, Vector3 positionInitiale,int indexTableau)
+        public SectionVentilateurDroite(Game jeu, Vector3 positionInitiale, int indexTableau)
             : base(jeu, positionInitiale, indexTableau)
         {
             ListeTerrains = new List<TerrainDeBase>();
@@ -29,6 +32,10 @@ namespace AtelierXNA
 
         private void AjouterAuComponents()
         {
+            Jeu.Components.Add(Ventilateur1);
+            ObjetCollisionables.Add(Ventilateur1);
+            Jeu.Components.Add(Hélice);
+
             foreach (TerrainDeBase a in ListeTerrains)
             {
                 Jeu.Components.Add(a);
@@ -38,11 +45,19 @@ namespace AtelierXNA
 
         private void CréerSection()
         {
-            ListeTerrains.Add(new TerrainDeBase(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X, PositionInitiale.Y, PositionInitiale.Z), INTERVAL_MAJ, "stefpath"));
-            ListeTerrains.Add(new TerrainDeBase(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X, PositionInitiale.Y, PositionInitiale.Z - TAILLE_TERRAIN_Z * HOMOTHÉTIE_INITIALE_TERRAIN), INTERVAL_MAJ, "stefpath"));
-            ListeTerrains.Add(new TerrainDeBase(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X, PositionInitiale.Y, PositionInitiale.Z - TAILLE_TERRAIN_Z * HOMOTHÉTIE_INITIALE_TERRAIN * 2), INTERVAL_MAJ, "stefpath"));
+            for (int i = 0; i < NB_REPOS; ++i)
+            {
+                ListeTerrains.Add(new TerrainDeBase(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X, PositionInitiale.Y, PositionInitiale.Z - HitBoxBase.Z * i), INTERVAL_MAJ, "stefpath"));
+            }
+
+            Vector3 min = new Vector3(PositionInitiale.X - HitBoxBase.X, PositionInitiale.Y - HitBoxBase.Y, PositionInitiale.Z - 1.25f * HitBoxBase.Z);
+            Vector3 max = new Vector3(PositionInitiale.X + HitBoxBase.X, PositionInitiale.Y + 2 * HitBoxBase.Y, PositionInitiale.Z - 0.25f * HitBoxBase.Z);
+
+            Ventilateur1 = new Ventilateur(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X + HitBoxBase.X, PositionInitiale.Y + 4, PositionInitiale.Z - HitBoxBase.Z), INTERVAL_MAJ, "stefpath", min, max,"Droite");
+            Hélice = new HéliceVentilateur(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X + HitBoxBase.X, PositionInitiale.Y + 4.5f, PositionInitiale.Z - HitBoxBase.Z), INTERVAL_MAJ, "stefpath");
 
         }
+
 
         /// <summary>
         /// Allows the game component to perform any initialization it needs to before starting
@@ -64,6 +79,5 @@ namespace AtelierXNA
 
             base.Update(gameTime);
         }
-  
     }
 }

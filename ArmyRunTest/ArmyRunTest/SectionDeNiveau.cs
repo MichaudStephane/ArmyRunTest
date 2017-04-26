@@ -24,14 +24,16 @@ namespace AtelierXNA
         protected const int HOMOTHÉTIE_INITIALE_TERRAIN = 15;
         protected const int HOMOTHÉTIE_INITIALE = 1;
         protected const float INTERVAL_MAJ = 1 / 60F;
+
+        static public Vector3 HitBoxBase = TerrainDeBase.TAILLE_HITBOX_STANDARD * HOMOTHÉTIE_INITIALE_TERRAIN;
         protected Vector3 ROTATION_INITIALE = new Vector3(0, 0, 0);
         public List<PrimitiveDeBase> ObjetCollisionables { get; set; }
         protected Game Jeu { get; set;}
         public Vector3 PositionInitiale { get; private set; }
 
-        public float LongueurNiveau
+        public virtual float LongueurNiveau
         {
-            get { return (GetListeCollisions().Where(x => x is TerrainDeBase).Count())*TAILLE_TERRAIN_Z* HOMOTHÉTIE_INITIALE_TERRAIN; }
+            get { return (GetListeCollisions().Where(x => x is TerrainDeBase).Count())*HitBoxBase.Z; }
         }
         public BoundingSphere HitBoxSection { get;protected set; }
         protected float TailleSectionNiveau { get; set; }

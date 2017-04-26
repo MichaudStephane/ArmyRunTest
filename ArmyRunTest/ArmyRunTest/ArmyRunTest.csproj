@@ -120,8 +120,10 @@
     <Compile Include="SectionHachesMultiples.cs" />
     <Compile Include="SectionMobileHorizontale.cs" />
     <Compile Include="SectionMobileMultiples.cs" />
+    <Compile Include="SectionMoitiéMur.cs" />
     <Compile Include="SectionRepos.cs" />
     <Compile Include="SectionVentilateur.cs" />
+    <Compile Include="SectionVentilateurDroite.cs" />
     <Compile Include="Soldat.cs" />
     <Compile Include="SoldatDeArmée.cs" />
     <Compile Include="TerrainBasePlanIncline.cs" />

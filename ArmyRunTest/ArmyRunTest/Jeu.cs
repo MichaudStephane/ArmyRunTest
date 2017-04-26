@@ -140,8 +140,8 @@ namespace AtelierXNA
         }
         public int GetNbSoldat()
         {
-            int nb = NombreSoldatsVivant;
-            NombreSoldatsVivant = 0;
+            int nb = NombreSoldatArrivé;
+            NombreSoldatArrivé = 0;
             return nb;
             
         }
