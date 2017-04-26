@@ -18,6 +18,8 @@ namespace AtelierXNA
         const int MAX_DISTANCE_CAMÉRA = 20;
         const int MIN_DISTANCE_CAMÉRA = 10;
         const int INTERVALLE_VERIFICATION = 2;
+        const int MARGE_BAS = 50;
+        const int MARGE_GAUCHE = 15;
         Vector2 DimensionCase = new Vector2(0.7F, 0.7F);
         List<Humanoide> Soldats { get; set; }
         Vector3[,] Positions { get; set; }
@@ -79,7 +81,7 @@ namespace AtelierXNA
             CréerSoldats();
             CalculerMoyennePosition();
             AnciennePosition = MoyennePosition;
-            AfficheurNbVivant = new AfficheurNbVivant(Game, "185281", Color.Red, NbVivants, INTERVALLE_STANDARD);
+            AfficheurNbVivant = new AfficheurNbVivant(Game, "185281", Color.Red, NbVivants, new Vector2(0 + MARGE_GAUCHE, Game.Window.ClientBounds.Height - MARGE_BAS), INTERVALLE_STANDARD);
             Game.Components.Add(AfficheurNbVivant);
 
             GestionInput = Game.Services.GetService(typeof(InputManager)) as InputManager;

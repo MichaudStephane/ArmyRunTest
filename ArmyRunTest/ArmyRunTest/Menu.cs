@@ -39,6 +39,11 @@ namespace AtelierXNA
         Rectangle RectangleAffichageMute { get; set; }
         Rectangle RectangleAffichageBoutonsDifficulté { get; set; }
         bool SourrisEstDansBoutton { get;set;}
+        int CompteurNiveau { get; set; }
+        SpriteBatch GestionSprites { get; set; }
+        SpriteFont Font { get; set; }
+        RessourcesManager<SpriteFont> GestionnaireDeFonts { get; set; }
+        AfficheurNbVivant afficheur { get; set; }
 
         public bool JeuUnique { get; set; }
 
@@ -82,13 +87,26 @@ namespace AtelierXNA
 
             AnciennePosSouris = PosSouris;
             PartieEnCours = new Jeu(Game, 0, new Vector3(0, 0,0), 0, INTERVALLE_MOYEN);
+
+            CompteurNiveau = 1;
+
+            if (CompteurNiveau != 1)
+            {
+                Game.Components.Remove(Game.Components.Where(x => x is AfficheurNbVivant).ToList().Last());
+            }
+            afficheur = new AfficheurNbVivant(Game, "185281", Color.Red, CompteurNiveau, new Vector2(0, 0), INTERVALLE_MOYEN);
+            Game.Components.Add(afficheur);
+
             base.Initialize();
         }
-
+        
         protected override void LoadContent()
         {
+            GestionSprites = new SpriteBatch(Game.GraphicsDevice);
             CaméraJeuAutomate = Game.Services.GetService(typeof(CaméraAutomate)) as CaméraAutomate;
             GestionnaireManager = Game.Services.GetService(typeof(InputManager)) as InputManager;
+            GestionnaireDeFonts = Game.Services.GetService(typeof(RessourcesManager<SpriteFont>)) as RessourcesManager<SpriteFont>;
+            Font = GestionnaireDeFonts.Find("Arial");
         }
 
         public override void Update(GameTime gameTime)
@@ -97,6 +115,9 @@ namespace AtelierXNA
             float tempsÉcoulé = (float)gameTime.ElapsedGameTime.TotalSeconds;
             Point point = GestionnaireManager.GetPositionSouris();
             PosSouris = new Vector2(point.X, point.Y);
+
+            afficheur.ChangerNombreVivant(CompteurNiveau);
+
             if (PartieEnCours.EstRéussi)
             {
                 Boutton Continuer = new Boutton(Game, "Continuer", new Rectangle(Game.Window.ClientBounds.Width / 2, Game.Window.ClientBounds.Height / 2 - 50, LARGEUR_BOUTTON, HAUTEUR_BOUTTON), Color.Blue, "fond écran blanc", "FondEcranGris", PartieEnCours.GetNbSoldat(), CalculerNbSection(), INTERVALLE_MOYEN);
@@ -105,6 +126,7 @@ namespace AtelierXNA
                 Bouttons.Add(Exit);
                 Game.Components.Add(Exit);
                 Game.Components.Add(Continuer);
+                ++CompteurNiveau;
                 PartieEnCours.EstRéussi = false;
             }
 
