@@ -14,8 +14,9 @@ namespace AtelierXNA
 {
     public class Niveau
     {
+       
         List<PrimitiveDeBase>[] TabListObjetCollisionables { get; set; }
-        const int NbrSectionsDisponibles = 6;
+        const int NbrSectionsDisponibles = 8;
         List<SectionDeNiveau> ListSections { get; set; }
         Random GénérateurAléatoire { get; set; }
         public int NbrSections { get; private set; }
@@ -54,13 +55,14 @@ namespace AtelierXNA
             foreach (List<PrimitiveDeBase> p in TabListObjetCollisionables)
             {
                 p.Clear();
+                
             }
             ListSections.Clear();
             
             List<int> index = new List<int>();
             for (int i = 0; i < Jeu.Components.Count(); i++)
             {
-                if(Jeu.Components[i] is PrimitiveDeBase)
+                if(Jeu.Components[i] is IDeletable)
                 {
                     index.Add(i);
                 }
@@ -71,7 +73,7 @@ namespace AtelierXNA
             {
                 Jeu.Components.RemoveAt(index[j]);
             }
-            Jeu.Components.Remove(Jeu.Components.Where(x => x is Armée).ToList().First());
+            int a = 1;
         }
 
         void CréerNiveau()
@@ -88,7 +90,7 @@ namespace AtelierXNA
             for (int i = 1; i < NbrSections; ++i)
             {
                   int nombreAléatoire = GénérateurAléatoire.Next(0, NbrSectionsDisponibles);
-                //  int nombreAléatoire = 0;
+                 // int nombreAléatoire = 0;
                 SectionDeNiveau a = null;
                 if (nombreAléatoire == 0)
                 {
@@ -121,6 +123,17 @@ namespace AtelierXNA
                      a = new SectionMobileMultiples(Jeu, Position, i);
                     Position = new Vector3(Position.X, Position.Y, Position.Z - a.LongueurNiveau);
                 }
+                else if(nombreAléatoire == 6)
+                {
+                    a = new SectionMoitiéMur(Jeu, Position, i);
+                    Position = new Vector3(Position.X, Position.Y, Position.Z - a.LongueurNiveau);
+                }
+                else if (nombreAléatoire == 7)
+                {
+                    a = new SectionVentilateurDroite(Jeu, Position, i);
+                    Position = new Vector3(Position.X, Position.Y, Position.Z - a.LongueurNiveau);
+                }
+
 
                 ListSections.Add(a);
                 Jeu.Components.Add(a);
@@ -129,7 +142,11 @@ namespace AtelierXNA
                     TabListObjetCollisionables[i].Add(b);
                 }
 
+
             }
+          
+        
+
         }
         public List<PrimitiveDeBase>[] GetTableauListObjetCollisionables()
         {

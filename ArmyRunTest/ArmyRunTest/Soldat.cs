@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace AtelierXNA
 {
-   public class Soldat : Humanoide
+   public class Soldat : Humanoide,IDeletable
     {
         public const float CONSTANTE_SAUT = 6000f;
         const float CONSTANTE_GRAVITE = 9.81F;

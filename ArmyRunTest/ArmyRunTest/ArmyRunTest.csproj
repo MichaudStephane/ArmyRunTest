@@ -100,6 +100,7 @@
     <Compile Include="HéliceVentilateur.cs" />
     <Compile Include="IBougeable.cs" />
     <Compile Include="ICollisionable.cs" />
+    <Compile Include="IDeletable.cs" />
     <Compile Include="IDestructible.cs" />
     <Compile Include="ImagesFond.cs" />
     <Compile Include="InputManager.cs" />
@@ -120,9 +121,11 @@
     <Compile Include="SectionHachesMultiples.cs" />
     <Compile Include="SectionMobileHorizontale.cs" />
     <Compile Include="SectionMobileMultiples.cs" />
+    <Compile Include="SectionMoitiéMur.cs" />
     <Compile Include="SectionNiveauFlamme.cs" />
     <Compile Include="SectionRepos.cs" />
     <Compile Include="SectionVentilateur.cs" />
+    <Compile Include="SectionVentilateurDroite.cs" />
     <Compile Include="Soldat.cs" />
     <Compile Include="SoldatDeArmée.cs" />
     <Compile Include="TerrainBasePlanIncline.cs" />
