@@ -16,7 +16,7 @@ namespace AtelierXNA
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class HéliceVentilateur : ObjetBase
+    public class HéliceVentilateur : ObjetBase,IDeletable
     {
         float Angle { get; set; }
         Matrix MondeInitial { get; set; }

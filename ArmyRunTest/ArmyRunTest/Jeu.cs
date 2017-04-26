@@ -101,8 +101,10 @@ namespace AtelierXNA
                                  
                                 if (Armées.NbVivants == 0)
                                 {
-                                    _Niveau.DétruireNiveau();
-                                    if(NombreSoldatArrivé >= 1)
+                                    DétruireNiveau();
+                                    
+
+                                    if (NombreSoldatArrivé >= 1)
                                     {
                                         EstRéussi = true;
 
@@ -117,6 +119,10 @@ namespace AtelierXNA
                     }
                 }
             }
+        }
+        public void DétruireNiveau()
+        {
+            _Niveau.DétruireNiveau();
         }
         public override void Update(GameTime gameTime)
         {
@@ -140,8 +146,8 @@ namespace AtelierXNA
         }
         public int GetNbSoldat()
         {
-            int nb = NombreSoldatsVivant;
-            NombreSoldatsVivant = 0;
+            int nb = NombreSoldatArrivé;
+            NombreSoldatArrivé = 0;
             return nb;
             
         }

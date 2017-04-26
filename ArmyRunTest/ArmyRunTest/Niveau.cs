@@ -54,13 +54,14 @@ namespace AtelierXNA
             foreach (List<PrimitiveDeBase> p in TabListObjetCollisionables)
             {
                 p.Clear();
+                
             }
             ListSections.Clear();
             
             List<int> index = new List<int>();
             for (int i = 0; i < Jeu.Components.Count(); i++)
             {
-                if(Jeu.Components[i] is PrimitiveDeBase)
+                if(Jeu.Components[i] is IDeletable)
                 {
                     index.Add(i);
                 }
@@ -71,7 +72,7 @@ namespace AtelierXNA
             {
                 Jeu.Components.RemoveAt(index[j]);
             }
-            Jeu.Components.Remove(Jeu.Components.Where(x => x is Armée).ToList().First());
+            int a = 1;
         }
 
         void CréerNiveau()
@@ -88,7 +89,7 @@ namespace AtelierXNA
             for (int i = 1; i < NbrSections; ++i)
             {
                   int nombreAléatoire = GénérateurAléatoire.Next(0, NbrSectionsDisponibles);
-                //  int nombreAléatoire = 0;
+                 // int nombreAléatoire = 0;
                 SectionDeNiveau a = null;
                 if (nombreAléatoire == 0)
                 {
@@ -129,7 +130,11 @@ namespace AtelierXNA
                     TabListObjetCollisionables[i].Add(b);
                 }
 
+
             }
+          
+        
+
         }
         public List<PrimitiveDeBase>[] GetTableauListObjetCollisionables()
         {

@@ -115,6 +115,7 @@ namespace AtelierXNA
         }
         public void CréerJeu()
         {
+
             Jeu partie = new Jeu(Game, NombreSectionNiveau, new Vector3(0, 0, 0), NombreSoldats, IntervalleMAJ);
             Game.Components.Add(partie);
             Game.Services.AddService(typeof(Jeu), partie);

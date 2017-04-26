@@ -16,7 +16,7 @@ namespace AtelierXNA
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public abstract class SectionDeNiveau : Microsoft.Xna.Framework.GameComponent
+    public abstract class SectionDeNiveau : Microsoft.Xna.Framework.GameComponent,IDeletable
     {
         protected const float TAILLE_TERRAIN_Z = 0.724F;
         protected const float TAILLE_TERRAIN_X = 1F;

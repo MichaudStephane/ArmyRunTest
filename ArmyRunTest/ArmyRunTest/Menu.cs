@@ -14,11 +14,13 @@ namespace AtelierXNA
 {
     public class Menu : Microsoft.Xna.Framework.DrawableGameComponent
     {
-        const int MARGE_DROITE = 10;
-        const int MARGE_BAS = 90;
+        const int MARGE_DROITE = 500;
+        const int MARGE_BAS =120;
         const int MARGE_GAUCHE = 150;
         const int MAXIMUM_NOMBRE_SOLDAT = 30;
         const int MINIMUM_NOMBRE_SECTION = 15;
+        const int LARGEUR_BOUTTON = 120;
+        const int HAUTEUR_BOUTTON = 70; 
 
         const float INTERVALLE_MOYEN = 1 / 60f;
         Vector2 PosSouris { get; set; }
@@ -30,13 +32,15 @@ namespace AtelierXNA
         Boutton DifficultéDifficile { get; set; }
         Boutton Tutoriel { get; set; }
         Boutton Mute { get; set; }
-
+        Boutton Exit { get; set; }
         Vector3 PosInitialeNiveau { get; set; }
         List<Boutton> Bouttons { get; set; }
         Jeu PartieEnCours { get; set; }
         Rectangle RectangleAffichageMute { get; set; }
         Rectangle RectangleAffichageBoutonsDifficulté { get; set; }
         bool SourrisEstDansBoutton { get;set;}
+
+        public bool JeuUnique { get; set; }
 
         public Menu(Game jeu)
             : base(jeu)
@@ -48,18 +52,21 @@ namespace AtelierXNA
             string nomImageAprès = "FondEcranGris";
             string son = "icone son";
             string mute = "mute button";
+            JeuUnique = true;
 
             Rectangle temp = Game.Window.ClientBounds;
-            RectangleAffichageMute = new Rectangle(0, temp.Y - MARGE_BAS, 60, 60);
+            RectangleAffichageMute = new Rectangle(0, temp.Height - MARGE_BAS, 60, 60);
 
             Bouttons = new List<Boutton>();
-            DifficultéFacile = new Boutton(Game, "Facile", new Rectangle(temp.X-MARGE_DROITE, temp.Y - MARGE_BAS * 2 , 120, 70), Color.Blue, nomImageAvant, nomImageAprès, 
+            DifficultéFacile = new Boutton(Game, "Facile", new Rectangle(temp.Width - MARGE_DROITE, temp.Top + MARGE_BAS , LARGEUR_BOUTTON, HAUTEUR_BOUTTON), Color.Blue, nomImageAvant, nomImageAprès, 
                                             MAXIMUM_NOMBRE_SOLDAT,2, INTERVALLE_MOYEN);
-            DifficultéMoyenne = new Boutton(Game, "Moyen", new Rectangle(temp.X - MARGE_DROITE, temp.Y - MARGE_BAS, 120, 70), Color.Blue, nomImageAvant, nomImageAprès, 
+            DifficultéMoyenne = new Boutton(Game, "Moyen", new Rectangle(temp.Width - MARGE_DROITE, temp.Top + MARGE_BAS*3, LARGEUR_BOUTTON, HAUTEUR_BOUTTON), Color.Blue, nomImageAvant, nomImageAprès, 
                                             MAXIMUM_NOMBRE_SOLDAT-5,MINIMUM_NOMBRE_SECTION+10, INTERVALLE_MOYEN);
-            DifficultéDifficile = new Boutton(Game, "Difficile", new Rectangle(temp.X - MARGE_DROITE, temp.Y, 120, 70), Color.Blue, nomImageAvant, nomImageAprès, 
+            DifficultéDifficile = new Boutton(Game, "Difficile", new Rectangle(temp.Width - MARGE_DROITE, temp.Top + MARGE_BAS*5, LARGEUR_BOUTTON, HAUTEUR_BOUTTON), Color.Blue, nomImageAvant, nomImageAprès, 
                                             MAXIMUM_NOMBRE_SOLDAT-10,MINIMUM_NOMBRE_SECTION+20, INTERVALLE_MOYEN);
             Mute = new Boutton(Game, " ", RectangleAffichageMute, Color.White, son, mute, 0,0, INTERVALLE_MOYEN);
+
+            Exit = new Boutton(Game, "Quitter", new Rectangle(Game.Window.ClientBounds.Width / 2, Game.Window.ClientBounds.Height / 2 + 50, LARGEUR_BOUTTON, HAUTEUR_BOUTTON), Color.Blue, "fond écran blanc", "FondEcranGris", 0, 0, INTERVALLE_MOYEN);
 
             Bouttons.Add(DifficultéFacile);
             Bouttons.Add(DifficultéMoyenne);
@@ -92,8 +99,11 @@ namespace AtelierXNA
             PosSouris = new Vector2(point.X, point.Y);
             if (PartieEnCours.EstRéussi)
             {
-                Boutton Continuer = new Boutton(Game, "Continuer", new Rectangle(Game.Window.ClientBounds.X / 2 - 40, Game.Window.ClientBounds.Y / 2 - 10, 120, 70), Color.Blue, "fond écran blanc", "FondEcranGris", PartieEnCours.GetNbSoldat(), CalculerNbSection(), INTERVALLE_MOYEN);
+                Boutton Continuer = new Boutton(Game, "Continuer", new Rectangle(Game.Window.ClientBounds.Width / 2, Game.Window.ClientBounds.Height / 2 - 50, LARGEUR_BOUTTON, HAUTEUR_BOUTTON), Color.Blue, "fond écran blanc", "FondEcranGris", PartieEnCours.GetNbSoldat(), CalculerNbSection(), INTERVALLE_MOYEN);
+                
                 Bouttons.Add(Continuer);
+                Bouttons.Add(Exit);
+                Game.Components.Add(Exit);
                 Game.Components.Add(Continuer);
                 PartieEnCours.EstRéussi = false;
             }
@@ -123,10 +133,21 @@ namespace AtelierXNA
                         {
                             if (Game.Components.Where(x => x is Jeu).ToList().Count != 0)
                             {
+                                
                                 Game.Components.Remove(Game.Components.Where(x => x is Jeu).ToList().First());
                                 Game.Services.RemoveService(typeof(Jeu));
                             }
-                            b.CréerJeu();
+                            if (b != Exit)
+                            {
+
+                               
+                                    b.CréerJeu();
+                               
+                            }
+                            else
+                            {
+                                Game.Exit();
+                            }
                             PartieEnCours = Game.Services.GetService(typeof(Jeu)) as Jeu;
 
                             foreach (Boutton boutton in Bouttons)
@@ -134,6 +155,7 @@ namespace AtelierXNA
                                 Game.Components.Remove(boutton);
                                 boutton.Enabled = false;
                             }
+                            Bouttons.Clear();
                         }
                     }
                     else

@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace AtelierXNA
 {
-    class Armée : Microsoft.Xna.Framework.GameComponent
+    class Armée : Microsoft.Xna.Framework.GameComponent,IDeletable
     {
         const int MAX_DISTANCE_CAMÉRA = 20;
         const int MIN_DISTANCE_CAMÉRA = 10;

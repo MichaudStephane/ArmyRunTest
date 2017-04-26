@@ -15,7 +15,7 @@ namespace AtelierXNA
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class Flag : TuileTextureeAnime
+    public class Flag : TuileTextureeAnime,IDeletable
     {
         public BoundingSphere ViewFlag { get;private set; }
         public Flag(Game jeu, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, Vector2 étendue, string nomTextureTuile, Vector2 descriptionImage, float intervalleMAJ)

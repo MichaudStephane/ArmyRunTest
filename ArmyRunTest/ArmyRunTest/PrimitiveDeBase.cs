@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace AtelierXNA
 {
-   public abstract class PrimitiveDeBase : Microsoft.Xna.Framework.DrawableGameComponent
+   public abstract class PrimitiveDeBase : Microsoft.Xna.Framework.DrawableGameComponent,IDeletable
    {
       protected float HomothétieInitiale { get; private set; }
       protected Vector3 RotationInitiale { get; private set; }
