@@ -12,10 +12,11 @@ namespace AtelierXNA
       protected InputManager GestionInput { get; private set; }
       float Temps…coulÈDepuisMAJ { get; set; }
       float IncrÈmentAngleRotation { get; set; }
-        protected bool Lacet { get; set; }
-        protected bool Tangage { get; set; }
-        protected bool Roulis { get; set; }
+        public bool Lacet { get; set; }
+        public bool Tangage { get; set; }
+        public bool Roulis { get; set; }
       protected bool Monde¿Recalculer { get; set; }
+        public bool InverseRoulis { get; set; }
 
       float angleLacet;
       protected float AngleLacet
@@ -31,8 +32,21 @@ namespace AtelierXNA
          }
          set { angleLacet = value; }
       }
+        protected float InverseAngleRoulis
+        {
+            get
+            {
+                if (InverseRoulis)
+                {
+                    angleRoulis -= IncrÈmentAngleRotation;
+                    MathHelper.WrapAngle(angleRoulis);
+                }
+                return angleRoulis;
+            }
+            set { angleRoulis = value; }
+        }
 
-      float angleTangage;
+        float angleTangage;
       protected float AngleTangage
       {
          get
@@ -110,7 +124,7 @@ namespace AtelierXNA
          }
       }
 
-      private void InitialiserRotations()
+      protected void InitialiserRotations()
       {
          AngleLacet = RotationInitiale.Y;
          AngleTangage = RotationInitiale.X;
@@ -139,7 +153,7 @@ namespace AtelierXNA
                Roulis = !Roulis;
             }
          }
-         Monde¿Recalculer = Monde¿Recalculer || Lacet || Tangage || Roulis;
+         Monde¿Recalculer = Monde¿Recalculer || Lacet || Tangage || Roulis || InverseRoulis;
       }
    }
 }

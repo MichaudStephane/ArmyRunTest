@@ -21,11 +21,16 @@ namespace AtelierXNA
         BoundingBox HitboxFlameGauche { get; set; }
         BoundingBox HitboxFlameDroite { get; set; }
         TuileTextureeAnime FlammeGauche { get; set; }
+        TuileTextureeAnime FlammeDroite { get; set; }
         public TerrainFlame(Game jeu, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, float intervalleMAJ, string nomModele)
             : base(jeu,homothétieInitiale,rotationInitiale,positionInitiale,intervalleMAJ,nomModele)
         {
-            FlammeGauche = new TuileTextureeAnime(Game, 1F, Vector3.Zero, Position,new Vector2(1,1), "FeuFollet", new Vector2(20, 1), 1f / 60);
+            FlammeGauche = new TuileTextureeAnime(Game, 1F, Vector3.Zero, Position - new Vector3(1,0,0),new Vector2(1,1), "FeuFollet", new Vector2(20, 1), 1f / 60);
+            FlammeDroite = new TuileTextureeAnime(Game, 1F, Vector3.Zero, Position + new Vector3(1, 0, 0), new Vector2(1, 1), "FeuFollet", new Vector2(20, 1), 1f / 60);
             jeu.Components.Add(FlammeGauche);
+            jeu.Components.Add(FlammeDroite);
+            FlammeGauche.Visible = false;
+
             TempsÉcouléDepuisMAJFlamme = 0;
             Droite = true;
         }
@@ -65,9 +70,15 @@ namespace AtelierXNA
         {
             Droite = !Droite;
 
-            if(Droite)
+            if(!Droite)
             {
                 FlammeGauche.Visible = true;
+                FlammeDroite.Visible = false;
+            }
+            else
+            {
+                FlammeGauche.Visible = false;
+                FlammeDroite.Visible = true;
             }
         }
         public override Vector3 DonnerVectorCollision(PrimitiveDeBaseAnimée a)
@@ -78,6 +89,14 @@ namespace AtelierXNA
                 {
                     flamme = new Vector3(0, 600, 0);
                 }
+
+            if(Droite)
+            {
+                if ((a as Soldat).HitBoxGénérale.Intersects(HitboxFlameDroite))
+                {
+                    flamme = new Vector3(0, 600, 0);
+                }
+            }
 
 
             return base.DonnerVectorCollision(a)+flamme;

@@ -89,6 +89,7 @@ namespace AtelierXNA
                 BougerHitbox();
                 TempsEcoulerDepuisMAJCalcul = 0;
             }
+          
             if (TempsEcouleDepuisMajMouvement >= Intervalle_MAJ_Mouvement)
             {
                 Position = VarPosition;

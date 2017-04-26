@@ -143,7 +143,8 @@ namespace AtelierXNA
                         Vector3 EntreSphèreetPers = (TableauxHitBoxPrécises[i].Center - a.Position);
                        // (a as Soldat).Vitesse = new Vector3((a as Soldat).Vitesse.X, (a as Soldat).Vitesse.Y, 0);
                        Vector3 temp = sens * 2800 * new Vector3(1,0.5f,0); //(Angle / Math.Abs(Angle))
-                        v = new Vector3(temp.X,Math.Abs(temp.Y),0);
+                        v = new Vector3(temp.X,Math.Abs(temp.Y),0);                                        
+
                     }
                 }      
             }

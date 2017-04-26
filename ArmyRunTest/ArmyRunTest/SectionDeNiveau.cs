@@ -25,6 +25,8 @@ namespace AtelierXNA
         protected const int HOMOTHÉTIE_INITIALE = 1;
         protected const float INTERVAL_MAJ = 1 / 60F;
         protected Vector3 ROTATION_INITIALE = new Vector3(0, 0, 0);
+        private Game game;
+
         public List<PrimitiveDeBase> ObjetCollisionables { get; set; }
         protected Game Jeu { get; set;}
         public Vector3 PositionInitiale { get; private set; }
@@ -46,6 +48,8 @@ namespace AtelierXNA
             Jeu = jeu;
             ObjetCollisionables = new List<PrimitiveDeBase>();
         }
+
+     
 
         private void DéterminerSection()
         {
