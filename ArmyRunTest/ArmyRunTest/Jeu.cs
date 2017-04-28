@@ -13,8 +13,9 @@ namespace AtelierXNA
 {
     class Jeu : Microsoft.Xna.Framework.GameComponent
     {
-        const int SECTION_NIVEAU_TUTORIEL = 15;
-        const int NOMBRE_SOLDATS_TUTORIEL = 25;
+        public const int NB_SECTION_FACILE = 10;
+        //const int SECTION_NIVEAU_TUTORIEL = 15;
+        //const int NOMBRE_SOLDATS_TUTORIEL = 25;
         const float INTERVAL_MAJ_MOYEN = 1 / 60f;
         Armée Armées { get; set; }
         Niveau _Niveau { get; set; }
@@ -41,14 +42,13 @@ namespace AtelierXNA
             NombreSoldats = nombreSoldats;
             IntervalleMaj = intervalleMaj;
         }
-        public Jeu(Game jeu)
-            : base(jeu)
-        {
-            NombreSectionsNiveau = SECTION_NIVEAU_TUTORIEL;
-            PositionInitialeNiveau = new Vector3(0, 0, 0);
-           
-            IntervalleMaj = INTERVAL_MAJ_MOYEN;
-        }
+        //public Jeu(Game jeu)
+        //    : base(jeu)
+        //{
+        //    NombreSectionsNiveau = SECTION_NIVEAU_TUTORIEL;
+        //    PositionInitialeNiveau = new Vector3(0, 0, 0);
+        //    IntervalleMaj = INTERVAL_MAJ_MOYEN;
+        //}
 
         public override void Initialize()
         {
@@ -75,7 +75,6 @@ namespace AtelierXNA
             JouerMusique = true;
             //Mute = new Boutton(Game, " ", RectangleAffichageMute, Color.White, son, mute, 0, 0, INTERVAL_MAJ_MOYEN);
             //Game.Components.Add(Mute);
-            
         }
 
         public void ChangerDeNiveau()
@@ -90,26 +89,34 @@ namespace AtelierXNA
                     {
                         if (Armées.Armés[i, j].EstVivant)
                         {
-                            Vector3 temp = _Niveau.GetListSectionNiveau().Last().PositionInitiale ;
+                            Vector3 temp = _Niveau.GetListSectionNiveau().Last().PositionInitiale;
                             BoundingSphere temp2 = _Niveau.GetListSectionNiveau().Last().HitBoxSection;
-                            if (Armées.Armés[i, j].Position.Z  <= (temp.Z - temp2.Radius))
+                            if (Armées.Armés[i, j].Position.Z <= (temp.Z - temp2.Radius))
                             {
                                 ++NombreSoldatArrivé;
                                 Armées.Armés[i, j].EstVivant = false;
                                 Armées.VerifierLesMorts();
                                 Armées.ReformerRang();
-                                 
+
                                 if (Armées.NbVivants == 0)
                                 {
                                     DétruireNiveau();
-                                    
+
 
                                     if (NombreSoldatArrivé >= 1)
                                     {
                                         EstRéussi = true;
-
                                     }
-                                    else
+                                }
+                            }
+                            else
+                            {
+                                if (Armées.NbVivants == 0)
+                                {
+                                    DétruireNiveau();
+
+
+                                    if (NombreSoldatArrivé != 0)
                                     {
                                         EstÉchec = true;
                                     }
@@ -120,10 +127,17 @@ namespace AtelierXNA
                 }
             }
         }
+
         public void DétruireNiveau()
         {
             _Niveau.DétruireNiveau();
         }
+
+        public int GetNbSections()
+        {
+            return NombreSectionsNiveau;
+        }
+
         public override void Update(GameTime gameTime)
         {
             ChangerDeNiveau();
@@ -144,12 +158,12 @@ namespace AtelierXNA
                 JouerMusique = !JouerMusique;
             }
         }
+
         public int GetNbSoldat()
         {
             int nb = NombreSoldatArrivé;
             NombreSoldatArrivé = 0;
             return nb;
-            
         }
     }
 }

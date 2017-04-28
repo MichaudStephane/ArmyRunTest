@@ -18,8 +18,7 @@ namespace AtelierXNA
         const int MAX_DISTANCE_CAMÉRA = 20;
         const int MIN_DISTANCE_CAMÉRA = 10;
         const int INTERVALLE_VERIFICATION = 2;
-        const int MARGE_BAS = 50;
-        const int MARGE_GAUCHE = 15;
+        const int MARGE_BAS = 40;
         Vector2 DimensionCase = new Vector2(0.7F, 0.7F);
         List<Humanoide> Soldats { get; set; }
         Vector3[,] Positions { get; set; }
@@ -47,7 +46,7 @@ namespace AtelierXNA
         List<SectionDeNiveau> ListeSections { get; set; }
         bool EstFormationStandard { get; set; }
         bool EstFormationLigne { get; set; }
-        AfficheurNbVivant AfficheurNbVivant { get; set; }
+        AfficheurNb AfficheurNbVivant { get; set; }
 
         public Armée(Game game, int nombreSoldats, Vector3 posFlag, float intervalleMAJ, List<PrimitiveDeBase>[] objetCollisionné, List<SectionDeNiveau> listeSections)
         : base(game)
@@ -81,7 +80,7 @@ namespace AtelierXNA
             CréerSoldats();
             CalculerMoyennePosition();
             AnciennePosition = MoyennePosition;
-            AfficheurNbVivant = new AfficheurNbVivant(Game, "185281", Color.Red, NbVivants, new Vector2(0 + MARGE_GAUCHE, Game.Window.ClientBounds.Height - MARGE_BAS), INTERVALLE_STANDARD);
+            AfficheurNbVivant = new AfficheurNb(Game, "185281", Color.Red, NbVivants, new Vector2(0, Game.Window.ClientBounds.Height - MARGE_BAS), "Nombre Soldats :", INTERVALLE_STANDARD);
             Game.Components.Add(AfficheurNbVivant);
 
             GestionInput = Game.Services.GetService(typeof(InputManager)) as InputManager;
@@ -95,7 +94,7 @@ namespace AtelierXNA
             TempsÉcoulé2 += (float)gameTime.ElapsedGameTime.TotalSeconds;
             TempsEcouleVerification += (float)gameTime.ElapsedGameTime.TotalSeconds;
             //Vector3 Pos = new Vector3(Armés[0, 0].Position.X, Armés[0, 0].Position.Y, Armés[0, 0].Position.Z);
-            AfficheurNbVivant.ChangerNombreVivant(NbVivants);
+            AfficheurNbVivant.ChangerNombreAfficheur(NbVivants);
             ReformerArmee();
             if (TempsÉcoulé >= IntervalleMAJ)
             {

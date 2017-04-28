@@ -92,48 +92,41 @@ namespace AtelierXNA
                   int nombreAléatoire = GénérateurAléatoire.Next(0, NbrSectionsDisponibles);
                  // int nombreAléatoire = 0;
                 SectionDeNiveau a = null;
-                if (nombreAléatoire == 0)
+                switch (nombreAléatoire)
                 {
-                     a = new SectionRepos(Jeu, Position, i);     
-                    Position = new Vector3(Position.X, Position.Y, Position.Z - a.LongueurNiveau);
+                    case 0:
+                        a = new SectionRepos(Jeu, Position, i);
+                        Position = new Vector3(Position.X, Position.Y, Position.Z - a.LongueurNiveau);
+                        break;
+                    case 1:
+                        a = new SectionHache(Jeu, Position, i);
+                        Position = new Vector3(Position.X, Position.Y, Position.Z - a.LongueurNiveau);
+                        break;
+                    case 2:
+                        a = new SectionHachesMultiples(Jeu, Position, 4, i);
+                        Position = new Vector3(Position.X, Position.Y, Position.Z - a.LongueurNiveau);
+                        break;
+                    case 3:
+                        a = new SectionVentilateur(Jeu, Position, i);
+                        Position = new Vector3(Position.X, Position.Y, Position.Z - a.LongueurNiveau);
+                        break;
+                    case 4:
+                        a = new SectionMobileHorizontale(Jeu, Position, i);
+                        Position = new Vector3(Position.X, Position.Y, Position.Z - a.LongueurNiveau);
+                        break;
+                    case 5:
+                        a = new SectionMobileMultiples(Jeu, Position, i);
+                        Position = new Vector3(Position.X, Position.Y, Position.Z - a.LongueurNiveau);
+                        break;
+                    case 6:
+                        a = new SectionMoitiéMur(Jeu, Position, i);
+                        Position = new Vector3(Position.X, Position.Y, Position.Z - a.LongueurNiveau);
+                        break;
+                    case 7:
+                        a = new SectionVentilateurDroite(Jeu, Position, i);
+                        Position = new Vector3(Position.X, Position.Y, Position.Z - a.LongueurNiveau);
+                        break;
                 }
-                else if (nombreAléatoire == 1)
-                {
-                     a = new SectionHache(Jeu, Position, i);
-                    Position = new Vector3(Position.X, Position.Y, Position.Z - a.LongueurNiveau);
-                }
-                else if (nombreAléatoire == 2)
-                {
-                     a = new SectionHachesMultiples(Jeu, Position, 4, i);
-                    Position = new Vector3(Position.X, Position.Y, Position.Z - a.LongueurNiveau);
-                }
-                else if (nombreAléatoire == 3)
-                {
-                     a = new SectionVentilateur(Jeu, Position, i);
-                    Position = new Vector3(Position.X, Position.Y, Position.Z - a.LongueurNiveau);
-
-                }
-                else if (nombreAléatoire == 4)
-                {
-                     a = new SectionMobileHorizontale(Jeu, Position, i);
-                    Position = new Vector3(Position.X, Position.Y, Position.Z - a.LongueurNiveau);
-                }
-                else if (nombreAléatoire == 5)
-                {
-                     a = new SectionMobileMultiples(Jeu, Position, i);
-                    Position = new Vector3(Position.X, Position.Y, Position.Z - a.LongueurNiveau);
-                }
-                else if(nombreAléatoire == 6)
-                {
-                    a = new SectionMoitiéMur(Jeu, Position, i);
-                    Position = new Vector3(Position.X, Position.Y, Position.Z - a.LongueurNiveau);
-                }
-                else if (nombreAléatoire == 7)
-                {
-                    a = new SectionVentilateurDroite(Jeu, Position, i);
-                    Position = new Vector3(Position.X, Position.Y, Position.Z - a.LongueurNiveau);
-                }
-
 
                 ListSections.Add(a);
                 Jeu.Components.Add(a);
@@ -141,12 +134,7 @@ namespace AtelierXNA
                 {
                     TabListObjetCollisionables[i].Add(b);
                 }
-
-
             }
-          
-        
-
         }
         public List<PrimitiveDeBase>[] GetTableauListObjetCollisionables()
         {

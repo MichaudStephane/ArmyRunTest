@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace AtelierXNA
 {
-    class AfficheurNbVivant : Microsoft.Xna.Framework.DrawableGameComponent
+    class AfficheurNb : Microsoft.Xna.Framework.DrawableGameComponent
     {
         const int MARGE_BAS = 50;
         const int MARGE_GAUCHE = 15;
@@ -21,17 +21,19 @@ namespace AtelierXNA
         Rectangle RectanglePosition { get; set; }
         RessourcesManager<Texture2D> GestionnaireDeTextures { get; set; }
         Texture2D Texture { get; set; }
-        int NbVivant { get; set; }
+        int NbAfficheur { get; set; }
         Vector2 Position { get; set; }
+        string Texte { get; set; }
 
-        public AfficheurNbVivant(Game game, string nomImage, Color couleurTexte, int nbVivant,Vector2 position, float intervalleMAJ)
+        public AfficheurNb(Game game, string nomImage, Color couleurTexte, int nbAfficheur,Vector2 position, string texte, float intervalleMAJ)
          : base(game)
         {
             NomImage = nomImage;
             CouleurTexte = couleurTexte;
             IntervalleMAJ = intervalleMAJ;
-            NbVivant = nbVivant;
+            NbAfficheur = nbAfficheur;
             Position = position;
+            Texte = texte;
         }
 
         public override void Initialize()
@@ -66,12 +68,13 @@ namespace AtelierXNA
         {
             GestionSprites.Begin();
             GestionSprites.Draw(Texture,RectanglePosition,Color.White);
-            GestionSprites.DrawString(Font, NbVivant.ToString(), new Vector2(RectanglePosition.X, RectanglePosition.Y), CouleurTexte);
+            GestionSprites.DrawString(Font, Texte, new Vector2(RectanglePosition.X, RectanglePosition.Y - 30), CouleurTexte);
+            GestionSprites.DrawString(Font, NbAfficheur.ToString(), new Vector2(RectanglePosition.X, RectanglePosition.Y), CouleurTexte);
             GestionSprites.End();
         }
-        public void ChangerNombreVivant(int nb)
+        public void ChangerNombreAfficheur(int nb)
         {
-            NbVivant = nb;
+            NbAfficheur = nb;
         }
     }
 }
