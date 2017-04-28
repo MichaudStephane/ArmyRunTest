@@ -118,7 +118,9 @@ namespace AtelierXNA
 
             if (PartieEnCours.EstRéussi)
             {
-                Boutton Continuer = new Boutton(Game, "Continuer", new Rectangle(Game.Window.ClientBounds.Width / 2, Game.Window.ClientBounds.Height / 2 - 50, LARGEUR_BOUTTON, HAUTEUR_BOUTTON), Color.Blue, "fond écran blanc", "FondEcranGris", CalculerNbSoldats(), CalculerNbSection(), INTERVALLE_MOYEN);
+                Boutton Continuer = new Boutton(Game, "Continuer", new Rectangle(Game.Window.ClientBounds.Width / 2, Game.Window.ClientBounds.Height / 2 - 50,
+                                    LARGEUR_BOUTTON, HAUTEUR_BOUTTON), Color.Blue, "fond écran blanc", "FondEcranGris", 
+                                    CalculerNbSoldats(), CalculerNbSection(), INTERVALLE_MOYEN);
                 
                 Bouttons.Add(Continuer);
                 Bouttons.Add(Exit);
@@ -130,7 +132,9 @@ namespace AtelierXNA
 
             if (PartieEnCours.EstÉchec)
             {
-                Boutton Recommencer = new Boutton(Game, "Recommencer", new Rectangle(Game.Window.ClientBounds.Width / 2, Game.Window.ClientBounds.Height / 2 - 50, LARGEUR_BOUTTON, HAUTEUR_BOUTTON), Color.Blue, "fond écran blanc", "FondEcranGris", PartieEnCours.GetNbSoldat(),PartieEnCours.GetNbSections(), INTERVALLE_MOYEN);
+                Boutton Recommencer = new Boutton(Game, "Recommencer", new Rectangle(Game.Window.ClientBounds.Width / 2, Game.Window.ClientBounds.Height / 2 - 50, 
+                                                LARGEUR_BOUTTON, HAUTEUR_BOUTTON), Color.Blue, "fond écran blanc", "FondEcranGris", PartieEnCours.GetNbSoldat(),
+                                                PartieEnCours.GetNbSections(), INTERVALLE_MOYEN);
                 Bouttons.Add(Recommencer);
                 Bouttons.Add(Exit);
 

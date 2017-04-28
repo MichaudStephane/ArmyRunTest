@@ -139,7 +139,7 @@ namespace AtelierXNA
                 CreerHitbox();
             }
         }
-        void VerifierSiMort()
+        public void VerifierSiMort()
         {
             if (VarPosition.Y < -20 || DISTANCE_MAX < Vector3.Distance(VarPosition, PositionCible))
             {

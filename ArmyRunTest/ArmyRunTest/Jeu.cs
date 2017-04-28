@@ -111,15 +111,14 @@ namespace AtelierXNA
                             }
                             else
                             {
+                                Armées.Armés[i, j].VerifierSiMort();
+                             
+                                Armées.VerifierLesMorts();
+                                Armées.ReformerRang();
+
                                 if (Armées.NbVivants == 0)
                                 {
-                                    DétruireNiveau();
-
-
-                                    if (NombreSoldatArrivé != 0)
-                                    {
-                                        EstÉchec = true;
-                                    }
+                                    EstÉchec = true;
                                 }
                             }
                         }
