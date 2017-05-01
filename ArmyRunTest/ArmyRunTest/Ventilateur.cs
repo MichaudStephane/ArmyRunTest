@@ -18,6 +18,7 @@ namespace AtelierXNA
     public class Ventilateur : ObjetBase, ICollisionable
     {
         const float Distance_Avec_Terrain_X = (float)(0.724*15)/2f;
+
         const float Distance_Avec_Terrain_Y = 2*1.5f;
         const float Grandeur_HitBox_Z = 7*1.5f;
         const float Distance_Avec_min_Z = 3*1.5f;

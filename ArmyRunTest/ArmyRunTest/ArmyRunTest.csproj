@@ -86,6 +86,7 @@
     <Compile Include="Afficheur3D.cs" />
     <Compile Include="AfficheurFPS.cs" />
     <Compile Include="AfficheurNb.cs" />
+    <Compile Include="AfficheurTexte.cs" />
     <Compile Include="Armée.cs" />
     <Compile Include="ArrièrePlan.cs" />
     <Compile Include="Boutton.cs" />

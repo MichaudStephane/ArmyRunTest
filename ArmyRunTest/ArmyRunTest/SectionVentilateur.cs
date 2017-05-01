@@ -53,8 +53,8 @@ namespace AtelierXNA
             Vector3 min = new Vector3(PositionInitiale.X - HitBoxBase.X,PositionInitiale.Y - HitBoxBase.Y,PositionInitiale.Z - 1.25f*HitBoxBase.Z);
             Vector3 max = new Vector3(PositionInitiale.X + HitBoxBase.X,PositionInitiale.Y + 2*HitBoxBase.Y, PositionInitiale.Z - 0.25f*HitBoxBase.Z);
 
-            Ventilateur1 = new Ventilateur(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X - HitBoxBase.X, PositionInitiale.Y + 4, PositionInitiale.Z - HitBoxBase.Z), INTERVAL_MAJ, "stefpath",min,max,"Gauche");
-            Hélice = new HéliceVentilateur(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X - HitBoxBase.X, PositionInitiale.Y + 4.5f, PositionInitiale.Z - HitBoxBase.Z), INTERVAL_MAJ, "stefpath");
+            Ventilateur1 = new Ventilateur(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN/100, Vector3.Zero, new Vector3(PositionInitiale.X - HitBoxBase.X, PositionInitiale.Y + 4, PositionInitiale.Z - HitBoxBase.Z), INTERVAL_MAJ, "stefpath",min,max,"Gauche");
+            Hélice = new HéliceVentilateur(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN/2, Vector3.Zero, new Vector3(PositionInitiale.X - HitBoxBase.X, PositionInitiale.Y + 4.5f, PositionInitiale.Z - HitBoxBase.Z), INTERVAL_MAJ, "hélice");
 
         }
    
