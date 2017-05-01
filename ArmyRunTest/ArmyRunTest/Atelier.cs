@@ -45,10 +45,10 @@ namespace AtelierXNA
             IsMouseVisible = false;
           
             content = new ContentManager(Services);
-            PériphériqueGraphique.PreferredBackBufferWidth = 1920;
-            PériphériqueGraphique.PreferredBackBufferHeight = 1080;
-            PériphériqueGraphique.PreferMultiSampling = false;
-            PériphériqueGraphique.IsFullScreen = true;
+            //PériphériqueGraphique.PreferredBackBufferWidth = 1920;
+            //PériphériqueGraphique.PreferredBackBufferHeight = 1080;
+            //PériphériqueGraphique.PreferMultiSampling = false;
+            //PériphériqueGraphique.IsFullScreen = true;
         }
 
   
