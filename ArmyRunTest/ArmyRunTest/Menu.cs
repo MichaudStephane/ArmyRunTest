@@ -119,7 +119,7 @@ namespace AtelierXNA
             if (PartieEnCours.EstRéussi)
             {
                 Vector2 PosTexte = new Vector2(Game.Window.ClientBounds.Width / 2, Game.Window.ClientBounds.Height / 2 - 150);
-                AfficheurTexte = new AfficheurTexte(Game, Color.Red, PosTexte, "Bravo! Vous êtes arrivé au niveau " + CompteurNiveau.ToString(), INTERVALLE_MOYEN);
+                AfficheurTexte = new AfficheurTexte(Game, Color.Red, PosTexte, "Bravo! Vous avez complété le niveau " + CompteurNiveau.ToString(), INTERVALLE_MOYEN);
 
                 Game.Components.Add(AfficheurTexte);
                 Boutton Continuer = new Boutton(Game, "Continuer", new Rectangle(Game.Window.ClientBounds.Width / 2, Game.Window.ClientBounds.Height / 2 - 50,
@@ -130,8 +130,7 @@ namespace AtelierXNA
                 Bouttons.Add(Exit);
                 Game.Components.Add(Exit);
                 Game.Components.Add(Continuer);
-                ++CompteurNiveau;
-                Afficheur = new AfficheurNb(Game, Color.Red, CompteurNiveau++, new Vector2(0, 0), "Niveau :", INTERVALLE_MOYEN);
+                Afficheur = new AfficheurNb(Game, Color.Red, ++CompteurNiveau, new Vector2(0, 0), "Niveau :", INTERVALLE_MOYEN);
                 Game.Components.Add(Afficheur);
                 PartieEnCours.EstRéussi = false;
             }
