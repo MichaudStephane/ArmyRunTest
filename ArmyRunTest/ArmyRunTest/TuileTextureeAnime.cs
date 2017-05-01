@@ -16,20 +16,18 @@ namespace AtelierXNA
     {
         public const float INTERVALLE_ANIMATION_STANDARD=1f/20;
 
-        Vector2 DescriptionImage { get; set; }
+       protected Vector2 DescriptionImage { get; set; }
       protected  int CompteurX { get; set; }
       protected  int CompteurY { get; set; }
         float IntervalleAnimation { get; set; }
         float TempsDepuisDerniereAnimation { get; set; }
-        Vector2 DeltaImage { get; set; }
+       protected Vector2 DeltaImage { get; set; }
 
 
         public TuileTextureeAnime(Game jeu, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, Vector2 étendue, string nomTextureTuile,Vector2 descriptionImage, float intervalleMAJ)
             : base(jeu,homothétieInitiale,rotationInitiale,positionInitiale,étendue,nomTextureTuile,intervalleMAJ)
         {
             DescriptionImage = descriptionImage;
-            
-            
         }
 
  

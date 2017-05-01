@@ -19,7 +19,7 @@ namespace AtelierXNA
         const int MIN_DISTANCE_CAMÉRA = 10;
         const int INTERVALLE_VERIFICATION = 2;
         const int MARGE_BAS = 40;
-        Vector2 DimensionCase = new Vector2(0.7F, 0.7F);
+        Vector2 DimensionCase = new Vector2(1.1F, 0.7F);
         List<Humanoide> Soldats { get; set; }
         Vector3[,] Positions { get; set; }
         public SoldatDeArmée[,] Armés { get; set; }
@@ -204,7 +204,7 @@ namespace AtelierXNA
                 {
                     if (nbSoldatsCreés < NombreSoldat)
                     {
-                        Armés[i, j] = new SoldatDeArmée(Game, 0.5F, Vector3.Zero, PosFlag + Positions[i, j], new Vector2(1, 2), "LoupGarou", string.Empty, new Vector2(4, 4), new Vector2(4, 4), 1f / 60, ObjetCollisionné, ListeSections);
+                        Armés[i, j] = new SoldatDeArmée(Game, 0.5F, Vector3.Zero, PosFlag + Positions[i, j], new Vector2(2, 3), "Soldat", string.Empty, new Vector2(20, 1), new Vector2(20, 1), 1f / 60, ObjetCollisionné, ListeSections);
                         Game.Components.Add(Armés[i, j]);
                         nbSoldatsCreés++;
                     }
