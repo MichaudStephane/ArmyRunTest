@@ -32,7 +32,7 @@ namespace AtelierXNA
         bool ChangerDeCouleurBoutton { get; set; }
         bool ChangerCouleurTexte { get; set; }
         int NombreSectionNiveau { get; set; }
-        int NombreSoldats { get; set; }
+        public int NombreSoldats { get; private set; }
         float IntervalleMAJ { get; set; }
 
         public Boutton(Game jeu, string texte, Rectangle rectangleAffichage, Color couleur, string nomImageAvant, string nomImgaeAprès, int nbSoldats, int nbSections, float intervalleMAJ)

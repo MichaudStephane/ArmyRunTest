@@ -29,8 +29,8 @@ namespace AtelierXNA
         int NombreSoldatArrivé { get; set; }
         Rectangle RectangleAffichageMute { get; set; }
         public bool JouerMusique { get; private set; }
-        public bool EstRéussi { get;  set; }
-        public bool EstÉchec { get;  set; }
+        public bool EstRéussi { get; set; }
+        public bool EstÉchec { get; set; }
         Boutton Mute { get; set; }
 
 
@@ -57,12 +57,11 @@ namespace AtelierXNA
             //string mute = "mute button";
             //Rectangle temp = Game.Window.ClientBounds;
             //RectangleAffichageMute = new Rectangle(0, temp.Y - 90, 60, 60);
-            if (Game.Components.Where(x => x is CaméraAutomate).ToList().Count <1)
+            if (Game.Components.Where(x => x is CaméraAutomate).ToList().Count < 1)
             {
                 CaméraJeu = Game.Services.GetService(typeof(Caméra)) as CaméraAutomate;
                 Game.Components.Add(CaméraJeu);
             }
-
             EstRéussi = false;
             EstÉchec = false;
             _Niveau = new Niveau(Game, NombreSectionsNiveau, PositionInitialeNiveau);
@@ -112,13 +111,14 @@ namespace AtelierXNA
                             else
                             {
                                 Armées.Armés[i, j].VerifierSiMort();
-                             
+
                                 Armées.VerifierLesMorts();
                                 Armées.ReformerRang();
 
                                 if (Armées.NbVivants == 0)
                                 {
                                     EstÉchec = true;
+                                    DétruireNiveau();
                                 }
                             }
                         }
@@ -140,7 +140,6 @@ namespace AtelierXNA
         public override void Update(GameTime gameTime)
         {
             ChangerDeNiveau();
-            
             base.Update(gameTime);
         }
 
@@ -164,6 +163,7 @@ namespace AtelierXNA
             NombreSoldatArrivé = 0;
             return nb;
         }
+
     }
 }
 

@@ -18,7 +18,7 @@ namespace AtelierXNA
         const int MAX_DISTANCE_CAMÉRA = 20;
         const int MIN_DISTANCE_CAMÉRA = 10;
         const int INTERVALLE_VERIFICATION = 2;
-        const int MARGE_BAS = 40;
+        const int MARGE_BAS = 70;
         Vector2 DimensionCase = new Vector2(0.7F, 0.7F);
         List<Humanoide> Soldats { get; set; }
         Vector3[,] Positions { get; set; }
@@ -65,9 +65,6 @@ namespace AtelierXNA
             Caméra = Game.Services.GetService(typeof(Caméra)) as CaméraAutomate;
             ObjetCollisionné = objetCollisionné;
             TempsEcouleVerification = 0;
-           
-
-
         }
 
         public override void Initialize()
@@ -80,7 +77,7 @@ namespace AtelierXNA
             CréerSoldats();
             CalculerMoyennePosition();
             AnciennePosition = MoyennePosition;
-            AfficheurNbVivant = new AfficheurNb(Game, "185281", Color.Red, NbVivants, new Vector2(0, Game.Window.ClientBounds.Height - MARGE_BAS), "Nombre Soldats :", INTERVALLE_STANDARD);
+            AfficheurNbVivant = new AfficheurNb(Game, Color.Red, NbVivants, new Vector2(0, Game.Window.ClientBounds.Height - MARGE_BAS), "Nombre Soldats :", INTERVALLE_STANDARD);
             Game.Components.Add(AfficheurNbVivant);
 
             GestionInput = Game.Services.GetService(typeof(InputManager)) as InputManager;
@@ -94,7 +91,7 @@ namespace AtelierXNA
             TempsÉcoulé2 += (float)gameTime.ElapsedGameTime.TotalSeconds;
             TempsEcouleVerification += (float)gameTime.ElapsedGameTime.TotalSeconds;
             //Vector3 Pos = new Vector3(Armés[0, 0].Position.X, Armés[0, 0].Position.Y, Armés[0, 0].Position.Z);
-            AfficheurNbVivant.ChangerNombreAfficheur(NbVivants);
+
             ReformerArmee();
             if (TempsÉcoulé >= IntervalleMAJ)
             {
@@ -117,6 +114,7 @@ namespace AtelierXNA
                 
                 TempsÉcoulé = 0;
             }
+
             if (TempsEcouleVerification >= INTERVALLE_VERIFICATION)
             {
                 
@@ -125,13 +123,16 @@ namespace AtelierXNA
                     ReformerRang();
                 }
             }
+            if(AfficheurNbVivant.NbAfficheur != NbVivants)
+            {
+                Game.Components.Remove(Game.Components.Where(x => x is AfficheurNb).ToList().Last());
+                AfficheurNbVivant = new AfficheurNb(Game, Color.Red, NbVivants, new Vector2(0, Game.Window.ClientBounds.Height - MARGE_BAS), "Nombre Soldats :", INTERVALLE_STANDARD);
+                Game.Components.Add(AfficheurNbVivant);
+            }
            
             Flag.ModifierPosition(new Vector3(PosFlag.X, 7, PosFlag.Z));
 
-
             CalculerMoyennePosition();
-
-
         }
 
         void OptimiserPosition()
