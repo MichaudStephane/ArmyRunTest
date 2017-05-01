@@ -18,7 +18,7 @@ namespace AtelierXNA
         const int MAX_DISTANCE_CAMÉRA = 20;
         const int MIN_DISTANCE_CAMÉRA = 10;
         const int INTERVALLE_VERIFICATION = 2;
-        const int MARGE_BAS = 40;
+        const int MARGE_BAS = 70;
         Vector2 DimensionCase = new Vector2(1.1F, 0.7F);
         List<Humanoide> Soldats { get; set; }
         Vector3[,] Positions { get; set; }
