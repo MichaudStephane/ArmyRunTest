@@ -53,7 +53,7 @@ namespace AtelierXNA
          {
             if (Tangage)
             {
-               angleTangage += IncrémentAngleRotation;
+               angleTangage += 15*IncrémentAngleRotation;
                MathHelper.WrapAngle(angleTangage);
             }
             return angleTangage;

@@ -73,7 +73,7 @@ namespace AtelierXNA
             {
                 Jeu.Components.RemoveAt(index[j]);
             }
-            int a = 1;
+          
         }
 
         void CréerNiveau()
@@ -89,8 +89,8 @@ namespace AtelierXNA
 
             for (int i = 1; i < NbrSections; ++i)
             {
-                  int nombreAléatoire = GénérateurAléatoire.Next(0, NbrSectionsDisponibles);
-                 // int nombreAléatoire = 0;
+                 int nombreAléatoire = GénérateurAléatoire.Next(0, NbrSectionsDisponibles);
+                  //int nombreAléatoire = 3;
                 SectionDeNiveau a = null;
                 switch (nombreAléatoire)
                 {
