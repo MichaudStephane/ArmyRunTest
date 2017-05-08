@@ -96,7 +96,6 @@
     <Compile Include="CaméraFixe.cs" />
     <Compile Include="Flag.cs" />
     <Compile Include="HachePendule.cs" />
-    <Compile Include="HitBoxAngulaire.cs" />
     <Compile Include="Humanoide.cs" />
     <Compile Include="HéliceVentilateur.cs" />
     <Compile Include="ICollisionable.cs" />

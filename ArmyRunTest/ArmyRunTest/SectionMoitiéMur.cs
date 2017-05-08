@@ -18,8 +18,6 @@ namespace AtelierXNA
 /// </summary>
 public class SectionMoitiéMur : SectionDeNiveau
     {
-        const int NB_REPOS = 3;
-    List<TerrainDeBase> ListeTerrains { get; set; }
         TerrainDeBase Obstacle { get; set; }
         public override float LongueurNiveau
         {
@@ -28,31 +26,20 @@ public class SectionMoitiéMur : SectionDeNiveau
 
         public SectionMoitiéMur(Game jeu, Vector3 positionInitiale, int indexTableau)
             : base(jeu, positionInitiale, indexTableau)
-        {
-        ListeTerrains = new List<TerrainDeBase>();
-        CréerSection();
-        AjouterAuComponents();
-    }
+        { }
 
-    private void AjouterAuComponents()
+    protected override void AjouterAuComponents()
     {
-        foreach (TerrainDeBase a in ListeTerrains)
-        {
-            Jeu.Components.Add(a);
-            ObjetCollisionables.Add(a);
-        }
+            base.AjouterAuComponents();
             Jeu.Components.Add(Obstacle);
             ObjetCollisionables.Add(Obstacle);
-        }
+ }
 
-    private void CréerSection()
+    protected override void CréerSection()
     {
             Obstacle =new TerrainDeBase(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN/2, Vector3.Zero, new Vector3(PositionInitiale.X + HitBoxBase.X /4f, PositionInitiale.Y + HitBoxBase.Y/2f , PositionInitiale.Z - HitBoxBase.Z), INTERVAL_MAJ, "stefpath");
 
-            for (int i = 0; i < NB_REPOS; ++i)
-            {
-                ListeTerrains.Add(new TerrainDeBase(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X, PositionInitiale.Y, PositionInitiale.Z - HitBoxBase.Z * i), INTERVAL_MAJ, "stefpath"));
-            }
+            base.CréerSection();
      
 
     }

@@ -35,6 +35,7 @@ namespace AtelierXNA
         Boutton Tutoriel { get; set; }
         Boutton Mute { get; set; }
         Boutton Exit { get; set; }
+        Boutton Réinitialiser { get; set; }
         Vector3 PosInitialeNiveau { get; set; }
         List<Boutton> Bouttons { get; set; }
         Jeu PartieEnCours { get; set; }
@@ -72,7 +73,8 @@ namespace AtelierXNA
                                             MAXIMUM_NOMBRE_SOLDAT,MINIMUM_NOMBRE_SECTION+20, INTERVALLE_MOYEN);
             Mute = new Boutton(Game, " ", RectangleAffichageMute, Color.White, son, mute, 0,0, INTERVALLE_MOYEN);
 
-            Exit = new Boutton(Game, "Quitter", new Rectangle(Game.Window.ClientBounds.Width / 2, Game.Window.ClientBounds.Height / 2 + 50, LARGEUR_BOUTTON, HAUTEUR_BOUTTON), Color.Blue, "fond écran blanc", "FondEcranGris", 0, 0, INTERVALLE_MOYEN);
+            Exit = new Boutton(Game, "Quitter", new Rectangle(temp.Width / 2, temp.Height / 2 + 50, LARGEUR_BOUTTON, HAUTEUR_BOUTTON), Color.Blue, nomImageAvant, nomImageAprès, 0, 0, INTERVALLE_MOYEN);
+            Réinitialiser = new Boutton(Game,"Réinitialiser",new Rectangle(temp.Width/2, temp.Height,LARGEUR_BOUTTON,HAUTEUR_BOUTTON),Color.Blue, nomImageAvant, nomImageAprès,0,0,INTERVALLE_MOYEN);
 
             Bouttons.Add(DifficultéFacile);
             Bouttons.Add(DifficultéMoyenne);
@@ -125,9 +127,11 @@ namespace AtelierXNA
                 Boutton Continuer = new Boutton(Game, "Continuer", new Rectangle(Game.Window.ClientBounds.Width / 2, Game.Window.ClientBounds.Height / 2 - 50,
                                     LARGEUR_BOUTTON, HAUTEUR_BOUTTON), Color.Blue, "fond écran blanc", "FondEcranGris", 
                                     CalculerNbSoldats(), CalculerNbSection(), INTERVALLE_MOYEN);
+                
                 NbSoldatsContinuer = Continuer.NombreSoldats;
                 Bouttons.Add(Continuer);
                 Bouttons.Add(Exit);
+                Bouttons.Add(Réinitialiser);
                 Game.Components.Add(Exit);
                 Game.Components.Add(Continuer);
                 Afficheur = new AfficheurNb(Game, Color.Red, ++CompteurNiveau, new Vector2(0, 0), "Niveau :", INTERVALLE_MOYEN);
@@ -140,13 +144,14 @@ namespace AtelierXNA
                 Vector2 PosTexte = new Vector2(Game.Window.ClientBounds.Width / 2, Game.Window.ClientBounds.Height / 2 - 150);
                 AfficheurTexte = new AfficheurTexte(Game, Color.Red, PosTexte, "Vous avez échoué.", INTERVALLE_MOYEN);
                 Game.Components.Add(AfficheurTexte);
-                Boutton Recommencer = new Boutton(Game, "Recommencer", new Rectangle(Game.Window.ClientBounds.Width / 2, Game.Window.ClientBounds.Height / 2 - 50, 
-                                                LARGEUR_BOUTTON, HAUTEUR_BOUTTON), Color.Blue, "fond écran blanc", "FondEcranGris", NbSoldatsContinuer,
-                                                PartieEnCours.GetNbSections(), INTERVALLE_MOYEN);
-                Bouttons.Add(Recommencer);
+                //Boutton Recommencer = new Boutton(Game, "Recommencer Niveau", new Rectangle(Game.Window.ClientBounds.Width / 2, Game.Window.ClientBounds.Height / 2 - 50, 
+                                                //LARGEUR_BOUTTON, HAUTEUR_BOUTTON), Color.Blue, "fond écran blanc", "FondEcranGris", NbSoldatsContinuer,
+                                                //PartieEnCours.GetNbSections(), INTERVALLE_MOYEN);
+                //Bouttons.Add(Recommencer);
                 Bouttons.Add(Exit);
-
-                Game.Components.Add(Recommencer);
+                Bouttons.Add(Réinitialiser);
+                Game.Components.Add(Réinitialiser);
+                //Game.Components.Add(Recommencer);
                 Game.Components.Add(Exit);
                 Afficheur = new AfficheurNb(Game, Color.Red, CompteurNiveau, new Vector2(0, 0), "Niveau :", INTERVALLE_MOYEN);
                 Game.Components.Add(Afficheur);
