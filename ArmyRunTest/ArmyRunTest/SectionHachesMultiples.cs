@@ -19,7 +19,6 @@ namespace AtelierXNA
     {
         HachePendule Hache { get; set; }
 
-        List<TerrainDeBase> ListeTerrains { get; set; }
         List<HachePendule> ListeHaches { get; set; }
         int NbHaches { get; set; }
 
@@ -27,45 +26,37 @@ namespace AtelierXNA
             : base(jeu, positionInitiale, indexTableau)
         {
             NbHaches = nbHaches;
-            ListeTerrains = new List<TerrainDeBase>();
             ListeHaches = new List<HachePendule>();
-            CréerSection();
-            AjouterAuComponents();
         }
 
-        private void AjouterAuComponents()
+        protected override void AjouterAuComponents()
         {
-
-            foreach (TerrainDeBase a in ListeTerrains)
-            {
-                Jeu.Components.Add(a);
-                ObjetCollisionables.Add(a);
-            }
+            base.AjouterAuComponents();
             foreach(HachePendule b in ListeHaches)
             {
                 Jeu.Components.Add(b);
                 ObjetCollisionables.Add(b);
             }
-            int c = 1;
         }
 
-        private void CréerSection()
+        protected override void CréerSection()
         {
+            base.CréerSection();
             float distance = 3;
             float angle = 0;
             for(int i =0;i< NbHaches;++i)
             {
-                ListeHaches.Add(new HachePendule(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X, PositionInitiale.Y + 3.5f, PositionInitiale.Z - 2*TAILLE_TERRAIN_Z * HOMOTHÉTIE_INITIALE_TERRAIN -distance*i), INTERVAL_MAJ, "StefAxe", angle));
+                ListeHaches.Add(new HachePendule(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X, PositionInitiale.Y + 3.5f, PositionInitiale.Z - 2*HitBoxBase.Z -distance*i), INTERVAL_MAJ, "StefAxe", angle));
                 angle += MathHelper.PiOver2;
             }
-                       
-
-            ListeTerrains.Add(new TerrainDeBase(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X, PositionInitiale.Y, PositionInitiale.Z), INTERVAL_MAJ, "stefpath"));
-            ListeTerrains.Add(new TerrainDeBase(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X, PositionInitiale.Y, PositionInitiale.Z - TAILLE_TERRAIN_Z * HOMOTHÉTIE_INITIALE_TERRAIN), INTERVAL_MAJ, "stefpath"));
-            ListeTerrains.Add(new TerrainDeBase(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X, PositionInitiale.Y, PositionInitiale.Z - TAILLE_TERRAIN_Z * HOMOTHÉTIE_INITIALE_TERRAIN * 2), INTERVAL_MAJ, "stefpath"));
 
         }
 
+        protected override void CréerHitboxSection()
+        {
+            HitBoxSection = new BoundingSphere(new Vector3(PositionInitiale.X + TAILLE_TERRAIN_X, PositionInitiale.Y, PositionInitiale.Z - LongueurNiveau / 4f), LongueurNiveau);
+
+        }
         /// <summary>
         /// Allows the game component to perform any initialization it needs to before starting
         /// to run.  This is where it can query for any required services and load content.

@@ -17,32 +17,11 @@ namespace AtelierXNA
     /// </summary>
     public class SectionRepos : SectionDeNiveau
     {
-        List<TerrainDeBase> ListeTerrains { get; set; }
 
         public SectionRepos(Game jeu, Vector3 positionInitiale,int indexTableau)
             : base(jeu, positionInitiale, indexTableau)
-        {
-            ListeTerrains = new List<TerrainDeBase>();
-            CréerSection();
-            AjouterAuComponents();
-        }
+        { }
 
-        private void AjouterAuComponents()
-        {
-            foreach (TerrainDeBase a in ListeTerrains)
-            {
-                Jeu.Components.Add(a);
-                ObjetCollisionables.Add(a);
-            }
-        }
-
-        private void CréerSection()
-        {
-            ListeTerrains.Add(new TerrainDeBase(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X, PositionInitiale.Y, PositionInitiale.Z), INTERVAL_MAJ, "stefpath"));
-            ListeTerrains.Add(new TerrainDeBase(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X, PositionInitiale.Y, PositionInitiale.Z - TAILLE_TERRAIN_Z * HOMOTHÉTIE_INITIALE_TERRAIN), INTERVAL_MAJ, "stefpath"));
-            ListeTerrains.Add(new TerrainDeBase(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X, PositionInitiale.Y, PositionInitiale.Z - TAILLE_TERRAIN_Z * HOMOTHÉTIE_INITIALE_TERRAIN * 2), INTERVAL_MAJ, "stefpath"));
-
-        }
 
         /// <summary>
         /// Allows the game component to perform any initialization it needs to before starting
