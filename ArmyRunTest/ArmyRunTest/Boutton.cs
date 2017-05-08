@@ -16,7 +16,7 @@ namespace AtelierXNA
         const int LARGEUR_RECTANGLE = 120;
         const int HAUTEUR_RECTANGLE = 70;
 
-        Vector2 Dimension { get; set; }
+        public Vector2 Dimension { get; private set; }
         string Texte { get; set; }
         Rectangle RectangleAffichage { get; set; }
         Vector2 Position { get; set; }
