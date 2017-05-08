@@ -89,8 +89,8 @@ namespace AtelierXNA
 
             for (int i = 1; i < NbrSections; ++i)
             {
-                 int nombreAléatoire = GénérateurAléatoire.Next(0, NbrSectionsDisponibles);
-                  //int nombreAléatoire = 3;
+                int nombreAléatoire = GénérateurAléatoire.Next(0, NbrSectionsDisponibles);
+                //int nombreAléatoire = 6;
                 SectionDeNiveau a = null;
                 switch (nombreAléatoire)
                 {
