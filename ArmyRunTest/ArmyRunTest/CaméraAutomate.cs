@@ -129,12 +129,7 @@ namespace AtelierXNA
                 
                 TempsÉcouléDepuisMAJ = 0;
             }
-             GameWindow a = Game.Window;
-            //a.Title =
-            //    " Position: [" + Math.Round(Position.X, 2) + "   " + Math.Round(Position.Y, 2) + "   " + Math.Round(Position.Z, 2) + "]" + "       CentreArmé: [ " + HitBoxArmée.Center.Z;
-            a.Title =
-                " Cible: [" + Cible.ToString() + "]" + "       CentreArmé: [ " + HitBoxArmée.Center.ToString();
-            //base.Update(gameTime);
+             
         }
 
         private int GérerTouche(Keys touche)

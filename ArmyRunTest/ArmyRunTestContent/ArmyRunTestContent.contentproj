@@ -117,13 +117,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Sounds\Saut1.wav">
-      <Name>Saut1</Name>
-      <Importer>WavImporter</Importer>
-      <Processor>SoundEffectProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Textures\fond écran blanc.png">
       <Name>fond écran blanc</Name>
       <Importer>TextureImporter</Importer>

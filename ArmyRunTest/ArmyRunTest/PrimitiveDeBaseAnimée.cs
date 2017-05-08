@@ -11,7 +11,7 @@ namespace AtelierXNA
       float IntervalleMAJ { get; set; }
       protected InputManager GestionInput { get; private set; }
       float TempsÉcouléDepuisMAJ { get; set; }
-      float IncrémentAngleRotation { get; set; }
+      protected float IncrémentAngleRotation { get; set; }
         public bool Lacet { get; set; }
         public bool Tangage { get; set; }
         public bool Roulis { get; set; }
@@ -53,7 +53,7 @@ namespace AtelierXNA
          {
             if (Tangage)
             {
-               angleTangage += 15*IncrémentAngleRotation;
+               angleTangage +=IncrémentAngleRotation;
                MathHelper.WrapAngle(angleTangage);
             }
             return angleTangage;
@@ -89,7 +89,7 @@ namespace AtelierXNA
          InitialiserRotations();
          Position = PositionInitiale;
          GestionInput = Game.Services.GetService(typeof(InputManager)) as InputManager;
-         IncrémentAngleRotation = MathHelper.Pi * IntervalleMAJ / 2;
+         IncrémentAngleRotation = 5*MathHelper.Pi * IntervalleMAJ ;
          TempsÉcouléDepuisMAJ = 0;
          base.Initialize();
       }

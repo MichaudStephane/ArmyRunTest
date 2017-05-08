@@ -99,7 +99,6 @@
     <Compile Include="HitBoxAngulaire.cs" />
     <Compile Include="Humanoide.cs" />
     <Compile Include="HéliceVentilateur.cs" />
-    <Compile Include="IBougeable.cs" />
     <Compile Include="ICollisionable.cs" />
     <Compile Include="IDeletable.cs" />
     <Compile Include="IDestructible.cs" />
@@ -123,7 +122,6 @@
     <Compile Include="SectionMobileHorizontale.cs" />
     <Compile Include="SectionMobileMultiples.cs" />
     <Compile Include="SectionMoitiéMur.cs" />
-    <Compile Include="SectionNiveauFlamme.cs" />
     <Compile Include="SectionRepos.cs" />
     <Compile Include="SectionVentilateur.cs" />
     <Compile Include="SectionVentilateurDroite.cs" />
@@ -132,7 +130,6 @@
     <Compile Include="TerrainBasePlanIncline.cs" />
     <Compile Include="TerrainDeBase.cs" />
     <Compile Include="TerrainDeBaseMobile.cs" />
-    <Compile Include="TerrainFlame.cs" />
     <Compile Include="TerrainMobileSin.cs" />
     <Compile Include="Tuile.cs" />
     <Compile Include="TuileTextureeAnime.cs" />
