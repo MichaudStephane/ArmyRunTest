@@ -15,8 +15,8 @@ namespace AtelierXNA
     public class Niveau
     {
        
+        const int NB_SECTIONS_DISPO = 8;
         List<PrimitiveDeBase>[] TabListObjetCollisionables { get; set; }
-        const int NbrSectionsDisponibles = 8;
         List<SectionDeNiveau> ListSections { get; set; }
         Random GénérateurAléatoire { get; set; }
         public int NbrSections { get; private set; }
@@ -39,6 +39,7 @@ namespace AtelierXNA
             Jeu = jeu;
             NbrSections = nbrSections;
             TabListObjetCollisionables = new List<PrimitiveDeBase>[NbrSections];
+
             for(int cpt=0; cpt< NbrSections;++cpt)
             {
                 TabListObjetCollisionables[cpt] = new List<PrimitiveDeBase>();
@@ -90,8 +91,8 @@ namespace AtelierXNA
             for (int i = 1; i < NbrSections; ++i)
             {
                 int nombreAléatoire = GénérateurAléatoire.Next(0, NbrSectionsDisponibles);
-                //int nombreAléatoire = 6;
                 SectionDeNiveau a = null;
+
                 switch (nombreAléatoire)
                 {
                     case 0:

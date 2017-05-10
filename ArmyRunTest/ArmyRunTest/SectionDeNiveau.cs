@@ -18,7 +18,7 @@ namespace AtelierXNA
     /// </summary>
     public abstract class SectionDeNiveau : Microsoft.Xna.Framework.GameComponent,IDeletable
     {
-        protected float LONGUEUR_SECTION_NORMALE = HitBoxBase.Z * 3f;
+        protected float LONGUEUR_SECTION_NORMALE = HitBoxBase.Z * NB_REPOS;
         protected const int NB_REPOS = 3;
         protected const float TAILLE_TERRAIN_X = 1f;
         protected const int HOMOTHÉTIE_INITIALE_TERRAIN = 15;
@@ -26,11 +26,10 @@ namespace AtelierXNA
 
         static public Vector3 HitBoxBase = TerrainDeBase.TAILLE_HITBOX_STANDARD * HOMOTHÉTIE_INITIALE_TERRAIN;
         protected Vector3 ROTATION_INITIALE = new Vector3(0, 0, 0);
-        private Game game;
 
         protected List<TerrainDeBase> ListeTerrains { get; set; }
 
-        public List<PrimitiveDeBase> ObjetCollisionables { get; set; }
+        public List<PrimitiveDeBase> ObjetCollisionables { get;private set; }
         protected Game Jeu { get; set;}
         public Vector3 PositionInitiale { get; private set; }
 
@@ -97,13 +96,19 @@ namespace AtelierXNA
         public override void Update(GameTime gameTime)
         {
             // TODO: Add your update code here
-
             base.Update(gameTime);
         }
 
         public List<PrimitiveDeBase> GetListeCollisions()
         {
-            return ObjetCollisionables;
+            List<PrimitiveDeBase> Copie = new List<PrimitiveDeBase>(ObjetCollisionables.Count());
+
+            foreach (PrimitiveDeBase a in ObjetCollisionables)
+            {
+                Copie.Add(a);
+            }
+            return Copie;
         }
     }
-}
+    }
+

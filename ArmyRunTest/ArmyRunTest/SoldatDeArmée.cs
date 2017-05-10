@@ -40,8 +40,8 @@ namespace AtelierXNA
             ObjetCollisionné = objetCollisionné;
         }
         public override void Initialize()
-        {  // a changer
-            Déplacement = new Vector2(7,7);// valeur test
+        {  
+            Déplacement = new Vector2(7,7);
             Compteur = 0;
             TempsDepuisDernierCible = 0;
             TempsVerification = 0;
@@ -116,15 +116,9 @@ namespace AtelierXNA
                 }
             }
 
-            //foreach (ICollisionable g in ObjetCollisionné[index])
-            //{
-            //    VecteurResultantForce += ((g as ICollisionable).DonnerVectorCollision(this));
-
-            //}
             if (V != VecteurResultantForce)
             {
                 EstEnCollision = true;
-                //  EstSurTerrain = true;
             }
         }
         protected override void GérerClavier()

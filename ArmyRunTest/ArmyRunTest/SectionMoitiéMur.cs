@@ -19,10 +19,6 @@ namespace AtelierXNA
 public class SectionMoitiéMur : SectionDeNiveau
     {
         TerrainDeBase Obstacle { get; set; }
-        public override float LongueurNiveau
-        {
-            get { return (ListeTerrains.Count()) * HitBoxBase.Z; }
-        }
 
         public SectionMoitiéMur(Game jeu, Vector3 positionInitiale, int indexTableau)
             : base(jeu, positionInitiale, indexTableau)

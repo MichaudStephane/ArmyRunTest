@@ -14,7 +14,6 @@ namespace AtelierXNA
     
     public class Atelier : Microsoft.Xna.Framework.Game
     {
-        const float HAUTEUR_HACHE = 3f;
 
         SpriteBatch spriteBatch;
         public const float INTERVALLE_STANDARD = 1f / 60;
@@ -54,7 +53,7 @@ namespace AtelierXNA
   
         protected override void Initialize()
         {
-            //staf path hauteur=0.5f(y) de base, (z)0.7x 2(x)
+
             Compteur = 0;
             const float DELTA_X = 3.3f;
             Vector3 positionDragon = new Vector3(0, 0, 5);
@@ -65,11 +64,11 @@ namespace AtelierXNA
             GestionnairesDeModele = new RessourcesManager<Model>(this, "Modeles");
             GestionInput = new InputManager(this);
             Components.Add(GestionInput);
-            // CaméraJeu = new CaméraSubjective(this, positionCaméra, positionDragon, Vector3.Up, INTERVALLE_STANDARD);
+
             CaméraJeuAutomate = new CaméraAutomate(this, positionDragon, positionCaméra, Vector3.Up, INTERVALLE_STANDARD);
             Soldats = new Soldat[3,3];
 
-            //Components.Add(CaméraJeu);
+
            
             Services.AddService(typeof(RessourcesManager<SpriteFont>), new RessourcesManager<SpriteFont>(this, "Fonts"));
             Services.AddService(typeof(Random), new Random());
@@ -81,7 +80,7 @@ namespace AtelierXNA
            
             Services.AddService(typeof(InputManager), GestionInput);
             Services.AddService(typeof(RessourcesManager<Model>), GestionnairesDeModele);
-            //Services.AddService(typeof(Caméra), CaméraJeu);
+
             Services.AddService(typeof(Caméra), CaméraJeuAutomate);
             Services.AddService(typeof(SpriteBatch), new SpriteBatch(GraphicsDevice));
            
