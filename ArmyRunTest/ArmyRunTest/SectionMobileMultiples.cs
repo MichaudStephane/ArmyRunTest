@@ -17,26 +17,16 @@ namespace AtelierXNA
     /// </summary>
     public class SectionMobileMultiples : SectionDeNiveau
     {
-        List<TerrainDeBase> ListeTerrains { get; set; }
+        public override float LongueurNiveau
+        {
+            get { return LONGUEUR_SECTION_NORMALE *2; }
+        }
 
         public SectionMobileMultiples(Game jeu, Vector3 positionInitiale, int indexTableau)
             : base(jeu, positionInitiale, indexTableau)
-        {
-            ListeTerrains = new List<TerrainDeBase>();
-            CréerSection();
-            AjouterAuComponents();
-        }
+        {}
 
-        private void AjouterAuComponents()
-        {
-            foreach (TerrainDeBase a in ListeTerrains)
-            {
-                Jeu.Components.Add(a);
-                ObjetCollisionables.Add(a);
-            }
-        }
-
-        private void CréerSection()
+        protected override void CréerSection()
         {
             bool gauche = true;
             float demiTerrain_X = (TAILLE_TERRAIN_X / 2f);
@@ -44,12 +34,12 @@ namespace AtelierXNA
             {
                 if (gauche)
                 {
-                    ListeTerrains.Add(new TerrainMobileSin(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X + demiTerrain_X * i, PositionInitiale.Y, PositionInitiale.Z - (TAILLE_TERRAIN_Z * HOMOTHÉTIE_INITIALE_TERRAIN * i)), 1 / 60f, "stefpath", "Gauche", 1 / 60f, i));
+                    ListeTerrains.Add(new TerrainMobileSin(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X + demiTerrain_X * i, PositionInitiale.Y, PositionInitiale.Z - (HitBoxBase.Z * i)), 1 / 60f, "stefpath", "Gauche", 1 / 60f, i));
                     gauche = false;
                 }
                 else
                 {
-                    ListeTerrains.Add(new TerrainMobileSin(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X + demiTerrain_X * i, PositionInitiale.Y, PositionInitiale.Z - (TAILLE_TERRAIN_Z * HOMOTHÉTIE_INITIALE_TERRAIN * i)), 1 / 60f, "stefpath", "Droite", 1 / 60f,  i));
+                    ListeTerrains.Add(new TerrainMobileSin(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X + demiTerrain_X * i, PositionInitiale.Y, PositionInitiale.Z - (HitBoxBase.Z * i)), 1 / 60f, "stefpath", "Droite", 1 / 60f,  i));
                     gauche = true;
                 }
             }
@@ -78,8 +68,9 @@ namespace AtelierXNA
         }
         protected override void CréerHitboxSection()
         {
-            HitBoxSection = new BoundingSphere(new Vector3(PositionInitiale.X + TAILLE_TERRAIN_X, PositionInitiale.Y, PositionInitiale.Z - LongueurNiveau / 4f), LongueurNiveau );
+            HitBoxSection = new BoundingSphere(new Vector3(PositionInitiale.X + TAILLE_TERRAIN_X, PositionInitiale.Y, PositionInitiale.Z - LongueurNiveau / 4f), LongueurNiveau);
 
         }
+
     }
 }

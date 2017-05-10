@@ -19,34 +19,21 @@ namespace AtelierXNA
     {
         HachePendule Hache { get; set; }
 
-        List<TerrainDeBase> ListeTerrains { get; set; }
-
         public SectionHache(Game jeu, Vector3 positionInitiale,int indexTableau)
             : base(jeu, positionInitiale, indexTableau)
-        {
-            ListeTerrains = new List<TerrainDeBase>();
-            CréerSection();
-            AjouterAuComponents();
-        }
+        {}
 
-        private void AjouterAuComponents()
+        protected override void AjouterAuComponents()
         {
             Jeu.Components.Add(Hache);
             ObjetCollisionables.Add(Hache);
-            foreach (TerrainDeBase a in ListeTerrains)
-            {
-                Jeu.Components.Add(a);
-                ObjetCollisionables.Add(a);
-            }
+            base.AjouterAuComponents(); 
         }
 
-        private void CréerSection()
+        protected override void CréerSection()
         {
-            Hache = new HachePendule(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN,Vector3.Zero, new Vector3(PositionInitiale.X, PositionInitiale.Y + 3.5f, PositionInitiale.Z + 7),INTERVAL_MAJ,"StefAxe",0);
-            ListeTerrains.Add(new TerrainDeBase(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X, PositionInitiale.Y , PositionInitiale.Z), INTERVAL_MAJ, "stefpath"));
-            ListeTerrains.Add(new TerrainDeBase(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X, PositionInitiale.Y, PositionInitiale.Z - TAILLE_TERRAIN_Z*HOMOTHÉTIE_INITIALE_TERRAIN), INTERVAL_MAJ, "stefpath"));
-            ListeTerrains.Add(new TerrainDeBase(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN, Vector3.Zero, new Vector3(PositionInitiale.X, PositionInitiale.Y, PositionInitiale.Z - TAILLE_TERRAIN_Z * HOMOTHÉTIE_INITIALE_TERRAIN*2), INTERVAL_MAJ, "stefpath"));
-       
+            Hache = new HachePendule(Jeu, HOMOTHÉTIE_INITIALE_TERRAIN,Vector3.Zero, new Vector3(PositionInitiale.X, PositionInitiale.Y + 3.5f, PositionInitiale.Z - 7),INTERVAL_MAJ,"StefAxe",0);
+            base.CréerSection();
         }
 
         /// <summary>

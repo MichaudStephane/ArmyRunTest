@@ -59,7 +59,7 @@ namespace AtelierXNA
             NbVivants = NombreSoldat;
             PosFlag = posFlag;
             PosFlagInitial = PosFlag;
-            CalculerFormation(); // pour l'instant dépend du nbSoldats
+            CalculerFormation(); 
             Armés = new SoldatDeArmée[Positions.GetLength(0), Positions.GetLength(1)];
             test = true;
             Caméra = Game.Services.GetService(typeof(Caméra)) as CaméraAutomate;
@@ -71,7 +71,6 @@ namespace AtelierXNA
         {
             CréerPositionsSoldats();
             
-            //   Game jeu, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, Vector2 étendue, string nomTextureTuile,Vector2 descriptionImage, float intervalleMAJ)
             Flag = new Flag(Game, 1F, Vector3.Zero, new Vector3(PosFlag.X,5,PosFlag.Z), new Vector2(1, 1), "FeuFollet",new Vector2(20,1),1f/60);
             Game.Components.Add(Flag);
             CréerSoldats();
@@ -90,20 +89,16 @@ namespace AtelierXNA
             TempsÉcoulé += (float)gameTime.ElapsedGameTime.TotalSeconds;
             TempsÉcoulé2 += (float)gameTime.ElapsedGameTime.TotalSeconds;
             TempsEcouleVerification += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            //Vector3 Pos = new Vector3(Armés[0, 0].Position.X, Armés[0, 0].Position.Y, Armés[0, 0].Position.Z);
 
             ReformerArmee();
             if (TempsÉcoulé >= IntervalleMAJ)
             {
                 GererClavier();
                 OptimiserPosition();
-              //  ReformerArmee();
                 if (TempsÉcoulé2 >= IntervalleMAJ)
                 {
                     if (AnciennePosition != MoyennePosition)
                     {
-                        //IntervalPosition = MoyennePosition - AnciennePosition;
-                        //AnciennePosition = MoyennePosition;
                         DifférencePositionCaméraAvecArmée = new Vector3(0, 0, -Caméra.Position.Z +MoyennePosition.Z) /10 ;
                         AnciennePosition = MoyennePosition;
                         DéplacerCaméra();
@@ -231,16 +226,7 @@ namespace AtelierXNA
 
                 
                  PosFlag = new Vector3(PosFlag.X, PosFlag.Y,  PosFlag.Z);
-           //     PosFlag = new Vector3(PosFlag.X, PosFlag.Y,  PosFlag.Z);
-
-                //Pour les tests
-                //if (GestionInput.EstNouvelleTouche(Keys.R))
-                //{
-                //    PosFlag = PosFlagInitial;
-                //    ToutDetruire();
-                //    CréerPositionsSoldats();
-                //    CréerSoldats();
-                //}
+       
             if(GestionInput.EstEnfoncée(Keys.D1))
             {
                 EstFormationStandard = true;
@@ -364,7 +350,7 @@ namespace AtelierXNA
                 {
                     if (soldatsCompte < NbVivants && Armés[i,j] != null)
                     {
-                        if (EstDansLimiteTerrain(Armés[i, j])) // fonctionne pas ???
+                        if (EstDansLimiteTerrain(Armés[i, j])) 
                         {
                             moyenne = new Vector3(moyenne.X + Armés[i, j].VarPosition.X, moyenne.Y + Armés[i, j].VarPosition.Y, moyenne.Z + Armés[i, j].Position.Z);
                             soldatsCompte++;
@@ -458,10 +444,6 @@ namespace AtelierXNA
 
              Caméra.DonnerBoundingSphere(BoundingSphere.CreateMerged(temp,Flag.ViewFlag));
 
-         
-
-
-         //   Caméra.DonnerBoundingSphere(temp);
           
         }
 
