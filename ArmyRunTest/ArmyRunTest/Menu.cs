@@ -15,14 +15,17 @@ namespace AtelierXNA
     public class Menu : Microsoft.Xna.Framework.DrawableGameComponent
     {
         const int MARGE_DROITE = 500;
-        const int MARGE_BAS =140;
+        const int MARGE_BAS = 140;
         const int MARGE_GAUCHE = 150;
         const int MAXIMUM_NOMBRE_SOLDAT = 30;
         const int MINIMUM_NOMBRE_SECTION = 5;
-        const int LARGEUR_BOUTTON = 120;
-        const int HAUTEUR_BOUTTON = 70;
+        const int LARGEUR_BOUTTON = 180;
+        const int HAUTEUR_BOUTTON = 90;
+        const int DISTANCE_ENTRE_BOUTTON_QUITTER = 70;
         const int AUGMENTATION_SECTION_NIVEAU = 2;
         const int AUGMENTATION_SOLDATS_NIVEAU = 5;
+        const string NOM_IMAGE_AVANT = "fond écran blanc";
+        const string NOM_IMAGE_APRÈS = "FondEcranGris";
 
         const float INTERVALLE_MOYEN = 1 / 60f;
         Vector2 PosSouris { get; set; }
@@ -35,13 +38,12 @@ namespace AtelierXNA
         Boutton Tutoriel { get; set; }
         Boutton Mute { get; set; }
         Boutton Exit { get; set; }
-        Boutton Réinitialiser { get; set; }
         Vector3 PosInitialeNiveau { get; set; }
         List<Boutton> Bouttons { get; set; }
         Jeu PartieEnCours { get; set; }
         Rectangle RectangleAffichageMute { get; set; }
         Rectangle RectangleAffichageBoutonsDifficulté { get; set; }
-        bool SourrisEstDansBoutton { get;set;}
+        bool SourrisEstDansBoutton { get; set; }
         int CompteurNiveau { get; set; }
         SpriteBatch GestionSprites { get; set; }
         SpriteFont Font { get; set; }
@@ -49,6 +51,7 @@ namespace AtelierXNA
         AfficheurNb Afficheur { get; set; }
         AfficheurTexte AfficheurTexte { get; set; }
         int NbSoldatsContinuer { get; set; }
+        bool BouttonMute { get;set;}
 
         public Menu(Game jeu)
             : base(jeu)
@@ -56,8 +59,6 @@ namespace AtelierXNA
 
         public override void Initialize()
         {
-            string nomImageAvant = "fond écran blanc";
-            string nomImageAprès = "FondEcranGris";
             string son = "icone son";
             string mute = "mute button";
 
@@ -65,16 +66,16 @@ namespace AtelierXNA
             RectangleAffichageMute = new Rectangle(0, temp.Height - MARGE_BAS, 60, 60);
 
             Bouttons = new List<Boutton>();
-            DifficultéFacile = new Boutton(Game, "Facile", new Rectangle(temp.Width - MARGE_DROITE, temp.Top + MARGE_BAS , LARGEUR_BOUTTON, HAUTEUR_BOUTTON), Color.Blue, nomImageAvant, nomImageAprès, 
+            DifficultéFacile = new Boutton(Game, "Facile", new Rectangle(temp.Width - MARGE_DROITE, temp.Top + MARGE_BAS , LARGEUR_BOUTTON, HAUTEUR_BOUTTON), Color.Blue, NOM_IMAGE_AVANT, NOM_IMAGE_APRÈS, 
                                             MAXIMUM_NOMBRE_SOLDAT, MINIMUM_NOMBRE_SECTION, INTERVALLE_MOYEN);
-            DifficultéMoyenne = new Boutton(Game, "Moyen", new Rectangle(temp.Width - MARGE_DROITE, temp.Top + MARGE_BAS*3, LARGEUR_BOUTTON, HAUTEUR_BOUTTON), Color.Blue, nomImageAvant, nomImageAprès, 
+            DifficultéMoyenne = new Boutton(Game, "Moyen", new Rectangle(temp.Width - MARGE_DROITE, temp.Top + MARGE_BAS*3, LARGEUR_BOUTTON, HAUTEUR_BOUTTON), Color.Blue, NOM_IMAGE_AVANT, NOM_IMAGE_APRÈS, 
                                             MAXIMUM_NOMBRE_SOLDAT,MINIMUM_NOMBRE_SECTION+10, INTERVALLE_MOYEN);
-            DifficultéDifficile = new Boutton(Game, "Difficile", new Rectangle(temp.Width - MARGE_DROITE, temp.Top + MARGE_BAS*5, LARGEUR_BOUTTON, HAUTEUR_BOUTTON), Color.Blue, nomImageAvant, nomImageAprès, 
+            DifficultéDifficile = new Boutton(Game, "Difficile", new Rectangle(temp.Width - MARGE_DROITE, temp.Top + MARGE_BAS*5, LARGEUR_BOUTTON, HAUTEUR_BOUTTON), Color.Blue, NOM_IMAGE_AVANT, NOM_IMAGE_APRÈS, 
                                             MAXIMUM_NOMBRE_SOLDAT,MINIMUM_NOMBRE_SECTION+20, INTERVALLE_MOYEN);
             Mute = new Boutton(Game, " ", RectangleAffichageMute, Color.White, son, mute, 0,0, INTERVALLE_MOYEN);
 
-            Exit = new Boutton(Game, "Quitter", new Rectangle(temp.Width / 2, temp.Height / 2 + 50, LARGEUR_BOUTTON, HAUTEUR_BOUTTON), Color.Blue, nomImageAvant, nomImageAprès, 0, 0, INTERVALLE_MOYEN);
-            Réinitialiser = new Boutton(Game,"Réinitialiser",new Rectangle(temp.Width/2, temp.Height,LARGEUR_BOUTTON,HAUTEUR_BOUTTON),Color.Blue, nomImageAvant, nomImageAprès,0,0,INTERVALLE_MOYEN);
+            Exit = new Boutton(Game, "Quitter", new Rectangle(temp.Width / 2-LARGEUR_BOUTTON/2, temp.Height/2+DISTANCE_ENTRE_BOUTTON_QUITTER , LARGEUR_BOUTTON, HAUTEUR_BOUTTON), Color.Blue, NOM_IMAGE_AVANT, NOM_IMAGE_APRÈS, 0, 0, INTERVALLE_MOYEN);
+            //Réinitialiser = new Boutton(Game,"Réinitialiser",new Rectangle(temp.Width/2, temp.Height,LARGEUR_BOUTTON,HAUTEUR_BOUTTON),Color.Blue, NOM_IMAGE_AVANT, NOM_IMAGE_APRÈS,0,0,INTERVALLE_MOYEN);
 
             Bouttons.Add(DifficultéFacile);
             Bouttons.Add(DifficultéMoyenne);
@@ -84,12 +85,11 @@ namespace AtelierXNA
             {
                 Game.Components.Add(b);
             }
-            Game.Components.Add(Mute);
 
             PosInitialeNiveau = new Vector3(0, 0, 0);
 
             AnciennePosSouris = PosSouris;
-            PartieEnCours = new Jeu(Game, 0, new Vector3(0, 0, 0), 0, INTERVALLE_MOYEN);
+            PartieEnCours = new Jeu(Game, 0, PosInitialeNiveau, 0, INTERVALLE_MOYEN);
 
             CompteurNiveau = 0;
             Afficheur = new AfficheurNb(Game, Color.Red, ++CompteurNiveau, new Vector2(0, 0), "Niveau :", INTERVALLE_MOYEN);
@@ -98,6 +98,7 @@ namespace AtelierXNA
             AfficheurTexte = new AfficheurTexte(Game, Color.Red, PosTexte, "Army Run!", INTERVALLE_MOYEN);
             Game.Components.Add(AfficheurTexte);
             NbSoldatsContinuer = 30;
+            BouttonMute = true;
 
             base.Initialize();
         }
@@ -120,83 +121,18 @@ namespace AtelierXNA
 
             if (PartieEnCours.EstRéussi)
             {
-                Vector2 PosTexte = new Vector2(Game.Window.ClientBounds.Width / 2, Game.Window.ClientBounds.Height / 2 - 150);
-                AfficheurTexte = new AfficheurTexte(Game, Color.Red, PosTexte, "Bravo! Vous avez complété le niveau " + CompteurNiveau.ToString(), INTERVALLE_MOYEN);
-
-                Game.Components.Add(AfficheurTexte);
-                Boutton Continuer = new Boutton(Game, "Continuer", new Rectangle(Game.Window.ClientBounds.Width / 2, Game.Window.ClientBounds.Height / 2 - 50,
-                                    LARGEUR_BOUTTON, HAUTEUR_BOUTTON), Color.Blue, "fond écran blanc", "FondEcranGris", 
-                                    CalculerNbSoldats(), CalculerNbSection(), INTERVALLE_MOYEN);
-                
-                NbSoldatsContinuer = Continuer.NombreSoldats;
-                Bouttons.Add(Continuer);
-                Bouttons.Add(Exit);
-                Bouttons.Add(Réinitialiser);
-                Game.Components.Add(Exit);
-                Game.Components.Add(Continuer);
-                Afficheur = new AfficheurNb(Game, Color.Red, ++CompteurNiveau, new Vector2(0, 0), "Niveau :", INTERVALLE_MOYEN);
-                Game.Components.Add(Afficheur);
-                PartieEnCours.EstRéussi = false;
+                InitialiserMenuContinuer();
             }
 
             if (PartieEnCours.EstÉchec)
             {
-                Vector2 PosTexte = new Vector2(Game.Window.ClientBounds.Width / 2, Game.Window.ClientBounds.Height / 2 - 150);
-                AfficheurTexte = new AfficheurTexte(Game, Color.Red, PosTexte, "Vous avez échoué.", INTERVALLE_MOYEN);
-                Game.Components.Add(AfficheurTexte);
-                //Boutton Recommencer = new Boutton(Game, "Recommencer Niveau", new Rectangle(Game.Window.ClientBounds.Width / 2, Game.Window.ClientBounds.Height / 2 - 50, 
-                                                //LARGEUR_BOUTTON, HAUTEUR_BOUTTON), Color.Blue, "fond écran blanc", "FondEcranGris", NbSoldatsContinuer,
-                                                //PartieEnCours.GetNbSections(), INTERVALLE_MOYEN);
-                //Bouttons.Add(Recommencer);
-                Bouttons.Add(Exit);
-                Bouttons.Add(Réinitialiser);
-                Game.Components.Add(Réinitialiser);
-                //Game.Components.Add(Recommencer);
-                Game.Components.Add(Exit);
-                Afficheur = new AfficheurNb(Game, Color.Red, CompteurNiveau, new Vector2(0, 0), "Niveau :", INTERVALLE_MOYEN);
-                Game.Components.Add(Afficheur);
-                PartieEnCours.EstÉchec = false;
+                InitialiserMenuRecommencer();
             }
 
             if (GestionnaireManager.EstSourisActive)
             {
-                for (int i = 0; i < Bouttons.Count; i++)
-                {
-                    Boutton b = Bouttons[i];
-                    if (EstDansBoutton(b))
-                    {
-                        b.ChangerDeCouleur(true);
-                        if (GestionnaireManager.EstNouveauClicGauche())
-                        {
-                            if (Game.Components.Where(x => x is Jeu).ToList().Count != 0)
-                            {
-                                Game.Components.Remove(Game.Components.Where(x => x is Jeu).ToList().First());
-                                Game.Services.RemoveService(typeof(Jeu));
-                            }
-                            if (b != Exit)
-                            {
-                                Game.Components.Remove(Game.Components.Where(x => x is AfficheurTexte).ToList().First());
-                                b.CréerJeu();
-                            }
-                            else
-                            {
-                                Game.Exit();
-                            }
-                            PartieEnCours = Game.Services.GetService(typeof(Jeu)) as Jeu;
-
-                            foreach (Boutton boutton in Bouttons)
-                            {
-                                Game.Components.Remove(boutton);
-                                boutton.Enabled = false;
-                            }
-                            Bouttons.Clear();
-                        }
-                    }
-                    else
-                    {
-                        b.ChangerDeCouleur(false);
-                    }
-                }
+                GestionBouttonsDeLaListe();
+                
 
                 if (EstDansBoutton(Mute))
                 {
@@ -209,6 +145,97 @@ namespace AtelierXNA
                 }
             }
             base.Update(gameTime);
+        }
+
+        void GestionBouttonsDeLaListe()
+        {
+            for (int i = 0; i < Bouttons.Count; i++)
+            {
+                Boutton b = Bouttons[i];
+                if (EstDansBoutton(b))
+                {
+                    b.ChangerDeCouleur(true);
+                    if (GestionnaireManager.EstNouveauClicGauche())
+                    {
+                        if (Game.Components.Where(x => x is Jeu).ToList().Count != 0)
+                        {
+                            Game.Components.Remove(Game.Components.Where(x => x is Jeu).ToList().First());
+                            Game.Services.RemoveService(typeof(Jeu));
+                        }
+                        if (b != Exit)
+                        {
+                            Game.Components.Remove(Game.Components.Where(x => x is AfficheurTexte).ToList().First());
+                            b.CréerJeu();
+                            if (BouttonMute)
+                            {
+                                Game.Components.Add(Mute);
+                                BouttonMute = false;
+                            }
+                        }
+                        else
+                        {
+                            Game.Exit();
+                        }
+                        PartieEnCours = Game.Services.GetService(typeof(Jeu)) as Jeu;
+
+                        foreach (Boutton boutton in Bouttons)
+                        {
+                            Game.Components.Remove(boutton);
+                            boutton.Enabled = false;
+                        }
+                        Bouttons.Clear();
+                    }
+                }
+                else
+                {
+                    b.ChangerDeCouleur(false);
+                }
+            }
+        }
+
+        void InitialiserMenuRecommencer()
+        {
+            Vector2 PosTexte = new Vector2(Game.Window.ClientBounds.Width / 2, Game.Window.ClientBounds.Height / 2 - 150);
+            AfficheurTexte = new AfficheurTexte(Game, Color.Red, PosTexte, "Vous avez échoué.", INTERVALLE_MOYEN);
+            Game.Components.Add(AfficheurTexte);
+            DiminuerNbSoldats();
+            Boutton Recommencer = new Boutton(Game, "Recommencer", new Rectangle(Game.Window.ClientBounds.Width / 2 - LARGEUR_BOUTTON / 2, Game.Window.ClientBounds.Height / 2-HAUTEUR_BOUTTON/2,
+                                            LARGEUR_BOUTTON, HAUTEUR_BOUTTON), Color.Blue, NOM_IMAGE_AVANT, NOM_IMAGE_APRÈS, NbSoldatsContinuer,
+                                            PartieEnCours.GetNbSections(), INTERVALLE_MOYEN);
+            Bouttons.Add(Recommencer);
+            Bouttons.Add(Exit);
+            Game.Components.Add(Recommencer);
+            Game.Components.Add(Exit);
+            Afficheur = new AfficheurNb(Game, Color.Red, CompteurNiveau, new Vector2(0, 0), "Niveau :", INTERVALLE_MOYEN);
+            Game.Components.Add(Afficheur);
+            PartieEnCours.EstÉchec = false;
+        }
+
+        void InitialiserMenuContinuer()
+        {
+            Vector2 PosTexte = new Vector2(Game.Window.ClientBounds.Width / 2, Game.Window.ClientBounds.Height / 2 - 150);
+            AfficheurTexte = new AfficheurTexte(Game, Color.Red, PosTexte, "Bravo! Vous avez complété le niveau " + CompteurNiveau.ToString(), INTERVALLE_MOYEN);
+
+            Game.Components.Add(AfficheurTexte);
+            Boutton Continuer = new Boutton(Game, "Continuer", new Rectangle(Game.Window.ClientBounds.Width / 2 - LARGEUR_BOUTTON/2, Game.Window.ClientBounds.Height /2 - HAUTEUR_BOUTTON/2,
+                                LARGEUR_BOUTTON, HAUTEUR_BOUTTON), Color.Blue, NOM_IMAGE_AVANT, NOM_IMAGE_APRÈS,
+                                CalculerNbSoldats(), CalculerNbSection(), INTERVALLE_MOYEN);
+
+            NbSoldatsContinuer = Continuer.NombreSoldats;
+            Bouttons.Add(Continuer);
+            Bouttons.Add(Exit);
+            Game.Components.Add(Exit);
+            Game.Components.Add(Continuer);
+            Afficheur = new AfficheurNb(Game, Color.Red, ++CompteurNiveau, new Vector2(0, 0), "Niveau :", INTERVALLE_MOYEN);
+            Game.Components.Add(Afficheur);
+            PartieEnCours.EstRéussi = false;
+        }
+        void DiminuerNbSoldats()
+        {
+            if(NbSoldatsContinuer>2)
+            {
+                NbSoldatsContinuer = NbSoldatsContinuer - 2;
+            }
         }
 
         int CalculerNbSoldats()

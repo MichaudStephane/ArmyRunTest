@@ -147,12 +147,12 @@ namespace AtelierXNA
         {
             if (JouerMusique)
             {
-                MediaPlayer.Resume();
+                MediaPlayer.Pause();
                 JouerMusique = !JouerMusique;
             }
             else
             {
-                MediaPlayer.Pause();
+                MediaPlayer.Resume();
                 JouerMusique = !JouerMusique;
             }
         }
