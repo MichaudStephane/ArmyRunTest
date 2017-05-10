@@ -27,7 +27,6 @@ namespace AtelierXNA
         RessourcesManager<Model> GestionnairesDeModele { get; set; }
         RessourcesManager<SoundEffect> GestionnaireDeSons { get; set; }
         Soldat[,] Soldats { get; set; }
-
         GraphicsDeviceManager graphics;
         ContentManager content;
 
@@ -56,16 +55,16 @@ namespace AtelierXNA
 
             Compteur = 0;
             const float DELTA_X = 3.3f;
-            Vector3 positionDragon = new Vector3(0, 0, 5);
+            Vector3 postiontemp = new Vector3(0, 0, 2.5f);
             Vector3 positionCaméra = new Vector3(0, 5, -10);
-            Vector3 positionTuileDragon = positionDragon + Vector3.Right * (DELTA_X * 2);
+            Vector3 positionTuileDragon = postiontemp + Vector3.Right * (DELTA_X * 2);
 
             GestionnaireDeTextures = new RessourcesManager<Texture2D>(this, "Textures");
             GestionnairesDeModele = new RessourcesManager<Model>(this, "Modeles");
             GestionInput = new InputManager(this);
             Components.Add(GestionInput);
-
-            CaméraJeuAutomate = new CaméraAutomate(this, positionDragon, positionCaméra, Vector3.Up, INTERVALLE_STANDARD);
+            // CaméraJeu = new CaméraSubjective(this, positionCaméra, positionDragon, Vector3.Up, INTERVALLE_STANDARD);
+            CaméraJeuAutomate = new CaméraAutomate(this, postiontemp, positionCaméra, Vector3.Up, INTERVALLE_STANDARD);
             Soldats = new Soldat[3,3];
 
 

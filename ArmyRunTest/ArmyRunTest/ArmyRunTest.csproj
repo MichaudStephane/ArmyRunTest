@@ -98,7 +98,6 @@
     <Compile Include="HachePendule.cs" />
     <Compile Include="Humanoide.cs" />
     <Compile Include="HéliceVentilateur.cs" />
-    <Compile Include="IBougeable.cs" />
     <Compile Include="ICollisionable.cs" />
     <Compile Include="IDeletable.cs" />
     <Compile Include="IDestructible.cs" />

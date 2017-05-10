@@ -64,11 +64,6 @@ namespace AtelierXNA
             Intervalle_MAJ_Mouvement = INTERVALLE_DE_DEPART_STANDARD;
             TempsEcouleDepuisMajMouvement = 0;
 
-            
-
-            GestionnaireDeSons = Game.Services.GetService(typeof(RessourcesManager<SoundEffect>)) as RessourcesManager<SoundEffect>;
-            SonSaut = GestionnaireDeSons.Find("Saut");
-
             CreerHitbox();
         }
         public override void Update(GameTime gameTime)
@@ -126,8 +121,6 @@ namespace AtelierXNA
                         BougerHitbox();
                         
                         
-                        AjouterVecteur(CONSTANTE_SAUT);
-                        SonSaut.Play(1f,0f,0f);
                     }
                 }
                 if (déplacementGaucheDroite != 0 || déplacementAvantArrière != 0)
@@ -228,8 +221,8 @@ namespace AtelierXNA
        {
 
 
-            Vector3 minHB = new Vector3(-0.5f * Delta.X, -0.4f * Delta.Y, -0.1f);
-            Vector3 maxHB = new Vector3(0.5f * Delta.X, 0.5f * Delta.Y, 0.1f);
+            Vector3 minHB = new Vector3(-0.5f * Delta.X, -0.4f * Delta.Y, -0.2f);
+            Vector3 maxHB = new Vector3(0.5f * Delta.X, 0.5f * Delta.Y, 0.2f);
 
             minHB = Vector3.Transform(minHB, Matrix.CreateScale(Homothétie));
             maxHB = Vector3.Transform(maxHB, Matrix.CreateScale(Homothétie));
@@ -266,20 +259,5 @@ namespace AtelierXNA
 
            BougerHitbox();
        }
-
-
-       void ModifierIntervalle() 
-       {
-
-       }
-       void InitialiserListe()
-       {
-
-       }
-       void CalculerVecteurResultant()
-       {
-            
-       }
-
     }
 }
