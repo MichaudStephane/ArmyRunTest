@@ -14,8 +14,7 @@ namespace AtelierXNA
     class Jeu : Microsoft.Xna.Framework.GameComponent
     {
         public const int NB_SECTION_FACILE = 10;
-        //const int SECTION_NIVEAU_TUTORIEL = 15;
-        //const int NOMBRE_SOLDATS_TUTORIEL = 25;
+       
         const float INTERVAL_MAJ_MOYEN = 1 / 60f;
         Armée Armées { get; set; }
         Niveau _Niveau { get; set; }
@@ -29,8 +28,8 @@ namespace AtelierXNA
         int NombreSoldatArrivé { get; set; }
         Rectangle RectangleAffichageMute { get; set; }
         public bool JouerMusique { get; private set; }
-        public bool EstRéussi { get; set; }
-        public bool EstÉchec { get; set; }
+        public bool EstRéussi { get; private set; }
+        public bool EstÉchec { get; private set; }
         Boutton Mute { get; set; }
 
 
@@ -42,21 +41,11 @@ namespace AtelierXNA
             NombreSoldats = nombreSoldats;
             IntervalleMaj = intervalleMaj;
         }
-        //public Jeu(Game jeu)
-        //    : base(jeu)
-        //{
-        //    NombreSectionsNiveau = SECTION_NIVEAU_TUTORIEL;
-        //    PositionInitialeNiveau = new Vector3(0, 0, 0);
-        //    IntervalleMaj = INTERVAL_MAJ_MOYEN;
-        //}
-
+        
         public override void Initialize()
         {
             base.Initialize();
-            //string son = "icone son";
-            //string mute = "mute button";
-            //Rectangle temp = Game.Window.ClientBounds;
-            //RectangleAffichageMute = new Rectangle(0, temp.Y - 90, 60, 60);
+            
             if (Game.Components.Where(x => x is CaméraAutomate).ToList().Count < 1)
             {
                 CaméraJeu = Game.Services.GetService(typeof(Caméra)) as CaméraAutomate;
@@ -76,6 +65,7 @@ namespace AtelierXNA
             //Game.Components.Add(Mute);
         }
 
+        // Permet de changer faire le changement de niveau
         public void ChangerDeNiveau()
         {
             for (int i = 0; i < Armées.Armés.GetLength(0); i++)
@@ -127,6 +117,7 @@ namespace AtelierXNA
             }
         }
 
+
         public void DétruireNiveau()
         {
             _Niveau.DétruireNiveau();
@@ -163,6 +154,12 @@ namespace AtelierXNA
             NombreSoldatArrivé = 0;
             return nb;
         }
+
+        public void DéfinirÉtatJeu(bool estRéussi,bool estÉchec )
+        {
+            EstRéussi = estRéussi;
+            EstÉchec = estÉchec;
+         }
 
     }
 }
