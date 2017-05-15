@@ -208,7 +208,7 @@ namespace AtelierXNA
             Game.Components.Add(Exit);
             Afficheur = new AfficheurNb(Game, Color.Red, CompteurNiveau, new Vector2(0, 0), "Niveau :", INTERVALLE_MOYEN);
             Game.Components.Add(Afficheur);
-            PartieEnCours.EstÉchec = false;
+            PartieEnCours.DéfinirÉtatJeu(PartieEnCours.EstRéussi, false);
         }
         /// <summary>
         /// initialise menu continuer
@@ -230,7 +230,7 @@ namespace AtelierXNA
             Game.Components.Add(Continuer);
             Afficheur = new AfficheurNb(Game, Color.Red, ++CompteurNiveau, new Vector2(0, 0), "Niveau :", INTERVALLE_MOYEN);
             Game.Components.Add(Afficheur);
-            PartieEnCours.EstRéussi = false;
+            PartieEnCours.DéfinirÉtatJeu(false,PartieEnCours.EstÉchec);
         }
         /// <summary>
         /// Change le nombre de soldats par niveau
