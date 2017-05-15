@@ -163,7 +163,6 @@ namespace AtelierXNA
             NombreSoldatArrivé = 0;
             return nb;
         }
-
     }
 }
 

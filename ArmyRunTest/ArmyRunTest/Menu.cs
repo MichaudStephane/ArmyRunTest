@@ -17,6 +17,7 @@ namespace AtelierXNA
         const int DISTANCE_ENTRE_BOUTTON_QUITTER = 70;
         const int AUGMENTATION_SECTION_NIVEAU = 2;
         const int AUGMENTATION_SOLDATS_NIVEAU = 5;
+        const int DIMINUTION_SOLDTAS_RECOMMENCER = -2;
         const string NOM_IMAGE_AVANT = "fond écran blanc";
         const string NOM_IMAGE_APRÈS = "FondEcranGris";
 
@@ -47,7 +48,9 @@ namespace AtelierXNA
         public Menu(Game jeu)
             : base(jeu)
         {  }
-
+        /// <summary>
+        /// Initialise les différents boutton de difficulté
+        /// </summary>
         public override void Initialize()
         {
             string son = "icone son";
@@ -92,7 +95,9 @@ namespace AtelierXNA
 
             base.Initialize();
         }
-        
+        /// <summary>
+        /// Load les différents services
+        /// </summary>
         protected override void LoadContent()
         {
             GestionSprites = new SpriteBatch(Game.GraphicsDevice);
@@ -101,11 +106,13 @@ namespace AtelierXNA
             GestionnaireDeFonts = Game.Services.GetService(typeof(RessourcesManager<SpriteFont>)) as RessourcesManager<SpriteFont>;
             Font = GestionnaireDeFonts.Find("Arial");
         }
-
+        /// <summary>
+        /// À chaque tour de boucle il vérifie l'état du niveau et appelle la classe nécessaire
+        /// </summary>
+        /// <param name="gameTime">le temps du jeu</param>
         public override void Update(GameTime gameTime)
         {
             Game.IsMouseVisible = true;
-            float tempsÉcoulé = (float)gameTime.ElapsedGameTime.TotalSeconds;
             Point point = GestionnaireManager.GetPositionSouris();
             PosSouris = new Vector2(point.X, point.Y);
 
@@ -135,7 +142,9 @@ namespace AtelierXNA
             }
             base.Update(gameTime);
         }
-
+        /// <summary>
+        /// Gère les boutons de la liste en fonction de la position et du clic de la souris 
+        /// </summary>
         void GestionBouttonsDeLaListe()
         {
             for (int i = 0; i < Bouttons.Count; i++)
@@ -181,13 +190,15 @@ namespace AtelierXNA
                 }
             }
         }
-
+        /// <summary>
+        /// Initialise le bouton menu recommencer
+        /// </summary>
         void InitialiserMenuRecommencer()
         {
             Vector2 PosTexte = new Vector2(Game.Window.ClientBounds.Width / 2, Game.Window.ClientBounds.Height / 2 - 150);
             AfficheurTexte = new AfficheurTexte(Game, Color.Red, PosTexte, "Vous avez échoué.", INTERVALLE_MOYEN);
             Game.Components.Add(AfficheurTexte);
-            DiminuerNbSoldats();
+            CalculerNbSoldats(DIMINUTION_SOLDTAS_RECOMMENCER);
             Boutton Recommencer = new Boutton(Game, "Recommencer", new Rectangle(Game.Window.ClientBounds.Width / 2 - LARGEUR_BOUTTON / 2, Game.Window.ClientBounds.Height / 2-HAUTEUR_BOUTTON/2,
                                             LARGEUR_BOUTTON, HAUTEUR_BOUTTON), Color.Blue, NOM_IMAGE_AVANT, NOM_IMAGE_APRÈS, NbSoldatsContinuer,
                                             PartieEnCours.GetNbSections(), INTERVALLE_MOYEN);
@@ -199,7 +210,9 @@ namespace AtelierXNA
             Game.Components.Add(Afficheur);
             PartieEnCours.EstÉchec = false;
         }
-
+        /// <summary>
+        /// initialise menu continuer
+        /// </summary>
         void InitialiserMenuContinuer()
         {
             Vector2 PosTexte = new Vector2(Game.Window.ClientBounds.Width / 2, Game.Window.ClientBounds.Height / 2 - 150);
@@ -208,7 +221,7 @@ namespace AtelierXNA
             Game.Components.Add(AfficheurTexte);
             Boutton Continuer = new Boutton(Game, "Continuer", new Rectangle(Game.Window.ClientBounds.Width / 2 - LARGEUR_BOUTTON/2, Game.Window.ClientBounds.Height /2 - HAUTEUR_BOUTTON/2,
                                 LARGEUR_BOUTTON, HAUTEUR_BOUTTON), Color.Blue, NOM_IMAGE_AVANT, NOM_IMAGE_APRÈS,
-                                CalculerNbSoldats(), CalculerNbSection(), INTERVALLE_MOYEN);
+                                CalculerNbSoldats(AUGMENTATION_SOLDATS_NIVEAU), CalculerNbSection(), INTERVALLE_MOYEN);
 
             NbSoldatsContinuer = Continuer.NombreSoldats;
             Bouttons.Add(Continuer);
@@ -219,24 +232,28 @@ namespace AtelierXNA
             Game.Components.Add(Afficheur);
             PartieEnCours.EstRéussi = false;
         }
-        void DiminuerNbSoldats()
-        {
-            if(NbSoldatsContinuer>2)
-            {
-                NbSoldatsContinuer = NbSoldatsContinuer - 2;
-            }
-        }
+        /// <summary>
+        /// Change le nombre de soldats par niveau
+        /// </summary>
+        /// <param name="valeur">le nouveau nombre de soldats</param>
 
-        int CalculerNbSoldats()
+        int CalculerNbSoldats(int valeur)
         {
-            return PartieEnCours.GetNbSoldat() + AUGMENTATION_SOLDATS_NIVEAU;
+            return PartieEnCours.GetNbSoldat() + valeur;
         }
-
+        /// <summary>
+        /// Change le nombre de sections dans chaque niveau
+        /// </summary>
+        /// <returns>le nouveau nombre de section de niveaux</returns>
         int CalculerNbSection()
         {
             return PartieEnCours.GetNbSections() + CompteurNiveau * AUGMENTATION_SECTION_NIVEAU;
         }
-
+        /// <summary>
+        /// Détermine si la souris est dans les limites du bouton
+        /// </summary>
+        /// <param name="b">bouton de la liste</param>
+        /// <returns>un booléen qui détermine si la souris est dans les limites du bouton</returns>
         bool EstDansBoutton(Boutton b)
         {
             bool estDansBoutton = false;
