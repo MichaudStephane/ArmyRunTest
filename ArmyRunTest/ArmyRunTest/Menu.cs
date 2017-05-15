@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
-using System.Windows.Forms;
 
 namespace AtelierXNA
 {
@@ -42,8 +35,6 @@ namespace AtelierXNA
         List<Boutton> Bouttons { get; set; }
         Jeu PartieEnCours { get; set; }
         Rectangle RectangleAffichageMute { get; set; }
-        Rectangle RectangleAffichageBoutonsDifficulté { get; set; }
-        bool SourrisEstDansBoutton { get; set; }
         int CompteurNiveau { get; set; }
         SpriteBatch GestionSprites { get; set; }
         SpriteFont Font { get; set; }
@@ -75,7 +66,6 @@ namespace AtelierXNA
             Mute = new Boutton(Game, " ", RectangleAffichageMute, Color.White, son, mute, 0,0, INTERVALLE_MOYEN);
 
             Exit = new Boutton(Game, "Quitter", new Rectangle(temp.Width / 2-LARGEUR_BOUTTON/2, temp.Height/2+DISTANCE_ENTRE_BOUTTON_QUITTER , LARGEUR_BOUTTON, HAUTEUR_BOUTTON), Color.Blue, NOM_IMAGE_AVANT, NOM_IMAGE_APRÈS, 0, 0, INTERVALLE_MOYEN);
-            //Réinitialiser = new Boutton(Game,"Réinitialiser",new Rectangle(temp.Width/2, temp.Height,LARGEUR_BOUTTON,HAUTEUR_BOUTTON),Color.Blue, NOM_IMAGE_AVANT, NOM_IMAGE_APRÈS,0,0,INTERVALLE_MOYEN);
 
             Bouttons.Add(DifficultéFacile);
             Bouttons.Add(DifficultéMoyenne);
@@ -139,7 +129,6 @@ namespace AtelierXNA
                     if (GestionnaireManager.EstNouveauClicGauche())
                     {
                         Mute.ChangerDeCouleur();
-                        
                         PartieEnCours.FaireJouerMusique();
                     }
                 }
@@ -261,7 +250,6 @@ namespace AtelierXNA
                     estDansBoutton = true;
                 }
             }
-            SourrisEstDansBoutton = estDansBoutton;
             return estDansBoutton;
         }
     }
