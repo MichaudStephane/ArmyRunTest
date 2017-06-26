@@ -126,7 +126,21 @@ namespace AtelierXNA
 
             if (PartieEnCours.EstÉchec)
             {
-                InitialiserMenuRecommencer();
+                Vector2 PosTexte = new Vector2(Game.Window.ClientBounds.Width / 2, Game.Window.ClientBounds.Height / 2 - 150);
+                AfficheurTexte = new AfficheurTexte(Game, Color.Red, PosTexte, "Vous avez échoué.", INTERVALLE_MOYEN);
+                Game.Components.Add(AfficheurTexte);
+                //Boutton Recommencer = new Boutton(Game, "Recommencer Niveau", new Rectangle(Game.Window.ClientBounds.Width / 2, Game.Window.ClientBounds.Height / 2 - 50, 
+                                                //LARGEUR_BOUTTON, HAUTEUR_BOUTTON), Color.Blue, "fond écran blanc", "FondEcranGris", NbSoldatsContinuer,
+                                                //PartieEnCours.GetNbSections(), INTERVALLE_MOYEN);
+                //Bouttons.Add(Recommencer);
+                Bouttons.Add(Exit);
+                Bouttons.Add(Réinitialiser);
+                Game.Components.Add(Réinitialiser);
+                //Game.Components.Add(Recommencer);
+                Game.Components.Add(Exit);
+                Afficheur = new AfficheurNb(Game, Color.Red, CompteurNiveau, new Vector2(0, 0), "Niveau :", INTERVALLE_MOYEN);
+                Game.Components.Add(Afficheur);
+                PartieEnCours.EstÉchec = false;
             }
 
             if (GestionnaireManager.EstSourisActive)
