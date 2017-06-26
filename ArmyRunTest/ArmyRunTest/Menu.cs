@@ -134,8 +134,8 @@ namespace AtelierXNA
                                                 //PartieEnCours.GetNbSections(), INTERVALLE_MOYEN);
                 //Bouttons.Add(Recommencer);
                 Bouttons.Add(Exit);
-                Bouttons.Add(Réinitialiser);
-                Game.Components.Add(Réinitialiser);
+                //Bouttons.Add(Réinitialiser);
+                //Game.Components.Add(Réinitialiser);
                 //Game.Components.Add(Recommencer);
                 Game.Components.Add(Exit);
                 Afficheur = new AfficheurNb(Game, Color.Red, CompteurNiveau, new Vector2(0, 0), "Niveau :", INTERVALLE_MOYEN);
